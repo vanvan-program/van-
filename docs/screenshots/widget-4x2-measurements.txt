@@ -1,0 +1,28 @@
+light host=312×170px, fontScale=1.0
+today_list height=102px children=4
+row0=0..30px
+row1=32..62px
+tomorrow_list height=102px children=4
+row0=0..30px
+row1=32..62px
+light host=312×130px, fontScale=1.0
+today_list height=62px children=2
+row0=0..30px
+row1=32..62px
+tomorrow_list height=62px children=2
+row0=0..30px
+row1=32..62px
+dark host=312×170px, fontScale=1.0
+today_list height=102px children=4
+row0=0..30px
+row1=32..62px
+tomorrow_list height=102px children=4
+row0=0..30px
+row1=32..62px
+dark host=312×130px, fontScale=1.0
+today_list height=62px children=2
+row0=0..30px
+row1=32..62px
+tomorrow_list height=62px children=2
+row0=0..30px
+row1=32..62px

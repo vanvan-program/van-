@@ -1,0 +1,74 @@
+light host=312×170px, fontScale=1.0
+today_list height=102px children=3
+measured-row0=0..43px, height=43
+measured-row1=45..88px, height=43
+measured-row2=90..133px, height=43
+row0=0..43px
+row1=45..88px
+tomorrow_list height=102px children=3
+measured-row0=0..43px, height=43
+measured-row1=45..88px, height=43
+measured-row2=90..133px, height=43
+row0=0..43px
+row1=45..88px
+light host=312×130px, fontScale=1.0
+today_list height=62px children=2
+measured-row0=0..30px, height=30
+measured-row1=32..62px, height=30
+row0=0..30px
+row1=32..62px
+tomorrow_list height=62px children=2
+measured-row0=0..30px, height=30
+measured-row1=32..62px, height=30
+row0=0..30px
+row1=32..62px
+light host=312×110px, fontScale=1.0
+today_list height=62px children=3
+measured-row0=0..26px, height=26
+measured-row1=28..54px, height=26
+measured-row2=56..82px, height=26
+row0=0..26px
+row1=28..54px
+tomorrow_list height=62px children=3
+measured-row0=0..26px, height=26
+measured-row1=28..54px, height=26
+measured-row2=56..82px, height=26
+row0=0..26px
+row1=28..54px
+dark host=312×170px, fontScale=1.0
+today_list height=102px children=3
+measured-row0=0..43px, height=43
+measured-row1=45..88px, height=43
+measured-row2=90..133px, height=43
+row0=0..43px
+row1=45..88px
+tomorrow_list height=102px children=3
+measured-row0=0..43px, height=43
+measured-row1=45..88px, height=43
+measured-row2=90..133px, height=43
+row0=0..43px
+row1=45..88px
+dark host=312×130px, fontScale=1.0
+today_list height=62px children=2
+measured-row0=0..30px, height=30
+measured-row1=32..62px, height=30
+row0=0..30px
+row1=32..62px
+tomorrow_list height=62px children=2
+measured-row0=0..30px, height=30
+measured-row1=32..62px, height=30
+row0=0..30px
+row1=32..62px
+dark host=312×110px, fontScale=1.0
+today_list height=62px children=3
+measured-row0=0..26px, height=26
+measured-row1=28..54px, height=26
+measured-row2=56..82px, height=26
+row0=0..26px
+row1=28..54px
+tomorrow_list height=62px children=3
+measured-row0=0..26px, height=26
+measured-row1=28..54px, height=26
+measured-row2=56..82px, height=26
+row0=0..26px
+row1=28..54px

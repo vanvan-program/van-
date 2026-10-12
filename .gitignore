@@ -1,0 +1,38 @@
+.gradle/
+.kotlin/
+**/build/
+local.properties
+.idea/
+*.jks
+*.keystore
+
+# Local build outputs and working files
+.cxx/
+.externalNativeBuild/
+tmp/
+.DS_Store
+Thumbs.db
+*.log
+*.apk
+*.aab
+*.apks
+
+# Credentials and signing material
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+keystore.properties
+key.properties
+signing.properties
+credentials.json
+*.p12
+*.pfx
+*.pem
+*.key
+
+# Private user-supplied import fixtures
+samples/private/
+private-samples/
+**/src/androidTest/assets/sample-*.pdf
