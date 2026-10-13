@@ -219,7 +219,7 @@ object DocumentImport {
     private val sectionHeaders = setOf("节次", "节数", "上课节次", "sections", "periods", "nodes")
     private val sectionPattern =
         Regex(
-            "(?:第)?(\\d{1,2})(?:[-~至](\\d{1,2}))?(?:节(?:次|课)?|(?=\\s*(?:section|period)))",
+            "(?:第)?(\\d{1,2})(?:(?:节(?:次|课)?)?[-~至](?:第)?(\\d{1,2}))?(?:节(?:次|课)?|(?=\\s*(?:section|period)))",
             RegexOption.IGNORE_CASE,
         )
     private val weekPiece = "(?:第)?\\d{1,3}(?:[-~至]\\d{1,3})?(?:\\(?[单双](?:周)?\\)?)?"
@@ -582,6 +582,9 @@ object DocumentImport {
         context: IntRange?,
         requireEvidence: Boolean,
     ): DocumentCourseRow? {
+        exportBlock(text, day)?.let {
+            return it
+        }
         if (Regex("H\\d{8}-").containsMatchIn(text)) return codedBlock(text, day, context)
         campusBlock(text, day)?.let {
             return it
@@ -724,6 +727,22 @@ object DocumentImport {
     private fun splitBlocks(text: String): List<String> {
         val normalized = timingText(text)
         val templateLines = normalized.lines().filter { it.isNotBlank() }
+        if (templateLines.any { exportTitle.matches(it.trim()) }) {
+            // One title can own several weekly teaching/lab runs. The merged cell's
+            // overall height is not the duration of each of those runs.
+            var title: String? = null
+            return buildList {
+                templateLines.forEach { line ->
+                    when {
+                        exportTitle.matches(line.trim()) -> title = line.trim()
+                        exportTiming.matches(line.trim()) && title != null ->
+                            add("$title\n${line.trim()}")
+                        Regex("^\\d{4}级.*班$").matches(line.trim()) -> Unit
+                        else -> add(line)
+                    }
+                }
+            }
+        }
         if (Regex("H\\d{8}-").containsMatchIn(normalized)) {
             val starts =
                 templateLines.indices.filter {
@@ -813,6 +832,30 @@ object DocumentImport {
                 lines.subList(start, starts.getOrNull(i + 1) ?: lines.size).joinToString("\n")
             }
         }
+    }
+
+    private val exportTitle =
+        Regex("^(.+?)\\[[A-Za-z0-9][A-Za-z0-9-]*]\\s*\\d+\\[(?:必修课|选修课|限选课|任选课)]$")
+    private val exportTiming =
+        Regex(
+            "^(.+?)\\s+((?:第)?\\d{1,2}(?:(?:节)?[-~至](?:第)?\\d{1,2})?节)\\[[^]]+]\\s*(\\S+)(?:\\s+(.+))?$"
+        )
+
+    private fun exportBlock(text: String, day: String): DocumentCourseRow? {
+        val lines = timingText(text).lines().filter { it.isNotBlank() }
+        if (lines.size != 2) return null
+        val title = exportTitle.matchEntire(lines[0].trim()) ?: return null
+        val timing = exportTiming.matchEntire(lines[1].trim()) ?: return null
+        val sections = sectionRange(timing.groupValues[2]) ?: return null
+        return DocumentCourseRow(
+            name = title.groupValues[1].trim(),
+            day = day,
+            startSection = sections.first.toString(),
+            endSection = sections.last.toString(),
+            weeks = normalizeWeeks(timing.groupValues[1]),
+            teacher = timing.groupValues[3],
+            place = timing.groupValues[4].trim(),
+        )
     }
 
     private fun shortLabelledTiming(value: String): String? {

@@ -23,7 +23,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.*
 import app.van.timetable.domain.*
 import java.time.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun Welcome(vm: VanViewModel, nav: (String) -> Unit) {
@@ -81,10 +85,15 @@ fun Timetable(
     val monday = LocalDate.parse(s.week1Monday).plusWeeks((week - 1).toLong())
     val selectedDate = if (daily) dayDate.toString() else weekSelectedDate
     val scope = rememberCoroutineScope()
+    var navigationJob by remember { mutableStateOf<Job?>(null) }
+    fun animateNavigation(action: suspend () -> Unit) {
+        navigationJob?.cancel()
+        navigationJob = scope.launch { action() }
+    }
     var selectWeek by remember { mutableStateOf(false) }
     var menu by remember { mutableStateOf(false) }
+    val gridPan = remember(s.id) { MutableStateFlow(0) }
     val colors = LocalVan.current
-    val gridScroll = rememberScrollState()
     LaunchedEffect(weekPager) {
         snapshotFlow { weekPager.currentPage }
             .collect { page ->
@@ -106,17 +115,18 @@ fun Timetable(
             .coerceIn(0, DAY_PAGER_COUNT.toLong() - 1)
             .toInt()
     fun showDay(date: LocalDate) {
+        navigationJob?.cancel()
         // Request the starting position before composing the previously hidden pager.
         // scrollToPage would wait for its first layout and prevent the mode switch.
         dayPager.requestScrollToPage(dayPage(date))
         daily = true
     }
     fun moveDate(days: Long) {
-        scope.launch { dayPager.animateScrollToPage(dayPage(dayDate.plusDays(days))) }
+        animateNavigation { dayPager.animateScrollToPage(dayPage(dayDate.plusDays(days))) }
     }
     fun moveWeek(target: Int) {
         val targetWeek = target.coerceIn(1, s.maxWeeks)
-        scope.launch {
+        animateNavigation {
             if (daily) {
                 val date =
                     LocalDate.parse(s.week1Monday)
@@ -131,7 +141,7 @@ fun Timetable(
         }
     }
     fun jumpToday() {
-        scope.launch {
+        animateNavigation {
             selectedWeekday = dateNow.dayOfWeek.value - 1
             if (daily) dayPager.animateScrollToPage(dayPage(dateNow))
             else weekPager.animateScrollToPage(actualWeek.coerceIn(1, s.maxWeeks) - 1)
@@ -208,6 +218,7 @@ fun Timetable(
                         text = { Text(if (daily) "切换为周课表" else "切换为日列表") },
                         onClick = {
                             if (daily) {
+                                navigationJob?.cancel()
                                 selectedWeekday = dayDate.dayOfWeek.value - 1
                                 weekSelectedDate = dayDate.toString()
                                 weekPager.requestScrollToPage(
@@ -235,7 +246,12 @@ fun Timetable(
                 }
             }
         }
-        val next = CourseEngine.next(s, now)
+        // Searching future days must not block a drag or repeat on page changes.
+        val nextState =
+            produceState<Occurrence?>(null, s, now) {
+                value = withContext(Dispatchers.Default) { CourseEngine.next(s, now) }
+            }
+        val next = nextState.value
         if (next != null) {
             Surface(
                 Modifier.fillMaxWidth().testTag("next-class").clickable {
@@ -301,7 +317,8 @@ fun Timetable(
                 }
             }
             Row(Modifier.weight(1f)) {
-                TimetablePager(dayPager, Modifier.weight(1f).fillMaxHeight().testTag("day-list")) { page ->
+                TimetablePager(dayPager, Modifier.weight(1f).fillMaxHeight().testTag("day-list")) {
+                    page ->
                     DayList(
                         s,
                         LocalDate.ofEpochDay(dayAnchor + page - DAY_PAGER_ANCHOR),
@@ -316,8 +333,19 @@ fun Timetable(
             }
         } else {
             Row(Modifier.weight(1f)) {
-                TimetablePager(weekPager, Modifier.weight(1f).fillMaxHeight().testTag("week-viewport")) { page ->
-                    WeekGrid(s, p, page + 1, dateNow, gridScroll, nav) { date ->
+                TimetablePager(
+                    weekPager,
+                    Modifier.weight(1f).fillMaxHeight().testTag("week-viewport"),
+                ) { page ->
+                    WeekGrid(
+                        s,
+                        p,
+                        page + 1,
+                        dateNow,
+                        gridPan,
+                        weekPager.settledPage == page,
+                        nav,
+                    ) { date ->
                         selectedWeekday = date.dayOfWeek.value - 1
                         showDay(date)
                     }
@@ -389,8 +417,10 @@ private fun ReturnToTodayButton(daily: Boolean, modifier: Modifier, onClick: () 
     val label = if (daily) "回到今日" else "回到本周"
     Surface(
         onClick = onClick,
-        modifier = modifier.width(44.dp).heightIn(min = 112.dp)
-            .testTag("jump-today").semantics { contentDescription = label },
+        modifier =
+            modifier.width(44.dp).heightIn(min = 112.dp).testTag("jump-today").semantics {
+                contentDescription = label
+            },
         shape = RoundedCornerShape(topStart = 18.dp, bottomStart = 18.dp),
         color = LocalVan.current.blue,
         contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -413,26 +443,40 @@ private fun WeekGrid(
     p: Preferences,
     week: Int,
     dateNow: LocalDate,
-    gridScroll: ScrollState,
+    gridPan: MutableStateFlow<Int>,
+    activePage: Boolean,
     nav: (String) -> Unit,
     onDaySelected: (LocalDate) -> Unit,
 ) {
     val monday = LocalDate.parse(s.week1Monday).plusWeeks((week - 1).toLong())
     val colors = LocalVan.current
     val days = if (p.showWeekend) 7 else 5
-    BoxWithConstraints(Modifier.fillMaxSize().testTag("week-grid-$week").gridPagingGuard(gridScroll)) {
+    // A ScrollState belongs to one scrollable. Sharing it across pager pages lets
+    // their measurement and fling jobs change/cancel each other's scroll state.
+    val gridScroll = rememberScrollState()
+    LaunchedEffect(gridScroll, activePage) {
+        // Read and synchronize the initial pan outside composition before publishing
+        // this page's changes. Only the settled page writes the shared position.
+        gridScroll.scrollTo(gridPan.value)
+        if (activePage) snapshotFlow { gridScroll.value }.collect { gridPan.value = it }
+        else gridPan.collect { if (gridScroll.value != it) gridScroll.scrollTo(it) }
+    }
+    val sections = remember(s, monday) { CourseEngine.routine(s, monday).sections }
+    val weekCourses =
+        remember(s, monday, days) {
+            (0 until days).map { d -> CourseEngine.timetableDay(s, monday.plusDays(d.toLong())) }
+        }
+    val timeline =
+        remember(sections, weekCourses) { GridTimeline.create(sections, weekCourses.flatten()) }
+    BoxWithConstraints(
+        Modifier.fillMaxSize().testTag("week-grid-$week").gridPagingGuard(gridScroll)
+    ) {
         val density = LocalDensity.current
         val gutter = (34f * density.fontScale.coerceAtLeast(1f)).dp
         val minimumDayWidth = 38f * density.fontScale.coerceAtLeast(1f)
         val width = maxOf(maxWidth.value, minimumDayWidth * days + gutter.value).dp
         val dayWidth = (width - gutter) / days
         val headerHeight = maxOf(44f, 36f * density.fontScale).dp
-        val sections = CourseEngine.routine(s, monday).sections
-        val weekCourses =
-            (0 until days).map { d ->
-                CourseEngine.timetableDay(s, monday.plusDays(d.toLong()))
-            }
-        val timeline = GridTimeline.create(sections, weekCourses.flatten())
         val fitted = (maxHeight - headerHeight - 8.dp) / timeline.units
         val rowHeight =
             if (p.fitWeek) minOf(p.rowHeight.dp, maxOf((36f * density.fontScale).dp, fitted))
@@ -538,7 +582,7 @@ private fun WeekGrid(
                         val date = monday.plusDays(d.toLong())
                         val holiday = CourseEngine.holiday(s, date) != null
                         val present = weekCourses[d]
-                        val conflictGroups = CourseEngine.conflicts(present)
+                        val conflictGroups = remember(present) { CourseEngine.conflicts(present) }
                         val hidden =
                             conflictGroups
                                 .flatMap { g ->
@@ -727,9 +771,9 @@ fun DayList(
     nav: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val list = CourseEngine.timetableDay(s, date)
-    val holiday = CourseEngine.holiday(s, date)
-    val conflicts = CourseEngine.conflicts(list).flatten().map { it.id }.toSet()
+    val list = remember(s, date) { CourseEngine.timetableDay(s, date) }
+    val holiday = remember(s, date) { CourseEngine.holiday(s, date) }
+    val conflicts = remember(list) { CourseEngine.conflicts(list).flatten().map { it.id }.toSet() }
     LazyColumn(modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
         if (list.isEmpty() || holiday != null)
             item {

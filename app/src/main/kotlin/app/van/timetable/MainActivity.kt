@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        launchSequence = savedInstanceState?.getInt("launchSequence") ?: 0
         launchIntent = intent
         setContent {
             val state by vm.state.collectAsStateWithLifecycle()
@@ -45,6 +46,11 @@ class MainActivity : ComponentActivity() {
         setIntent(intent)
         launchIntent = intent
         launchSequence++
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt("launchSequence", launchSequence)
+        super.onSaveInstanceState(outState)
     }
 
     override fun onResume() {

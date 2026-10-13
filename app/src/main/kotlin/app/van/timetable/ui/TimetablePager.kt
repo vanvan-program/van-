@@ -54,6 +54,7 @@ internal fun TimetablePager(
         state = state,
         modifier = modifier,
         key = { it },
+        beyondViewportPageCount = 1,
         flingBehavior =
             PagerDefaults.flingBehavior(
                 state,
@@ -83,7 +84,8 @@ internal fun TimetablePager(
 // An oversized grid owns the entire gesture if it could pan at its start.
 // Consume leftover movement/fling so reaching an edge does not also change weeks.
 internal fun Modifier.gridPagingGuard(scroll: ScrollState): Modifier = composed {
-    var gridOwnsGesture by remember { mutableStateOf(false) }
+    // Gesture bookkeeping is not UI state; changing it must not recompose grids.
+    val ownership = remember(scroll) { GridGestureOwnership() }
     val connection =
         remember(scroll) {
             object : NestedScrollConnection {
@@ -91,18 +93,19 @@ internal fun Modifier.gridPagingGuard(scroll: ScrollState): Modifier = composed 
                     consumed: Offset,
                     available: Offset,
                     source: NestedScrollSource,
-                ): Offset = if (gridOwnsGesture) Offset(available.x, 0f) else Offset.Zero
+                ): Offset = if (ownership.ownsGesture) Offset(available.x, 0f) else Offset.Zero
 
                 override suspend fun onPostFling(
                     consumed: Velocity,
                     available: Velocity,
-                ): Velocity = if (gridOwnsGesture) Velocity(available.x, 0f) else Velocity.Zero
+                ): Velocity =
+                    if (ownership.ownsGesture) Velocity(available.x, 0f) else Velocity.Zero
             }
         }
     nestedScroll(connection).pointerInput(scroll) {
         awaitEachGesture {
             val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
-            gridOwnsGesture = false
+            ownership.ownsGesture = false
             var decided = false
             do {
                 val change =
@@ -111,7 +114,7 @@ internal fun Modifier.gridPagingGuard(scroll: ScrollState): Modifier = composed 
                     } ?: break
                 val delta = change.position - change.previousPosition
                 if (!decided && delta.x != 0f) {
-                    gridOwnsGesture =
+                    ownership.ownsGesture =
                         if (delta.x < 0) scroll.canScrollForward else scroll.canScrollBackward
                     decided = true
                 }
@@ -119,3 +122,5 @@ internal fun Modifier.gridPagingGuard(scroll: ScrollState): Modifier = composed 
         }
     }
 }
+
+private class GridGestureOwnership(var ownsGesture: Boolean = false)

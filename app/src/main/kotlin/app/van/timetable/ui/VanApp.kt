@@ -67,6 +67,9 @@ fun VanApp(
     var message by remember { mutableStateOf<String?>(null) }
     var now by remember { mutableStateOf(Instant.now()) }
     var viewedScheduleId by rememberSaveable { mutableStateOf(initialSchedule) }
+    var handledLaunch by rememberSaveable { mutableIntStateOf(-1) }
+    var handledLaunchTarget by rememberSaveable { mutableStateOf<String?>(null) }
+    val launchTarget = listOf(initialCourse, initialDate, initialSchedule, openTimetable).toString()
     val displayed =
         if (viewedScheduleId == null) state.active
         else state.schedules.firstOrNull { it.id == viewedScheduleId }
@@ -100,12 +103,22 @@ fun VanApp(
         openTimetable,
         launchSequence,
     ) {
+        if (!state.ready || (handledLaunch == launchSequence && handledLaunchTarget == launchTarget))
+            return@LaunchedEffect
+        handledLaunch = launchSequence
+        handledLaunchTarget = launchTarget
         if (state.ready && openTimetable) {
             viewedScheduleId = initialSchedule
             home()
             tab = 0
         } else if (state.ready && initialCourse != null) {
-            if (displayed?.courses?.any { it.id == initialCourse } == true)
+            viewedScheduleId = initialSchedule
+            home()
+            tab = 0
+            val targetSchedule =
+                initialSchedule?.let { id -> state.schedules.firstOrNull { it.id == id } }
+                    ?: state.active
+            if (targetSchedule?.courses?.any { it.id == initialCourse } == true)
                 nav("detail:$initialCourse${initialDate?.let{":$it"}.orEmpty()}")
             else message = "这门课程或绑定的课表已删除"
         }

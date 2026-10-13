@@ -1,0 +1,14 @@
+/sdcard/death-1-start.xml: 1 file pulled, 0 skipped. 12.5 MB/s (50893 bytes in 0.004s)
+/sdcard/death-1-detail.xml: 1 file pulled, 0 skipped. 5.0 MB/s (14664 bytes in 0.003s)
+ERROR: null root node returned by UiTestAutomationBridge.
+adb: error: failed to stat remote object '/sdcard/death-1-restored.xml': No such file or directory
+/sdcard/death-1-restored.xml: 1 file pulled, 0 skipped. 24.7 MB/s (50893 bytes in 0.002s)
+Run 1 PASS: reclaimed PID 7930 -> 8171; one MainActivity; widget opens timetable; one back returns to launcher
+/sdcard/death-2-start.xml: 1 file pulled, 0 skipped. 7.7 MB/s (50893 bytes in 0.006s)
+/sdcard/death-2-detail.xml: 1 file pulled, 0 skipped. 8.0 MB/s (14664 bytes in 0.002s)
+/sdcard/death-2-restored.xml: 1 file pulled, 0 skipped. 23.4 MB/s (50893 bytes in 0.002s)
+Run 2 PASS: reclaimed PID 8171 -> 8341; one MainActivity; widget opens timetable; one back returns to launcher
+/sdcard/death-3-start.xml: 1 file pulled, 0 skipped. 8.7 MB/s (50893 bytes in 0.006s)
+/sdcard/death-3-detail.xml: 1 file pulled, 0 skipped. 9.5 MB/s (14664 bytes in 0.001s)
+/sdcard/death-3-restored.xml: 1 file pulled, 0 skipped. 23.4 MB/s (50893 bytes in 0.002s)
+Run 3 PASS: reclaimed PID 8341 -> 8492; one MainActivity; widget opens timetable; one back returns to launcher
