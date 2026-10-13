@@ -1,7 +1,7 @@
 # van课表
 
 原生 Android 本地课表应用。Kotlin / Compose / Room / DataStore，GPL-3.0-only。
-
+目前仅支持Android端
 仓库包含源码、构建配置、合成样例与脱敏验证资料。本机工具缓存、构建产物、个人课表原件和签名密钥不属于仓库内容。
 
 ## 已实现
