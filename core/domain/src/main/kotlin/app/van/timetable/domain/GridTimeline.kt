@@ -41,9 +41,24 @@ class GridTimeline private constructor(val bands: List<Band>) {
                     o.end != rows.firstOrNull { it.section == o.session.endSection }?.end
             }
             fun gap(start: LocalTime, end: LocalTime) {
-                if (start < end && clockCourses.any { it.start < end && it.end > start }) {
-                    val length = (end.toSecondOfDay() - start.toSecondOfDay()) / 2700f
-                    result += Band(start, end, length.coerceIn(0.65f, 3f), null)
+                if (start >= end) return
+                val occupied =
+                    clockCourses
+                        .filter { it.start < end && it.end > start }
+                        .map { maxOf(start, it.start) to minOf(end, it.end) }
+                        .sortedBy { it.first }
+                // A custom course may only occupy part of a break. The remaining empty time
+                // stays compressed, just like an unused break between ordinary sections.
+                val spans = mutableListOf<Pair<LocalTime, LocalTime>>()
+                occupied.forEach { span ->
+                    val previous = spans.lastOrNull()
+                    if (previous != null && span.first <= previous.second) {
+                        spans[spans.lastIndex] = previous.first to maxOf(previous.second, span.second)
+                    } else spans += span
+                }
+                spans.forEach { (from, through) ->
+                    val length = (through.toSecondOfDay() - from.toSecondOfDay()) / 2700f
+                    result += Band(from, through, length.coerceIn(0.65f, 3f), null)
                 }
             }
             gap(

@@ -15,6 +15,8 @@ import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -136,6 +138,9 @@ fun Timetable(
             weekSelectedDate = dateNow.toString()
         }
     }
+    val showReturn =
+        if (daily) dayDate != dateNow
+        else weekPager.currentPage != actualWeek.coerceIn(1, s.maxWeeks) - 1
     Column(
         Modifier.fillMaxSize().padding(horizontal = 8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -165,12 +170,6 @@ fun Timetable(
                 modifier =
                     Modifier.weight(1f).padding(horizontal = 6.dp).clickable { nav("schedules") },
             )
-            IconButton(
-                onClick = { jumpToday() },
-                modifier = Modifier.size(40.dp).testTag("jump-today"),
-            ) {
-                Icon(Icons.Outlined.Today, "回到今日／本周", Modifier.size(22.dp))
-            }
             IconButton(onClick = { nav("import") }, modifier = Modifier.size(40.dp)) {
                 Icon(Icons.Outlined.FileUpload, "导入课表", Modifier.size(22.dp))
             }
@@ -301,20 +300,30 @@ fun Timetable(
                     Text("后一天")
                 }
             }
-            TimetablePager(dayPager, Modifier.weight(1f).testTag("day-list")) { page ->
-                DayList(
-                    s,
-                    LocalDate.ofEpochDay(dayAnchor + page - DAY_PAGER_ANCHOR),
-                    now,
-                    nav,
-                    Modifier.fillMaxSize(),
-                )
+            Row(Modifier.weight(1f)) {
+                TimetablePager(dayPager, Modifier.weight(1f).fillMaxHeight().testTag("day-list")) { page ->
+                    DayList(
+                        s,
+                        LocalDate.ofEpochDay(dayAnchor + page - DAY_PAGER_ANCHOR),
+                        now,
+                        nav,
+                        Modifier.fillMaxSize(),
+                    )
+                }
+                Box(Modifier.width(44.dp).fillMaxHeight(), contentAlignment = Alignment.CenterEnd) {
+                    if (showReturn) ReturnToTodayButton(true, Modifier) { jumpToday() }
+                }
             }
         } else {
-            TimetablePager(weekPager, Modifier.weight(1f).testTag("week-viewport")) { page ->
-                WeekGrid(s, p, page + 1, dateNow, gridScroll, nav) { date ->
-                    selectedWeekday = date.dayOfWeek.value - 1
-                    showDay(date)
+            Row(Modifier.weight(1f)) {
+                TimetablePager(weekPager, Modifier.weight(1f).fillMaxHeight().testTag("week-viewport")) { page ->
+                    WeekGrid(s, p, page + 1, dateNow, gridScroll, nav) { date ->
+                        selectedWeekday = date.dayOfWeek.value - 1
+                        showDay(date)
+                    }
+                }
+                Box(Modifier.width(44.dp).fillMaxHeight(), contentAlignment = Alignment.CenterEnd) {
+                    if (showReturn) ReturnToTodayButton(false, Modifier) { jumpToday() }
                 }
             }
         }
@@ -334,13 +343,23 @@ fun Timetable(
                 s.sessionOverrides
                     .filter { LocalDate.parse(it.originalDate) in monday..monday.plusDays(6) }
                     .map { "${it.originalDate} 有单次调课" }
-        if (notes.isNotEmpty())
-            Text(
-                notes.joinToString("；"),
-                Modifier.basicMarquee().padding(vertical = 2.dp),
-                fontSize = 11.sp,
-                color = colors.muted,
-            )
+        // Keep the viewport identical while paging through weeks with different notes.
+        Box(
+            Modifier.fillMaxWidth()
+                .height((20f * LocalDensity.current.fontScale.coerceAtLeast(1f)).dp)
+                .testTag("week-notes"),
+            contentAlignment = Alignment.CenterStart,
+        ) {
+            if (notes.isNotEmpty())
+                Text(
+                    notes.joinToString("；"),
+                    Modifier.fillMaxWidth().basicMarquee(),
+                    fontSize = 11.sp,
+                    lineHeight = 14.sp,
+                    maxLines = 1,
+                    color = colors.muted,
+                )
+        }
     }
     if (selectWeek)
         AlertDialog(
@@ -366,6 +385,29 @@ fun Timetable(
 }
 
 @Composable
+private fun ReturnToTodayButton(daily: Boolean, modifier: Modifier, onClick: () -> Unit) {
+    val label = if (daily) "回到今日" else "回到本周"
+    Surface(
+        onClick = onClick,
+        modifier = modifier.width(44.dp).heightIn(min = 112.dp)
+            .testTag("jump-today").semantics { contentDescription = label },
+        shape = RoundedCornerShape(topStart = 18.dp, bottomStart = 18.dp),
+        color = LocalVan.current.blue,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        shadowElevation = 3.dp,
+    ) {
+        Text(
+            label.toCharArray().joinToString("\n"),
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 14.dp),
+            textAlign = TextAlign.Center,
+            fontSize = 13.sp,
+            lineHeight = 19.sp,
+            fontWeight = FontWeight.Medium,
+        )
+    }
+}
+
+@Composable
 private fun WeekGrid(
     s: Schedule,
     p: Preferences,
@@ -378,7 +420,7 @@ private fun WeekGrid(
     val monday = LocalDate.parse(s.week1Monday).plusWeeks((week - 1).toLong())
     val colors = LocalVan.current
     val days = if (p.showWeekend) 7 else 5
-    BoxWithConstraints(Modifier.fillMaxSize().gridPagingGuard(gridScroll)) {
+    BoxWithConstraints(Modifier.fillMaxSize().testTag("week-grid-$week").gridPagingGuard(gridScroll)) {
         val density = LocalDensity.current
         val gutter = (34f * density.fontScale.coerceAtLeast(1f)).dp
         val minimumDayWidth = 38f * density.fontScale.coerceAtLeast(1f)
@@ -469,18 +511,25 @@ private fun WeekGrid(
                             Column(
                                 Modifier.offset(y = rowHeight * timeline.position(band.start))
                                     .width(gutter - 3.dp)
-                                    .height(rowHeight * band.units),
+                                    .height(rowHeight * band.units)
+                                    .testTag("clock-band-${band.start}-${band.end}"),
                                 horizontalAlignment = Alignment.End,
                                 verticalArrangement = Arrangement.Center,
                             ) {
                                 Text(
                                     band.start.toString(),
                                     fontSize = 9.sp,
+                                    lineHeight = 11.sp,
+                                    maxLines = 1,
+                                    softWrap = false,
                                     color = colors.muted,
                                 )
                                 Text(
                                     band.end.toString(),
                                     fontSize = 9.sp,
+                                    lineHeight = 11.sp,
+                                    maxLines = 1,
+                                    softWrap = false,
                                     color = colors.muted,
                                 )
                             }

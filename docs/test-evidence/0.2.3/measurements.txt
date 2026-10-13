@@ -1,0 +1,7 @@
+original-backup-sha256=verified-locally-private-original
+device=emulator-5556 API37 360x800 density160 fontScale1.0
+apk-version=0.2.3 versionCode=16
+apk-sha256=5c8b5b87dd3591093620f75f884f080464a6a1dd60e1ed29de781bd1ed0a45f9
+lint=0 errors 72 warnings
+jvm=70 tests 69 passed 1 skipped (optional original PDF sample not supplied in this run)
+android=14 passed 0 failed 0 skipped

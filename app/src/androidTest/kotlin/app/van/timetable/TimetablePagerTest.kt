@@ -95,14 +95,14 @@ class TimetablePagerTest {
         viewport.performTouchInput {
             down(Offset(width * 0.8f, height * 0.65f))
             advanceEventTime(300)
-            moveBy(Offset(-width * 0.28f, 0f))
+            moveBy(Offset(-width * 0.12f, 0f))
         }
         ui.mainClock.advanceTimeBy(64)
         ui.waitForIdle()
         val during = card.fetchSemanticsNode().boundsInRoot.left
         assertTrue(
             "Content must follow the finger before release: $before -> $during",
-            during < before - width * 0.15f,
+            during < before - width * 0.04f,
         )
         ui.onNodeWithText("第1周 ▾").assertExists()
         screenshot("pager-during-drag.png")
@@ -114,6 +114,30 @@ class TimetablePagerTest {
         ui.waitForIdle()
         ui.onNodeWithText("第1周 ▾").assertExists()
         assertEquals(before, card.fetchSemanticsNode().boundsInRoot.left, 2f)
+    }
+
+    @Test
+    fun shortSlowDragChangesOneWeekInEitherDirection() {
+        seed()
+        val viewport = ui.onNodeWithTag("week-viewport")
+        val width = viewport.fetchSemanticsNode().boundsInRoot.width
+        fun dragQuarterPage(direction: Float) {
+            viewport.performTouchInput {
+                down(Offset(width * 0.5f, height * 0.65f))
+                repeat(12) {
+                    advanceEventTime(50)
+                    moveBy(Offset(direction * width * 0.25f / 12f, 0f))
+                }
+                // Release after a pause so this tests distance-based snapping, not velocity.
+                advanceEventTime(300)
+                up()
+            }
+            ui.waitForIdle()
+        }
+        dragQuarterPage(-1f)
+        ui.onNodeWithText("第2周 ▾").assertExists()
+        dragQuarterPage(1f)
+        ui.onNodeWithText("第1周 ▾").assertExists()
     }
 
     @Test

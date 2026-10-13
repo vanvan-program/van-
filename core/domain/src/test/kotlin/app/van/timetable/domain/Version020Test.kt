@@ -87,13 +87,19 @@ class Version020Test {
             timeline.position(LocalTime.parse("08:15")) >
                 timeline.position(LocalTime.parse("08:00"))
         )
-        assertTrue(
-            timeline.position(LocalTime.parse("12:00")) >
-                timeline.position(LocalTime.parse("11:40"))
+        assertEquals(
+            timeline.position(LocalTime.parse("11:40")),
+            timeline.position(LocalTime.parse("12:00")),
+            0f,
         )
         assertTrue(
-            timeline.position(LocalTime.parse("13:00")) <
-                timeline.position(LocalTime.parse("14:30"))
+            timeline.position(LocalTime.parse("13:00")) >
+                timeline.position(LocalTime.parse("12:00"))
+        )
+        assertEquals(
+            timeline.position(LocalTime.parse("13:00")),
+            timeline.position(LocalTime.parse("14:30")),
+            0f,
         )
         assertTrue(
             timeline.position(LocalTime.parse("22:00")) >=

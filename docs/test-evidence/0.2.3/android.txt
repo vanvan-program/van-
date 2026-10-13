@@ -1,0 +1,9 @@
+
+app.van.timetable.Version023UiTest:...
+app.van.timetable.TimetablePagerTest:......
+app.van.timetable.Version020UiTest:....
+app.van.timetable.RequestedFeaturesTest:.
+
+Time: 43.303
+
+OK (14 tests)

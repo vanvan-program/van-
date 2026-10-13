@@ -55,7 +55,13 @@ internal fun TimetablePager(
         modifier = modifier,
         key = { it },
         flingBehavior =
-            PagerDefaults.flingBehavior(state, pagerSnapDistance = PagerSnapDistance.atMost(1)),
+            PagerDefaults.flingBehavior(
+                state,
+                pagerSnapDistance = PagerSnapDistance.atMost(1),
+                // A deliberate short drag should change weeks even without a fast fling.
+                // Keep normal touch slop, finger tracking, and snap-on-release behavior.
+                snapPositionalThreshold = 0.18f,
+            ),
     ) { page ->
         Box(
             Modifier.fillMaxSize().graphicsLayer {
