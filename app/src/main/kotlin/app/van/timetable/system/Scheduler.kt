@@ -63,7 +63,7 @@ object Scheduler {
             NotificationCompat.Builder(c, "courses")
                 .setSmallIcon(R.drawable.ic_van)
                 .setContentTitle("van课表 · 通知测试")
-                .setContentText("操作系统 · 立德楼A214 · 10:00开始")
+                .setContentText("操作系统 · 示例楼A214 · 10:00开始")
                 .setAutoCancel(true)
                 .build(),
         )

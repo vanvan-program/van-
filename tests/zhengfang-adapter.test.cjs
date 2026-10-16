@@ -5,8 +5,8 @@ const assert = require('node:assert/strict');
 const {readFileSync} = require('node:fs');
 const {join} = require('node:path');
 const vm = require('node:vm');
-const source = readFileSync(join(__dirname, '../app/src/main/assets/adapters/hebiace.js'), 'utf8');
-const row = {kcmc:'课程甲', xqj:'3', jc:'3-4节', zcd:'3-4周,6-8周', xm:'教师甲', cdmc:'朝阳校区 A414'};
+const source = readFileSync(join(__dirname, '../app/src/main/assets/adapters/zhengfang.js'), 'utf8');
+const row = {kcmc:'课程甲', xqj:'3', jc:'3-4节', zcd:'3-4周,6-8周', xm:'甲老师', cdmc:'示例校区 A414'};
 const legacyArrays = `
 Array.prototype.filter = function(predicate) {
   const result = [];
@@ -35,7 +35,7 @@ async function extract(data = {kbList:[row]}, options = {}) {
   };
   const requests = [];
   const window = {
-    location: new URL('https://jwx.hebiace.edu.cn/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N2151&layout=default'),
+    location: new URL('https://portal.example.edu.cn/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N2151&layout=default'),
     __vanReadDom: doc => {
       assert.equal(doc, root);
       return options.fallback || {error:'No DOM fixture'};
@@ -57,13 +57,13 @@ async function extract(data = {kbList:[row]}, options = {}) {
 test('uses the selected past term and same-origin query, preserving metadata', async () => {
   const {result, requests}=await extract();
   assert.equal(requests.length,1);
-  assert.equal(requests[0].url,'https://jwx.hebiace.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N2151');
+  assert.equal(requests[0].url,'https://portal.example.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N2151');
   assert.equal(requests[0].request.body,'xnm=2024&xqm=12');
   assert.equal(requests[0].request.method,'POST');
   assert.equal(requests[0].request.credentials,'same-origin');
   assert.equal(requests[0].request.headers['X-Requested-With'],'XMLHttpRequest');
   assert.equal(result.term,'2024-2025学年 · 第2学期');
-  assert.deepEqual(result.courses,[{name:'课程甲',day:3,startSection:3,endSection:4,weeks:[3,4,6,7,8],teacher:'教师甲',position:'朝阳校区 A414'}]);
+  assert.deepEqual(result.courses,[{name:'课程甲',day:3,startSection:3,endSection:4,weeks:[3,4,6,7,8],teacher:'甲老师',position:'示例校区 A414'}]);
 });
 
 test('reads repeated week suffixes, both parity spellings, and sparse weeks', async () => {
@@ -79,10 +79,10 @@ test('reads repeated week suffixes, both parity spellings, and sparse weeks', as
 });
 
 test('handles single sections and missing metadata without inventing values', async () => {
-  const {result}=await extract({kbList:[{...row,jc:'1',xm:'',jsxm:'教师乙',cdmc:''}]});
+  const {result}=await extract({kbList:[{...row,jc:'1',xm:'',jsxm:'乙老师',cdmc:''}]});
   assert.equal(result.courses[0].startSection,1);
   assert.equal(result.courses[0].endSection,1);
-  assert.equal(result.courses[0].teacher,'教师乙');
+  assert.equal(result.courses[0].teacher,'乙老师');
   assert.equal(result.courses[0].position,'');
 });
 
@@ -98,7 +98,7 @@ test('rejects malformed rows atomically without hiding errors through DOM fallba
 test('expired login rejects stale visible data', async () => {
   for (const response of [
     {ok:false,status:401,redirected:false}, {ok:false,status:403,redirected:false},
-    {ok:true,status:200,redirected:true,url:'https://jwx.hebiace.edu.cn/xtgl/login_slogin.html'},
+    {ok:true,status:200,redirected:true,url:'https://portal.example.edu.cn/xtgl/login_slogin.html'},
     {ok:true,status:200,redirected:false,text:async()=>'<input id="yhm"><input id="mm">'},
   ]) {
     const {result}=await extract(undefined,{response,fallback:{courses:[row]}});
@@ -140,14 +140,14 @@ test('legacy pages without term inputs never request an inferred semester', asyn
 test('school overrides of array predicates preserve the term and reject practice courses', async () => {
   const {result}=await extract(undefined,{legacyArrays:true});
   assert.equal(result.term,'2024-2025学年 · 第2学期');
-  assert.equal(result.courses[0].teacher,'教师甲');
+  assert.equal(result.courses[0].teacher,'甲老师');
   const practice=await extract({kbList:[row],sjkList:[{qtkcgs:'第17周课程设计'}]},{legacyArrays:true});
   assert.match(practice.result.error,/实践或时间未定课程/);
   assert.equal(practice.result.courses,undefined);
 });
 
 test('imports the queried grid and footer without fetching a different semester', async () => {
-  const fallback={courses:[{name:'表格课程'}],term:'2024-2025学年 · 第2学期',extraCoursesText:'实践课程：认识实习教师甲(共2周)/1-2周;'};
+  const fallback={courses:[{name:'表格课程'}],term:'2024-2025学年 · 第2学期',extraCoursesText:'实践课程：示例实习甲老师(共2周)/1-2周;'};
   const {result,requests}=await extract(undefined,{renderedGrid:true,legacyArrays:true,fallback});
   assert.equal(requests.length,0);
   assert.equal(result.courses[0].name,'表格课程');

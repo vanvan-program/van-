@@ -47,7 +47,7 @@ class LocalSmokeTest {
                             startSection = 9,
                             endSection = 10,
                             teacher = "验证老师",
-                            place = "立德楼 B512",
+                            place = "示例楼 B512",
                         ),
             )
         val store = (ui.activity.application as VanApplication).store
@@ -77,7 +77,7 @@ class LocalSmokeTest {
                 )
             }
             ui.onNodeWithText("晚间验证课程").assertIsDisplayed()
-            ui.onNodeWithText("立德楼 B512", useUnmergedTree = true).assertIsDisplayed()
+            ui.onNodeWithText("示例楼 B512", useUnmergedTree = true).assertIsDisplayed()
             ui.onNodeWithText("日", useUnmergedTree = true).assertIsDisplayed()
             ui.onNodeWithText("20:40", useUnmergedTree = true).assertIsDisplayed()
             val card = ui.onNodeWithText("晚间验证课程").fetchSemanticsNode().boundsInRoot
@@ -125,7 +125,7 @@ class LocalSmokeTest {
     fun editCourseAndKeepSlotsAfterRecreation() {
         val s = seed()
         ui.onNodeWithText("课程", useUnmergedTree = true).performClick()
-        ui.onNodeWithText("大数据技术").performClick()
+        ui.onNodeWithText("示例课程甲").performClick()
         ui.onNodeWithText("编辑整门课程").performScrollTo().performClick()
         ui.onNode(hasSetTextAction() and hasText("课程名称")).performTextReplacement("编辑验证课程")
         ui.activityRule.scenario.recreate()

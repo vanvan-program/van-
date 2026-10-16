@@ -32,7 +32,7 @@ class ExcelReaderTest {
                 <c r="A2"><v>1</v></c>
                 <c r="B2" t="s"><v>1</v></c>
                 <c r="D2" t="inlineStr"><is><r><t>教师：</t></r><r><t>张老师</t></r></is></c>
-                <c r="E2" t="str"><f>"立德楼 A414"</f><v>立德楼 A414</v></c>
+                <c r="E2" t="str"><f>"示例楼 A414"</f><v>示例楼 A414</v></c>
               </row><row r="3"><c r="A3"><v>2</v></c></row></sheetData>
               <mergeCells count="1"><mergeCell ref="B2:C3"/></mergeCells>
             </worksheet>
@@ -64,7 +64,7 @@ class ExcelReaderTest {
                     """
                     <sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
                       <si><t>节次</t></si>
-                      <si><r><t>大数据技术</t></r><r><t xml:space="preserve">&#10;教师：张老师&#10;地点：立德楼 A414&#10;(1-2节)3-4周,6-8周</t></r><rPh sb="0" eb="2"><t>ignored phonetic</t></rPh></si>
+                      <si><r><t>示例课程甲</t></r><r><t xml:space="preserve">&#10;教师：张老师&#10;地点：示例楼 A414&#10;(1-2节)3-4周,6-8周</t></r><rPh sb="0" eb="2"><t>ignored phonetic</t></rPh></si>
                     </sst>
                     """
                         .trimIndent(),
@@ -99,12 +99,12 @@ class ExcelReaderTest {
         assertEquals(listOf("个人课表", "备注"), sheets.map { it.name })
         val cells = sheets.first().cells
         val course = cells.single { it.row == 1 && it.column == 1 }
-        assertEquals("大数据技术\n教师：张老师\n地点：立德楼 A414\n(1-2节)3-4周,6-8周", course.text)
+        assertEquals("示例课程甲\n教师：张老师\n地点：示例楼 A414\n(1-2节)3-4周,6-8周", course.text)
         assertEquals(2, course.rowSpan)
         assertEquals(2, course.columnSpan)
         assertFalse(cells.any { it.row == 2 && it.column == 1 })
         assertEquals("教师：张老师", cells.single { it.column == 3 }.text)
-        assertEquals("立德楼 A414", cells.single { it.column == 4 }.text)
+        assertEquals("示例楼 A414", cells.single { it.column == 4 }.text)
         assertEquals("请核对学期与开学日期", sheets[1].cells.single().text)
     }
 
@@ -137,7 +137,7 @@ class ExcelReaderTest {
             sheet.addCell(Label(1, 0, "星期一"))
             sheet.addCell(Label(0, 1, "1"))
             sheet.addCell(Label(0, 2, "2"))
-            sheet.addCell(Label(1, 1, "操作系统\n教师：李老师\n地点：立德楼 A214\n(1-2节)1-16周"))
+            sheet.addCell(Label(1, 1, "示例课程乙\n教师：李老师\n地点：示例楼 A214\n(1-2节)1-16周"))
             sheet.mergeCells(1, 1, 1, 2)
             // JXL NumberFormat accepts numeric formats only: it replaces "hh:mm" with
             // "#.###" before export. DateFormat creates an actual Excel time cell.
@@ -164,7 +164,7 @@ class ExcelReaderTest {
         val sheets = ExcelReader.read(output.toByteArray())
         assertEquals(listOf("个人课表", "备注"), sheets.map { it.name })
         val course = sheets.first().cells.single { it.row == 1 && it.column == 1 }
-        assertTrue(course.text.contains("教师：李老师\n地点：立德楼 A214"))
+        assertTrue(course.text.contains("教师：李老师\n地点：示例楼 A214"))
         assertEquals(2, course.rowSpan)
         assertEquals(1, course.columnSpan)
         assertEquals("08:00", sheets.first().cells.single { it.column == 2 }.text)

@@ -61,8 +61,8 @@ class DocumentReviewTest {
             val table =
                 listOf(
                     listOf("课程名称", "星期", "开始节数", "结束节数", "老师", "地点", "周数"),
-                    listOf("大数据技术", "1", "1", "2", "张老师", "立德楼 A414", "3-4、6-8"),
-                    listOf("操作系统", "7", "3", "4", "李老师", "立德楼 A214", "1-16"),
+                    listOf("示例课程甲", "1", "1", "2", "张老师", "示例楼 A414", "3-4、6-8"),
+                    listOf("示例课程乙", "7", "3", "4", "李老师", "示例楼 A214", "1-16"),
                 )
             table.forEachIndexed { row, cells ->
                 cells.forEachIndexed { column, text -> sheet.addCell(Label(column, row, text)) }
@@ -70,7 +70,7 @@ class DocumentReviewTest {
             val other = workbook.createSheet("其他课表", 1)
             listOf(
                     table.first(),
-                    listOf("Java程序设计", "2", "5", "6", "王老师", "立德楼 A314", "1-16"),
+                    listOf("示例课程丙", "2", "5", "6", "王老师", "示例楼 A314", "1-16"),
                 )
                 .forEachIndexed { row, cells ->
                     cells.forEachIndexed { column, text -> other.addCell(Label(column, row, text)) }
@@ -82,10 +82,10 @@ class DocumentReviewTest {
         // Keep exact source metadata checks in addition to the rendered and persisted values.
         val rawSheet = ExcelReader.read(file.readBytes()).first()
         assertEquals("张老师", rawSheet.cells.single { it.row == 1 && it.column == 4 }.text)
-        assertEquals("立德楼 A414", rawSheet.cells.single { it.row == 1 && it.column == 5 }.text)
+        assertEquals("示例楼 A414", rawSheet.cells.single { it.row == 1 && it.column == 5 }.text)
         val draft = DocumentImport.fromSheet(rawSheet)
         assertEquals("张老师", draft.rows.first().teacher)
-        assertEquals("立德楼 A414", draft.rows.first().place)
+        assertEquals("示例楼 A414", draft.rows.first().place)
         val context = ui.activity
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.files", file)
         val monitor =
@@ -112,10 +112,10 @@ class DocumentReviewTest {
                     .isEmpty()
             }
             reviewText("核对识别结果").assertIsDisplayed()
-            reviewText("大数据技术").assertIsDisplayed()
-            reviewText("张老师 · 立德楼 A414").assertIsDisplayed()
-            reviewText("操作系统").assertIsDisplayed()
-            reviewText("李老师 · 立德楼 A214").assertIsDisplayed()
+            reviewText("示例课程甲").assertIsDisplayed()
+            reviewText("张老师 · 示例楼 A414").assertIsDisplayed()
+            reviewText("示例课程乙").assertIsDisplayed()
+            reviewText("李老师 · 示例楼 A214").assertIsDisplayed()
             reviewText("继续核对学期与作息").assertIsNotEnabled()
             for (theme in listOf("light", "dark")) {
                 runBlocking { store.updatePreferences { it.copy(theme = theme) } }
@@ -132,25 +132,25 @@ class DocumentReviewTest {
                 )
             }
 
-            reviewText("大数据技术").performClick()
-            reviewNode(hasSetTextAction() and hasText("地点")).performTextReplacement("立德楼 A416")
+            reviewText("示例课程甲").performClick()
+            reviewNode(hasSetTextAction() and hasText("地点")).performTextReplacement("示例楼 A416")
             ui.activityRule.scenario.recreate()
-            reviewNode(hasSetTextAction() and hasText("地点")).assertTextContains("立德楼 A416")
+            reviewNode(hasSetTextAction() and hasText("地点")).assertTextContains("示例楼 A416")
             reviewNode(hasSetTextAction() and hasText("老师")).assertTextContains("张老师")
-            reviewNode(hasText("大数据技术") and !hasSetTextAction()).performClick()
-            reviewText("张老师 · 立德楼 A416").assertIsDisplayed()
+            reviewNode(hasText("示例课程甲") and !hasSetTextAction()).performClick()
+            reviewText("张老师 · 示例楼 A416").assertIsDisplayed()
             // Each worksheet keeps its own edits when switching away and back.
             reviewText("其他课表").performClick()
-            reviewText("Java程序设计").performClick()
+            reviewText("示例课程丙").performClick()
             reviewNode(hasSetTextAction() and hasText("地点")).performTextReplacement("其他楼 B316")
-            reviewNode(hasText("Java程序设计") and !hasSetTextAction()).performClick()
+            reviewNode(hasText("示例课程丙") and !hasSetTextAction()).performClick()
             reviewText("个人课表").performClick()
-            reviewText("张老师 · 立德楼 A416").assertIsDisplayed()
-            ui.onNodeWithText("Java程序设计").assertDoesNotExist()
+            reviewText("张老师 · 示例楼 A416").assertIsDisplayed()
+            ui.onNodeWithText("示例课程丙").assertDoesNotExist()
             reviewText("其他课表").performClick()
             reviewText("王老师 · 其他楼 B316").assertIsDisplayed()
             reviewText("个人课表").performClick()
-            reviewText("张老师 · 立德楼 A416").assertIsDisplayed()
+            reviewText("张老师 · 示例楼 A416").assertIsDisplayed()
             // A freshly selected file must not inherit the prior file's selected sheet or edits.
             reviewText("其他课表").performClick()
             ui.onNodeWithContentDescription("返回").performClick()
@@ -158,17 +158,17 @@ class DocumentReviewTest {
             ui.waitUntil(15_000) {
                 ui.onAllNodesWithText("识别结果").fetchSemanticsNodes().isNotEmpty()
             }
-            reviewText("张老师 · 立德楼 A414").assertIsDisplayed()
-            ui.onNodeWithText("Java程序设计").assertDoesNotExist()
-            reviewText("大数据技术").performClick()
-            reviewNode(hasSetTextAction() and hasText("地点")).performTextReplacement("立德楼 A416")
-            reviewNode(hasText("大数据技术") and !hasSetTextAction()).performClick()
+            reviewText("张老师 · 示例楼 A414").assertIsDisplayed()
+            ui.onNodeWithText("示例课程丙").assertDoesNotExist()
+            reviewText("示例课程甲").performClick()
+            reviewNode(hasSetTextAction() and hasText("地点")).performTextReplacement("示例楼 A416")
+            reviewNode(hasText("示例课程甲") and !hasSetTextAction()).performClick()
             reviewNode(switch).assertIsOff().performClick()
             reviewText("继续核对学期与作息").performClick()
             ui.waitUntil(10_000) {
                 ui.onAllNodesWithText("导入预览").fetchSemanticsNodes().isNotEmpty()
             }
-            ui.onNodeWithText("老师：张老师 · 地点：立德楼 A416").performScrollTo().assertIsDisplayed()
+            ui.onNodeWithText("老师：张老师 · 地点：示例楼 A416").performScrollTo().assertIsDisplayed()
             ui.onNode(switch).performScrollTo().assertIsOff()
             ui.onNodeWithText("保存为新课表").performScrollTo().performClick()
             ui.waitUntil(10_000) { runBlocking { store.all().any { it.name == name } } }
@@ -177,10 +177,10 @@ class DocumentReviewTest {
                 assertEquals(old.id, store.prefs().activeScheduleId)
                 assertEquals(old, store.all().first { it.id == old.id })
                 assertEquals(2, saved.courses.size)
-                val course = saved.courses.single { it.name == "大数据技术" }
+                val course = saved.courses.single { it.name == "示例课程甲" }
                 val session = saved.sessions.single { it.courseId == course.id }
                 assertEquals("张老师", session.teacher)
-                assertEquals("立德楼 A416", session.place)
+                assertEquals("示例楼 A416", session.place)
                 assertEquals(1, session.day)
                 assertEquals(1, session.startSection)
                 assertEquals(2, session.endSection)

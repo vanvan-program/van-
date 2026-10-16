@@ -19,18 +19,18 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class HebiaceAdapterTest {
+class ZhengfangAdapterTest {
     private val url =
-        "https://jwx.hebiace.edu.cn/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N2151&layout=default"
+        "https://portal.example.edu.cn/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N2151&layout=default"
     private val termInputs =
         """<select id="xnm"><option value="2024">2024-2025学年</option></select>
         <select id="xqm"><option value="12">第2学期</option><option value="3">第1学期</option></select>"""
     private val row =
-        """{"kcmc":"接口课程","xqj":"3","jc":"3-4节","zcd":"3-4周,6-8周","xm":"测试教师甲","cdmc":"朝阳校区 A414"}"""
+        """{"kcmc":"接口课程","xqj":"3","jc":"3-4节","zcd":"3-4周,6-8周","xm":"测试甲老师","cdmc":"示例校区 A414"}"""
     private val dom =
         """<table><tr><td id="1-1"><div class="timetable_con"><p class="title">网页课程</p>
-        <p>(1-2节)1-16周(单)</p><p><span class="glyphicon-user"></span>测试教师乙</p>
-        <p><span class="glyphicon-map-marker"></span>朝阳校区 A214</p></div></td></tr></table>"""
+        <p>(1-2节)1-16周(单)</p><p><span class="glyphicon-user"></span>测试乙老师</p>
+        <p><span class="glyphicon-map-marker"></span>示例校区 A214</p></div></td></tr></table>"""
     private val legacyArrays =
         """Array.prototype.filter=function(predicate){
           const result=[];for(let i=0;i<this.length;i++)if(predicate(i,this[i],this))result.push(this[i]);return result;
@@ -109,28 +109,28 @@ class HebiaceAdapterTest {
         };"""
 
     private fun draft(result: String) =
-        Importers.school(result, "河北建筑工程学院", LocalDate.parse("2024-02-26"))
+        Importers.school(result, "某学校", LocalDate.parse("2024-02-26"))
 
     internal fun fixtureResult(): String =
         extract(termInputs, legacyArrays + response("""{"kbList":[$row],"sjkList":[]}"""))
 
     internal fun currentPageFixtureResult(): String =
         extract(
-            HebiacePageFixture.html,
+            ZhengfangPageFixture.html,
             legacyArrays + "window.fetch=async()=>{throw Error('Grid must be read locally')};",
         )
 
     @Test
     fun queriedGridExcludesHiddenListAndPreservesAllFooterEntries() {
         val result = currentPageFixtureResult()
-        val imported = Importers.school(result, "河北建筑工程学院", LocalDate.parse("2026-09-07"))
+        val imported = Importers.school(result, "某学校", LocalDate.parse("2026-09-07"))
         val schedule = imported.schedule
         val timed = schedule.sessions.filter { it.mode == TimeMode.SECTIONS }
         val untimed = schedule.sessions.filter { it.mode == TimeMode.UNTIMED }
         assertEquals(26, timed.size)
         assertEquals(9, untimed.size)
         assertEquals(12, schedule.courses.size)
-        assertTrue(timed.all { it.teacher.isNotBlank() && it.place.startsWith("朝阳校区") })
+        assertTrue(timed.all { it.teacher.isNotBlank() && it.place.startsWith("示例校区") })
         assertTrue(imported.warnings.any { it.contains("2026-2027学年 · 第1学期") })
         assertTrue(imported.warnings.any { it.contains("已保留9个实践或无固定时间") })
         assertEquals(setOf(3, 4, 6, 7, 8), timed.first().weeks)
@@ -155,7 +155,7 @@ class HebiaceAdapterTest {
     fun selectedTermWithoutQueryingNeverImportsTheOldGrid() {
         val result =
             extract(
-                HebiacePageFixture.html,
+                ZhengfangPageFixture.html,
                 legacyArrays + "document.getElementById('xnm').value='2025';",
             )
         assertTrue(result.contains("所选学期与当前表格不一致"))
@@ -166,7 +166,7 @@ class HebiaceAdapterTest {
     fun schoolArrayOverridesPreserveApiAndDomAndNeverDropPractice() {
         val api = draft(fixtureResult())
         assertTrue(api.warnings.any { it.contains("2024-2025学年 · 第2学期") })
-        assertEquals("测试教师甲", api.schedule.sessions.single().teacher)
+        assertEquals("测试甲老师", api.schedule.sessions.single().teacher)
         val table =
             dom.replace("<table><tr>", "<table><tr><th>周一</th><th>周二</th></tr><tr>")
                 .replace(" id=\"1-1\"", "")
@@ -178,8 +178,8 @@ class HebiaceAdapterTest {
                 )
             )
         assertEquals(1, fallback.schedule.sessions.single().day)
-        assertEquals("测试教师乙", fallback.schedule.sessions.single().teacher)
-        assertEquals("朝阳校区 A214", fallback.schedule.sessions.single().place)
+        assertEquals("测试乙老师", fallback.schedule.sessions.single().teacher)
+        assertEquals("示例校区 A214", fallback.schedule.sessions.single().place)
         assertTrue(fallback.warnings.any { it.contains("2024-2025学年 · 第2学期") })
         val practice =
             extract(
@@ -194,10 +194,10 @@ class HebiaceAdapterTest {
     @Test
     fun selectedTermApiMetadataAndWeekSegmentsSurviveSaveAndBackup() {
         val second =
-            """{"kcmc":"单双周课程","xqj":7,"jc":"9-10","zcd":"2-16(双)周","jsxm":"测试教师丙","cdmc":"公共机房3"}"""
+            """{"kcmc":"单双周课程","xqj":7,"jc":"9-10","zcd":"2-16(双)周","jsxm":"测试丙老师","cdmc":"公共机房3"}"""
         val third = """{"kcmc":"间断课程","xqj":"2","jc":"1","zcd":"1-3、7、11-15周(单)"}"""
         val checks =
-            """if (url !== 'https://jwx.hebiace.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N2151'
+            """if (url !== 'https://portal.example.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N2151'
               || options.method !== 'POST' || options.credentials !== 'same-origin'
               || options.headers['X-Requested-With'] !== 'XMLHttpRequest'
               || options.body !== 'xnm=2024&xqm=12') throw Error('Wrong request');"""
@@ -214,8 +214,8 @@ class HebiaceAdapterTest {
         assertEquals(setOf(3, 4, 6, 7, 8), sessions[0].weeks)
         assertEquals((2..16 step 2).toSet(), sessions[1].weeks)
         assertEquals(setOf(1, 3, 7, 11, 13, 15), sessions[2].weeks)
-        assertEquals(listOf("测试教师甲", "测试教师丙", ""), sessions.map { it.teacher })
-        assertEquals("朝阳校区 A414", sessions[0].place)
+        assertEquals(listOf("测试甲老师", "测试丙老师", ""), sessions.map { it.teacher })
+        assertEquals("示例校区 A414", sessions[0].place)
         assertEquals(9, sessions[1].startSection)
         assertEquals(10, sessions[1].endSection)
         assertTrue(imported.warnings.any { it.contains("2024-2025学年 · 第2学期") })
@@ -264,8 +264,8 @@ class HebiaceAdapterTest {
                 )
             )
         assertEquals("网页课程", imported.schedule.courses.single().name)
-        assertEquals("测试教师乙", imported.schedule.sessions.single().teacher)
-        assertEquals("朝阳校区 A214", imported.schedule.sessions.single().place)
+        assertEquals("测试乙老师", imported.schedule.sessions.single().teacher)
+        assertEquals("示例校区 A214", imported.schedule.sessions.single().place)
         assertTrue(imported.warnings.any { it.contains("第2学期") })
         val legacy =
             draft(
@@ -282,7 +282,7 @@ class HebiaceAdapterTest {
         val loginResponse =
             """window.fetch=async()=>({ok:true,status:200,redirected:false,text:async()=>'<input id="yhm"><input id="mm">'});"""
         val redirected =
-            """window.fetch=async()=>({ok:true,status:200,redirected:true,url:'https://jwx.hebiace.edu.cn/xtgl/login_slogin.html'});"""
+            """window.fetch=async()=>({ok:true,status:200,redirected:true,url:'https://portal.example.edu.cn/xtgl/login_slogin.html'});"""
         val denied = "window.fetch=async()=>({ok:false,status:403,redirected:false});"
         for (setup in listOf(loginResponse, redirected, denied)) {
             val result = extract(termInputs + dom, setup)

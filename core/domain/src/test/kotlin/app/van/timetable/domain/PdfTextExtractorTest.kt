@@ -52,8 +52,8 @@ class PdfTextExtractorTest {
     fun rotatedCampusExportYieldsExactTextInDisplayOrder() {
         val content =
             "0 1 -1 0 595 0 cm\n" +
-                "q\nBT\n/F1 9.5 Tf\n16 570 Td\n(${han("大数据技术")}) Tj\n0 -11.5 Td\n" +
-                "(${han("(1-2节)3-4周,6-8周/校区:朝阳校区/场地:A414/教师:王")}) Tj\nET\nQ\n" +
+                "q\nBT\n/F1 9.5 Tf\n16 570 Td\n(${han("示例课程甲")}) Tj\n0 -11.5 Td\n" +
+                "(${han("(1-2节)3-4周,6-8周/校区:示例校区/场地:A414/教师:己")}) Tj\nET\nQ\n" +
                 "16 500 810 44 re\nS\n"
         val bytes =
             pdf(
@@ -78,8 +78,8 @@ class PdfTextExtractorTest {
         assertTrue(extraction.cjkCount >= 19)
         val name = extraction.lines[0]
         val detail = extraction.lines[1]
-        assertEquals("大数据技术", name.text)
-        assertEquals("(1-2节)3-4周,6-8周/校区:朝阳校区/场地:A414/教师:王", detail.text)
+        assertEquals("示例课程甲", name.text)
+        assertEquals("(1-2节)3-4周,6-8周/校区:示例校区/场地:A414/教师:己", detail.text)
         assertEquals(16f, name.left, 0.6f)
         // MediaBox is portrait 595x842 with /Rotate 90, so display space is 842x595 top-down.
         assertEquals((595f - 570f) - 0.8f * 9.5f, name.top, 0.8f)

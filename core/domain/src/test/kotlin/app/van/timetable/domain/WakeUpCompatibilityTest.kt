@@ -14,7 +14,7 @@ class WakeUpCompatibilityTest {
         times: String = rows,
         tableRef: String = "\"timeTable\":0,",
         detail: String =
-            """{"id":41,"tableId":8,"day":1,"startNode":1,"step":2,"startWeek":1,"endWeek":16,"type":1,"teacher":"张老师","room":"立德楼 A414"}""",
+            """{"id":41,"tableId":8,"day":1,"startNode":1,"step":2,"startWeek":1,"endWeek":16,"type":1,"teacher":"张老师","room":"示例楼 A414"}""",
     ) =
         """{"id":7,"name":"夏季作息"}
 $times
@@ -32,7 +32,7 @@ $times
         assertEquals("09:40", s.routines.single().sections.last().end)
         assertEquals("2.5", s.courses.single().credit)
         assertEquals("张老师", s.sessions.single().teacher)
-        assertEquals("立德楼 A414", s.sessions.single().place)
+        assertEquals("示例楼 A414", s.sessions.single().place)
         assertEquals((1..16 step 2).toSet(), s.sessions.single().weeks)
         assertTrue(warnings.any { it.contains("关联ID不同") })
         val copied = Importers.freshCopy(s)

@@ -254,7 +254,7 @@ object DocumentImport {
             "^(?:周次|周数|上课周次|教学周|星期|周几|礼拜|节次|节数|上课节次|开始节数|结束节数|weeks?|weekday|day|sections?|periods?)\\s*[:：=]?",
             RegexOption.IGNORE_CASE,
         )
-    private val roomLine = Regex(".*(?:校区|教学楼|立德楼|明德楼|实验楼|图书馆|机房|[A-Za-z]\\s?\\d{2,4}).*")
+    private val roomLine = Regex(".*(?:校区|教学楼|示例楼|示例楼|实验楼|图书馆|机房|[A-Za-z]\\s?\\d{2,4}).*")
     private val campusSection = Regex("\\((\\d{1,2})(?:[-~](\\d{1,2}))?节\\)")
     private val campusLabel = Regex("(?:校区|场地|地点|教室|教师|老师|教学班|考核方式|选课备注|课程学时|周学时|总学时|学分)\\s*[:：]")
     private val campusTeacher = Regex("教师[:：]\\s*([^/\\n;；|]*)")
@@ -666,7 +666,7 @@ object DocumentImport {
 
     /**
      * Academic grid exports write one course per cell as `课程名 (1-2节)3-4周,6-8周/校区:…/场地:
-     * A414/教师:王剑雄/教学班:…/学分:…`. Values wrap mid-word across lines, so the metadata tail is joined
+     * A414/教师:己老师/教学班:…/学分:…`. Values wrap mid-word across lines, so the metadata tail is joined
      * before the labelled fields are cut out; leading fragment lines from a previous cell (班级/考核
      * metadata) are dropped so the name stays clean.
      */

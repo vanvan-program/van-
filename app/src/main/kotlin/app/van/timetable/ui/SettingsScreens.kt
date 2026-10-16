@@ -133,6 +133,12 @@ fun Appearance(p: Preferences, vm: VanViewModel) {
         Panel {
             Toggle("显示周末", p.showWeekend, { v -> vm.prefs { it.copy(showWeekend = v) } })
             Toggle("显示非本周课程", p.showInactive, { v -> vm.prefs { it.copy(showInactive = v) } })
+            Toggle(
+                "显示自定义时间课时间",
+                p.showCustomTimeLabels,
+                { v -> vm.prefs { it.copy(showCustomTimeLabels = v) } },
+                "在课表左侧显示自定义时间课程的时间；关闭后保留正常节次时间，不影响桌面小组件",
+            )
         }
         Muted("课程配色在编辑课程中调整。小组件可以独立设置浅色、深色或跟随App。教务网页保留学校原色。")
     }

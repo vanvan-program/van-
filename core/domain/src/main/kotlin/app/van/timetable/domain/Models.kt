@@ -113,6 +113,7 @@ data class Preferences(
     val leadMinutes: Int = 10,
     val statusNotification: Boolean = false,
     val keepLogin: Boolean = false,
+    val showCustomTimeLabels: Boolean = true,
 )
 
 @Serializable

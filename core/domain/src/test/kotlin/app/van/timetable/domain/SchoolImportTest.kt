@@ -9,15 +9,15 @@ class SchoolImportTest {
     @Test
     fun visibleFooterPreservesPracticeAndOtherCoursesWithoutSchedulingFakeTimes() {
         val result =
-            """{"courses":[{"name":"【调】数据库原理","day":3,"startSection":9,"endSection":10,"weeks":[4,6,7,8,9,10,11,12,16],"teacher":"教师甲","position":"朝阳校区 B512"}],
-          "extraCoursesText":"实践课程：认识实习教师乙(共2周)/1-2周;数据库原理课程设计教师甲(共1周)/18周;Java程序设计课程设计教师丙(共1周)/19周;其它课程：数据库原理教师甲(共4周)/9-12周/无;形势与政策E教师丁(共4周)/1-4周/无;"}"""
-        val draft = Importers.school(result, "河北建筑工程学院", LocalDate.parse("2026-09-07"))
+            """{"courses":[{"name":"【调】示例课程庚","day":3,"startSection":9,"endSection":10,"weeks":[4,6,7,8,9,10,11,12,16],"teacher":"甲老师","position":"示例校区 B512"}],
+          "extraCoursesText":"实践课程：示例实习乙老师(共2周)/1-2周;示例课程庚课程设计甲老师(共1周)/18周;示例课程丙课程设计丙老师(共1周)/19周;其它课程：示例课程庚甲老师(共4周)/9-12周/无;形势与政策E丁老师(共4周)/1-4周/无;"}"""
+        val draft = Importers.school(result, "某学校", LocalDate.parse("2026-09-07"))
         val schedule = draft.schedule
         val extra = schedule.sessions.filter { it.mode == TimeMode.UNTIMED }
         assertEquals(5, schedule.courses.size)
         assertEquals(5, extra.size)
         assertEquals(setOf(1, 2), extra[0].weeks)
-        assertEquals("教师乙", extra[0].teacher)
+        assertEquals("乙老师", extra[0].teacher)
         assertEquals(setOf(18), extra[1].weeks)
         assertEquals(setOf(19), extra[2].weeks)
         assertEquals(setOf(9, 10, 11, 12), extra[3].weeks)
@@ -37,10 +37,10 @@ class SchoolImportTest {
     fun malformedFooterCannotBeDroppedWhileSavingRegularCourses() {
         val base =
             """{"courses":[{"name":"常规课程","day":1,"startSection":1,"endSection":2,"weeks":[1]}],"extraCoursesText":"%s"}"""
-        for (footer in listOf("实践课程：无法识别的条目;", "其它课程：课程设计教师甲(共1周)/未知周;", "实践课程：课程设计教师甲(共1周)/0周;")) {
+        for (footer in listOf("实践课程：无法识别的条目;", "其它课程：课程设计甲老师(共1周)/未知周;", "实践课程：课程设计甲老师(共1周)/0周;")) {
             val failure =
                 assertThrows(RuntimeException::class.java) {
-                    Importers.school(base.format(footer), "河北建筑工程学院", LocalDate.parse("2026-09-07"))
+                    Importers.school(base.format(footer), "某学校", LocalDate.parse("2026-09-07"))
                 }
             assertTrue(
                 failure.message.orEmpty().contains("周") ||
@@ -53,16 +53,16 @@ class SchoolImportTest {
     fun selectedTermAndMultipleTeachingSlotsRemainIntactThroughBackup() {
         val result =
             """{"term":"2024-2025学年 · 第2学期","courses":[
-              {"name":"课程甲","day":3,"startSection":3,"endSection":4,"weeks":[3,4,6,7,8],"teacher":"教师甲","position":"朝阳校区 A414"},
-              {"name":"课程甲","day":7,"startSection":9,"endSection":10,"weeks":[2,4,6,8],"teacher":"教师乙","position":"公共机房3"}
+              {"name":"课程甲","day":3,"startSection":3,"endSection":4,"weeks":[3,4,6,7,8],"teacher":"甲老师","position":"示例校区 A414"},
+              {"name":"课程甲","day":7,"startSection":9,"endSection":10,"weeks":[2,4,6,8],"teacher":"乙老师","position":"公共机房3"}
             ]}"""
-        val draft = Importers.school(result, "河北建筑工程学院", LocalDate.parse("2024-02-26"))
+        val draft = Importers.school(result, "某学校", LocalDate.parse("2024-02-26"))
         assertEquals(1, draft.schedule.courses.size)
         assertEquals(2, draft.schedule.sessions.size)
         assertEquals(setOf(3, 4, 6, 7, 8), draft.schedule.sessions[0].weeks)
         assertEquals(setOf(2, 4, 6, 8), draft.schedule.sessions[1].weeks)
-        assertEquals(listOf("教师甲", "教师乙"), draft.schedule.sessions.map { it.teacher })
-        assertEquals(listOf("朝阳校区 A414", "公共机房3"), draft.schedule.sessions.map { it.place })
+        assertEquals(listOf("甲老师", "乙老师"), draft.schedule.sessions.map { it.teacher })
+        assertEquals(listOf("示例校区 A414", "公共机房3"), draft.schedule.sessions.map { it.place })
         assertEquals(7, draft.schedule.sessions[1].day)
         assertEquals(10, draft.schedule.sessions[1].endSection)
         assertTrue(draft.warnings.any { it.contains("2024-2025学年 · 第2学期") })

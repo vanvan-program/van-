@@ -42,7 +42,7 @@ class SchoolDomTest {
                     }
                 }
             web.loadDataWithBaseURL(
-                "https://jwx.hebiace.edu.cn/",
+                "https://portal.example.edu.cn/",
                 "<html><body>$body</body></html>",
                 "text/html",
                 "UTF-8",
@@ -64,43 +64,43 @@ class SchoolDomTest {
                 """
                 <table><tr>
                   <td id="1-1"><div class="timetable_con">
-                    <p class="title"><font>大数据技术</font></p>
+                    <p class="title"><font>示例课程甲</font></p>
                     <p><span data-original-title="教师"></span>张老师</p>
-                    <p><span data-original-title="上课地点"></span>立德楼 A414</p>
+                    <p><span data-original-title="上课地点"></span>示例楼 A414</p>
                     <p><span data-original-title="节/周"></span>(1-2节)1-16周(单)</p>
                   </div></td>
                   <td id="2-3"><div class="timetable_con">
-                    <p class="title">操作系统</p>
+                    <p class="title">示例课程乙</p>
                     <span title="教师"></span><b>李老师</b><br>
-                    <span title="教室"></span><span>立德楼 A214</span><br>
+                    <span title="教室"></span><span>示例楼 A214</span><br>
                     (3-4节)2-16(双)周
                   </div></td>
                   <td id="3-5"><div class="timetable_con">
-                    <p class="title">Java程序设计</p>
+                    <p class="title">示例课程丙</p>
                     <p><span data-bs-original-title="任课教师"></span>王老师</p>
-                    <p><span data-bs-original-title="场地"></span>图书馆一楼公共机房3</p>
+                    <p><span data-bs-original-title="场地"></span>示例机房3</p>
                     <p>(5-6节)1-8、11-16周</p>
                   </div></td>
                   <td id="4-1"><div class="kbcontent">
-                    汇编语言程序设计<br><font title="老师">赵老师</font><br>
-                    <font title="教室">明德楼 306</font><br>[0102节]1-16(周)
+                    示例课程丁<br><font title="老师">赵老师</font><br>
+                    <font title="教室">示例楼 306</font><br>[0102节]1-16(周)
                   </div></td>
                   <td id="5-7"><div class="timetable_con">
-                    <p class="title">数据库原理</p><p>教师：刘老师</p><p>地点：立德楼 B512</p>
+                    <p class="title">示例课程庚</p><p>教师：刘老师</p><p>地点：示例楼 B512</p>
                     <p>(7-8节)1-16周</p>
                   </div></td>
                 </tr></table>
                 """
                     .trimIndent()
             )
-        val draft = Importers.school(result, "河北建筑工程学院", LocalDate.parse("2026-09-07"))
+        val draft = Importers.school(result, "某学校", LocalDate.parse("2026-09-07"))
         assertEquals(5, draft.schedule.sessions.size)
         assertEquals(
             listOf("张老师", "李老师", "王老师", "赵老师", "刘老师"),
             draft.schedule.sessions.map { it.teacher },
         )
         assertEquals(
-            listOf("立德楼 A414", "立德楼 A214", "图书馆一楼公共机房3", "明德楼 306", "立德楼 B512"),
+            listOf("示例楼 A414", "示例楼 A214", "示例机房3", "示例楼 306", "示例楼 B512"),
             draft.schedule.sessions.map { it.place },
         )
         assertEquals((1..16 step 2).toSet(), draft.schedule.sessions[0].weeks)
@@ -129,7 +129,7 @@ class SchoolDomTest {
         val draft =
             Importers.school(
                 extract("<table><tr>$valid</tr></table>"),
-                "河北建筑工程学院",
+                "某学校",
                 LocalDate.parse("2026-09-07"),
             )
         assertTrue(draft.schedule.sessions.single().teacher.isBlank())
@@ -138,7 +138,7 @@ class SchoolDomTest {
             "<td id='2-3'><div class='timetable_con'><p class='title'>坏数据</p><p>没有周次与节次</p></div></td>"
         val result = extract("<table><tr>$valid$bad</tr></table>")
         assertTrue(
-            runCatching { Importers.school(result, "河北建筑工程学院", LocalDate.parse("2026-09-07")) }
+            runCatching { Importers.school(result, "某学校", LocalDate.parse("2026-09-07")) }
                 .isFailure
         )
     }
@@ -167,28 +167,28 @@ class SchoolDomTest {
                   <tr>
                     <td rowspan="2">上午</td><td>1</td>
                     <td><div class="timetable_con">
-                      <p class="title"><font>大数据技术</font></p>
+                      <p class="title"><font>示例课程甲</font></p>
                       <p><span data-original-title="节/周"></span>(<span>1</span>-<span>2</span>节)<span>3</span>-<span>4</span>周,<span>6</span>-<span>8</span>周</p>
-                      <p><span class="glyphicon glyphicon-map-marker"></span>朝阳校区 A414</p>
-                      <p><span class="glyphicon glyphicon-user"></span>测试教师甲</p>
+                      <p><span class="glyphicon glyphicon-map-marker"></span>示例校区 A414</p>
+                      <p><span class="glyphicon glyphicon-user"></span>测试甲老师</p>
                     </div></td>
                     <td></td>
                     <td><div class="timetable_con">
-                      <p class="title">汇编语言程序设计</p><p>(1-2节)3-14周</p>
-                      <p><span data-original-title="上课地点"></span>朝阳校区 A214</p>
-                      <p><span data-original-title="教师"></span>测试教师乙</p>
+                      <p class="title">示例课程丁</p><p>(1-2节)3-14周</p>
+                      <p><span data-original-title="上课地点"></span>示例校区 A214</p>
+                      <p><span data-original-title="教师"></span>测试乙老师</p>
                     </div></td>
                     <td></td><td></td><td></td>
                     <td colspan="2"><div class="timetable_con">
-                      <p class="title">大数据技术</p><p>(1-2节)3周,6周</p>
-                      <p>教师：测试教师甲</p><p>地点：朝阳校区 A414</p>
+                      <p class="title">示例课程甲</p><p>(1-2节)3周,6周</p>
+                      <p>教师：测试甲老师</p><p>地点：示例校区 A414</p>
                     </div></td>
                   </tr>
                   <tr>
                     <td>2</td><td></td>
                     <td><div class="timetable_con">
-                      <p class="title">操作系统</p><p>(3-4节)2-16周(双)</p>
-                      <p>教师：测试教师丙</p><p>地点：朝阳校区 A214</p>
+                      <p class="title">示例课程乙</p><p>(3-4节)2-16周(双)</p>
+                      <p>教师：测试丙老师</p><p>地点：示例校区 A214</p>
                     </div></td>
                     <td></td><td></td><td></td><td></td><td colspan="2"></td>
                   </tr>
@@ -196,7 +196,7 @@ class SchoolDomTest {
                 """
                     .trimIndent()
             )
-        val draft = Importers.school(result, "河北建筑工程学院", LocalDate.parse("2026-09-07"))
+        val draft = Importers.school(result, "某学校", LocalDate.parse("2026-09-07"))
         val sessions = draft.schedule.sessions
         assertEquals(listOf(1, 3, 7, 2), sessions.map { it.day })
         assertEquals(setOf(3, 4, 6, 7, 8), sessions[0].weeks)
@@ -205,8 +205,8 @@ class SchoolDomTest {
         assertEquals((2..16 step 2).toSet(), sessions[3].weeks)
         assertEquals(listOf(1, 1, 1, 3), sessions.map { it.startSection })
         assertEquals(listOf(2, 2, 2, 4), sessions.map { it.endSection })
-        assertEquals("测试教师甲", sessions[0].teacher)
-        assertEquals("朝阳校区 A414", sessions[0].place)
+        assertEquals("测试甲老师", sessions[0].teacher)
+        assertEquals("示例校区 A414", sessions[0].place)
         assertFalse(draft.warnings.any { it.contains("未读取到") })
     }
 

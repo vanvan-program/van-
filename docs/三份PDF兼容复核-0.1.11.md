@@ -24,12 +24,3 @@
 第一份原文未提供常规课程老师和部分地点，4门时间未定课程也未注明周次；这些信息需要按学校安排补充。三份文件均没有完整的学校钟点作息或明确的第1周周一，导入时仍应核对。测试中的2026-08-31仅用于验证日期保存，不作为学校开学日期结论。
 
 最终崩溃缓冲区为空。三份原件的SHA-256与检查前一致。测试副本使用sample-0／1／2名称，截图展示导入界面，不包含原PDF学生身份页；原件没有进入应用安装包或源码包。临时渲染、提取文字和模拟器PDF副本在验证后清理。
-
-本轮证据：[实际PDF核心检查](test-evidence/pdf-compat-core.xml)、[Android最终日志](test-evidence/pdf-compat-android.txt)、[崩溃缓冲区](test-evidence/pdf-compat-crash.txt)。构建日志保存在上级.tools的gradle-pdf-compat-0.1.11.log和gradle-pdf-ui-0.1.11.log。新增LocalPdfFlowTest可重跑实际文件的界面验证；需要先提供三个sample文件，未提供时跳过。
-
-![第一份识别核对](screenshots/pdf-check-0-review.png)
-![第一份保留待安排课程](screenshots/pdf-check-0-preview.png)
-![第二份识别核对](screenshots/pdf-check-1-review.png)
-![第二份实践及其它课程预览](screenshots/pdf-check-1-preview.png)
-![第三份识别核对](screenshots/pdf-check-2-review.png)
-![第三份课程设计预览](screenshots/pdf-check-2-preview.png)

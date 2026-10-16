@@ -146,7 +146,7 @@ object Demo {
                 startSection = p.second,
                 endSection = p.second + 1,
                 teacher = listOf("李老师", "张老师", "王老师")[i % 3],
-                place = "立德楼 A${listOf(414,214,302,101)[i%4]}",
+                place = "示例楼 A${listOf(414,214,302,101)[i%4]}",
             )
         }
         return Schedule(

@@ -550,7 +550,7 @@ private fun WeekGrid(
                         }
                     }
                     timeline.bands
-                        .filter { it.section == null }
+                        .filter { p.showCustomTimeLabels && it.section == null }
                         .forEach { band ->
                             Column(
                                 Modifier.offset(y = rowHeight * timeline.position(band.start))

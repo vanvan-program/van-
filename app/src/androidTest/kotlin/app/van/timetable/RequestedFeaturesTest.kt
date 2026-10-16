@@ -92,7 +92,7 @@ class RequestedFeaturesTest {
     fun quickEventsKeepParentAndExpandedPaletteSurvivesSaving() {
         val s = seed()
         ui.onNodeWithText("课程", useUnmergedTree = true).performClick()
-        ui.onNodeWithText("大数据技术").performClick()
+        ui.onNodeWithText("示例课程甲").performClick()
         ui.onNodeWithText("添加实验课").performScrollTo().performClick()
         ui.onNodeWithContentDescription("课程颜色12").performScrollTo().performClick()
         screenshot("feature-colors.png")
@@ -107,7 +107,7 @@ class RequestedFeaturesTest {
             runBlocking { store.all().first { it.id == s.id }.courses.any { it.kind == "期末考试" } }
         }
         val saved = runBlocking { store.all().first { it.id == s.id } }
-        val parent = saved.courses.first { it.name == "大数据技术" }
+        val parent = saved.courses.first { it.name == "示例课程甲" }
         val lab = saved.courses.first { it.kind == "实验课" }
         val exam = saved.courses.first { it.kind == "期末考试" }
         assertEquals(parent.id, lab.parentCourseId)

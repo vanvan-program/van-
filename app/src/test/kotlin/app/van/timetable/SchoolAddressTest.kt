@@ -17,24 +17,13 @@ class SchoolAddressTest {
     }
 
     @Test
-    fun retainsFourSchoolAdaptersWithoutAUserFacingSchoolList() {
-        schools.forEach { original ->
-            val chosen = schoolForAddress(original.url)
-            assertEquals(original.id, chosen.id)
-            assertEquals(original.url, chosen.url)
-            assertEquals(
-                when (original.id) {
-                    "hebau" -> "hebau"
-                    "hebiace" -> "hebiace"
-                    else -> "dom"
-                },
-                schoolAdapter(original.url),
-            )
-        }
-        assertEquals("custom", schoolForAddress("https://hebau.edu.cn.example.com/").id)
-        assertEquals(listOf("dom", "hebiace"), schoolAdapterAssets(schools[1].url))
-        assertEquals("hebiace", schoolAdapter("https://jwx.hebiace.edu.cn/xtgl/login_slogin.html"))
-        assertEquals("dom", schoolAdapter("https://hebiace.edu.cn.example.com/kbcx/"))
+    fun selectsProtocolsByPagePathWithoutSchoolDomains() {
+        assertEquals("wdkb", schoolAdapter("https://portal.example.edu.cn/jwapp/sys/home/"))
+        assertEquals("zhengfang", schoolAdapter("https://portal.example.edu.cn/kbcx/query"))
+        assertEquals(listOf("dom", "zhengfang"), schoolAdapterAssets("https://portal.example.edu.cn/xtgl/login_slogin.html"))
+        assertEquals("dom", schoolAdapter("https://portal.example.edu.cn/login"))
+        assertEquals("教务系统", schoolForAddress("https://portal.example.edu.cn/kbcx/query").name)
+        assertEquals("dom", schoolAdapter("https://portal.example.edu.cn/other/kbcx/"))
     }
 
     @Test

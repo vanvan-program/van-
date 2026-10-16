@@ -28,22 +28,22 @@ class DocumentImportTest {
                         "Location",
                         "Weeks",
                     ),
-                    listOf("大数据技术", "Monday", "1.0", "2", "王剑雄", "朝阳校区 A414", "3-4周,6-8周"),
+                    listOf("示例课程甲", "Monday", "1.0", "2", "己老师", "示例校区 A414", "3-4周,6-8周"),
                     listOf("Operating Systems", "周日", "3", "4", "Ms. Li", "Room 306", "1-16周(双)"),
                 )
             )
         assertEquals(2, result.rows.size)
         assertEquals("1", result.rows[0].day)
-        assertEquals("王剑雄", result.rows[0].teacher)
-        assertEquals("朝阳校区 A414", result.rows[0].place)
+        assertEquals("己老师", result.rows[0].teacher)
+        assertEquals("示例校区 A414", result.rows[0].place)
         assertEquals("3-4,6-8", result.rows[0].weeks)
         assertEquals("7", result.rows[1].day)
         assertEquals((2..16 step 2).toSet(), Importers.weeks(result.rows[1].weeks))
         assertEquals(0, result.unresolvedCount)
         val draft = Importers.csv(result.csv, LocalDate.parse("2026-09-07"))
         assertEquals(2, draft.schedule.sessions.size)
-        assertEquals("王剑雄", draft.schedule.sessions.first().teacher)
-        assertEquals("朝阳校区 A414", draft.schedule.sessions.first().place)
+        assertEquals("己老师", draft.schedule.sessions.first().teacher)
+        assertEquals("示例校区 A414", draft.schedule.sessions.first().place)
         assertEquals("Ms. Li", result.rows[1].teacher)
         assertEquals("Room 306", result.rows[1].place)
     }
@@ -55,40 +55,40 @@ class DocumentImportTest {
                 sheet(
                     listOf("2026秋季个人课表"),
                     listOf("课程", "星期", "节次", "教师", "教室", "周次"),
-                    listOf("Java程序设计", "星期三", "第3-4节", "祁爱华", "A314", "1、3、5周"),
+                    listOf("示例课程丙", "星期三", "第3-4节", "丙老师", "A314", "1、3、5周"),
                 )
             )
         assertEquals(
-            DocumentCourseRow("Java程序设计", "3", "3", "4", "祁爱华", "A314", "1,3,5"),
+            DocumentCourseRow("示例课程丙", "3", "3", "4", "丙老师", "A314", "1,3,5"),
             result.rows.single(),
         )
     }
 
     @Test
-    fun hebiaceStyleWeekGridRestoresSplitWordsAndSeparatedWeekRanges() {
+    fun zhengfangStyleWeekGridRestoresSplitWordsAndSeparatedWeekRanges() {
         val result =
             DocumentImport.fromSheet(
                 sheet(
                     listOf("节次", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"),
                     listOf(
                         "1-2节",
-                        "大数\n据技\n术\n(1-2节)3-4周,6-8周\n地点: 朝阳校区 A414\n教师: 王剑雄",
+                        "示例\n课程\n甲\n(1-2节)3-4周,6-8周\n地点: 示例校区 A414\n教师: 己老师",
                         "",
                         "",
                         "",
-                        "汇编语言程序设计\n(1-2节)3-14周\n教室: A214\n老师: 杜春梅",
+                        "示例课程丁\n(1-2节)3-14周\n教室: A214\n老师: 丁老师",
                     ),
                 )
             )
         assertEquals(2, result.rows.size)
         val first = result.rows.first()
-        assertEquals("大数据技术", first.name)
+        assertEquals("示例课程甲", first.name)
         assertEquals("1", first.day)
         assertEquals("1", first.startSection)
         assertEquals("2", first.endSection)
         assertEquals("3-4,6-8", first.weeks)
-        assertEquals("王剑雄", first.teacher)
-        assertEquals("朝阳校区A414", first.place)
+        assertEquals("己老师", first.teacher)
+        assertEquals("示例校区A414", first.place)
         assertEquals("5", result.rows.last().day)
         assertEquals(0, result.unresolvedCount)
     }
@@ -104,8 +104,8 @@ class DocumentImportTest {
                 DocumentCell(2, 0, "第2节"),
                 DocumentCell(3, 0, "第3节"),
                 DocumentCell(4, 0, "第4节"),
-                DocumentCell(1, 1, "操作系统\n1-16周(单)\n教师：李老师\n教室：A214", rowSpan = 2),
-                DocumentCell(3, 2, "计算机系统结构\n1-16周", rowSpan = 2),
+                DocumentCell(1, 1, "示例课程乙\n1-16周(单)\n教师：李老师\n教室：A214", rowSpan = 2),
+                DocumentCell(3, 2, "示例课程戊\n1-16周", rowSpan = 2),
             )
         val result = DocumentImport.fromSheet(DocumentSheet("合并网格", cells))
         assertEquals(2, result.rows.size)
@@ -142,11 +142,11 @@ class DocumentImportTest {
                     listOf("节次", "周一", "周二"),
                     listOf(
                         "1-2节",
-                        "大数据技术\n(1-2节)1-8周\n教师: 张老师\n地点: A414\n操作系统\n(1-2节)9-16周\n教师: 李老师\n地点: A214",
+                        "示例课程甲\n(1-2节)1-8周\n教师: 张老师\n地点: A414\n示例课程乙\n(1-2节)9-16周\n教师: 李老师\n地点: A214",
                     ),
                 )
             )
-        assertEquals(listOf("大数据技术", "操作系统"), result.rows.map { it.name })
+        assertEquals(listOf("示例课程甲", "示例课程乙"), result.rows.map { it.name })
         assertEquals(listOf("1-8", "9-16"), result.rows.map { it.weeks })
         assertEquals(listOf("A414", "A214"), result.rows.map { it.place })
     }
@@ -162,7 +162,7 @@ class DocumentImportTest {
                         DocumentCell(0, 1, "周一"),
                         DocumentCell(0, 2, "周二"),
                         DocumentCell(1, 0, "第1节"),
-                        DocumentCell(1, 1, "操作系统", rowSpan = 2),
+                        DocumentCell(1, 1, "示例课程乙", rowSpan = 2),
                     ),
                 )
             )
@@ -200,20 +200,20 @@ class DocumentImportTest {
                 line("星期一", 0.13f, 0.10f),
                 line("星期二", 0.33f, 0.106f),
                 line("星期三", 0.53f, 0.10f),
-                line("大数据技术", 0.13f, 0.20f),
+                line("示例课程甲", 0.13f, 0.20f),
                 line("(1-2节)3-4周,6-8周", 0.13f, 0.23f),
-                line("教室:朝阳校区A414", 0.13f, 0.26f),
-                line("教师:王剑雄", 0.13f, 0.29f),
-                line("操作系统", 0.53f, 0.20f),
+                line("教室:示例校区A414", 0.13f, 0.26f),
+                line("教师:己老师", 0.13f, 0.29f),
+                line("示例课程乙", 0.53f, 0.20f),
                 line("3-4节 1-16周(双)", 0.53f, 0.23f),
                 line("老师:张老师", 0.53f, 0.26f),
                 line("地点:A214", 0.53f, 0.29f),
             )
         val result = DocumentImport.fromPositioned("OCR测试", lines)
-        assertEquals(listOf("大数据技术", "操作系统"), result.rows.map { it.name })
+        assertEquals(listOf("示例课程甲", "示例课程乙"), result.rows.map { it.name })
         assertEquals(listOf("1", "3"), result.rows.map { it.day })
-        assertEquals("王剑雄", result.rows.first().teacher)
-        assertEquals("朝阳校区A414", result.rows.first().place)
+        assertEquals("己老师", result.rows.first().teacher)
+        assertEquals("示例校区A414", result.rows.first().place)
         assertEquals((2..16 step 2).toSet(), Importers.weeks(result.rows.last().weeks))
         assertEquals(0, result.unresolvedCount)
     }
@@ -224,13 +224,13 @@ class DocumentImportTest {
             DocumentImport.fromPositioned(
                 "裁切截图",
                 listOf(
-                    line("大数据技术", 0.15f, 0.3f),
+                    line("示例课程甲", 0.15f, 0.3f),
                     line("(1-2节)3-4周,6-8周", 0.15f, 0.33f),
-                    line("教师:王剑雄", 0.15f, 0.36f),
-                    line("教室:朝阳校区A414", 0.15f, 0.39f),
+                    line("教师:己老师", 0.15f, 0.36f),
+                    line("教室:示例校区A414", 0.15f, 0.39f),
                 ),
             )
-        assertEquals("大数据技术", result.rows.single().name)
+        assertEquals("示例课程甲", result.rows.single().name)
         assertEquals("", result.rows.single().day)
         assertEquals("3-4,6-8", result.rows.single().weeks)
         assertEquals(1, result.unresolvedCount)
@@ -245,13 +245,13 @@ class DocumentImportTest {
                 listOf(
                     line("周一 周二 周三 周四 周五 周六 周日", 0.1f, 0.1f, width = 0.84f),
                     line("10/05", 0.11f, 0.15f),
-                    line("操作系统", 0.59f, 0.3f, width = 0.1f),
+                    line("示例课程乙", 0.59f, 0.3f, width = 0.1f),
                     line("(3-4节)1-16周", 0.59f, 0.33f, width = 0.1f),
                 ),
             )
         assertEquals(1, result.rows.size)
         assertEquals("5", result.rows.single().day)
-        assertEquals("操作系统", result.rows.single().name)
+        assertEquals("示例课程乙", result.rows.single().name)
     }
 
     @Test
@@ -260,15 +260,15 @@ class DocumentImportTest {
             DocumentImport.fromPositioned(
                 "裁切多列",
                 listOf(
-                    line("大数据技术", 0.15f, 0.3f),
+                    line("示例课程甲", 0.15f, 0.3f),
                     line("(1-2节)3-4周,6-8周", 0.15f, 0.33f),
-                    line("教师:王剑雄", 0.15f, 0.36f),
-                    line("操作系统", 0.55f, 0.3f),
+                    line("教师:己老师", 0.15f, 0.36f),
+                    line("示例课程乙", 0.55f, 0.3f),
                     line("(3-4节)1-16周", 0.55f, 0.33f),
                     line("教师:张老师", 0.55f, 0.36f),
                 ),
             )
-        assertEquals(listOf("大数据技术", "操作系统"), result.rows.map { it.name })
+        assertEquals(listOf("示例课程甲", "示例课程乙"), result.rows.map { it.name })
         assertTrue(result.rows.all { it.day.isBlank() })
         assertEquals(2, result.unresolvedCount)
     }
@@ -282,17 +282,17 @@ class DocumentImportTest {
                     line("周一", 0.15f, 0.1f),
                     line("周二", 0.35f, 0.1f),
                     line("1-2节", 0.01f, 0.23f, width = 0.06f),
-                    line("大数据技术", 0.15f, 0.2f),
+                    line("示例课程甲", 0.15f, 0.2f),
                     line("1-8周", 0.15f, 0.23f),
-                    line("教师:王剑雄", 0.15f, 0.26f),
-                    line("操作系统", 0.35f, 0.7f),
+                    line("教师:己老师", 0.15f, 0.26f),
+                    line("示例课程乙", 0.35f, 0.7f),
                     line("1-16周", 0.35f, 0.73f),
                     line("教师:张老师", 0.35f, 0.76f),
                 ),
             )
         assertEquals(2, result.rows.size)
-        val near = result.rows.first { it.name == "大数据技术" }
-        val far = result.rows.first { it.name == "操作系统" }
+        val near = result.rows.first { it.name == "示例课程甲" }
+        val far = result.rows.first { it.name == "示例课程乙" }
         assertEquals("1", near.startSection)
         assertEquals("2", near.endSection)
         assertEquals("", far.startSection)
@@ -315,12 +315,12 @@ class DocumentImportTest {
                     "不完整星期表头",
                     header +
                         listOf(
-                            line("操作系统", 0.32f, 0.3f),
+                            line("示例课程乙", 0.32f, 0.3f),
                             line("(3-4节)1-16周", 0.32f, 0.33f),
                             line("教师:张老师", 0.32f, 0.36f),
                         ),
                 )
-            assertEquals("操作系统", result.rows.single().name)
+            assertEquals("示例课程乙", result.rows.single().name)
             assertEquals("", result.rows.single().day)
             assertEquals("3", result.rows.single().startSection)
             assertEquals("4", result.rows.single().endSection)
@@ -412,12 +412,12 @@ class DocumentImportTest {
                     listOf("节次", "周一", "周二"),
                     listOf(
                         "1-2节",
-                        "操作系统\n(1 -\n2 节)\n周次：1、3、5\n教师:张老师",
-                        "Java程序设计\n3-4节\n第1-16(单)周",
+                        "示例课程乙\n(1 -\n2 节)\n周次：1、3、5\n教师:张老师",
+                        "示例课程丙\n3-4节\n第1-16(单)周",
                     ),
                 )
             )
-        assertEquals(listOf("操作系统", "Java程序设计"), result.rows.map { it.name })
+        assertEquals(listOf("示例课程乙", "示例课程丙"), result.rows.map { it.name })
         assertEquals("1", result.rows.first().startSection)
         assertEquals("2", result.rows.first().endSection)
         assertEquals(setOf(1, 3, 5), Importers.weeks(result.rows.first().weeks))
@@ -430,7 +430,7 @@ class DocumentImportTest {
             DocumentImport.fromSheet(
                 sheet(
                     listOf("课程名称", "星期", "开始节数", "结束节数", "老师", "地点", "周数"),
-                    listOf("操作系统", "周二", "4", "2", "张老师", "A214", "0-16周"),
+                    listOf("示例课程乙", "周二", "4", "2", "张老师", "A214", "0-16周"),
                 )
             )
         assertEquals("0-16周", result.rows.single().weeks)
@@ -479,9 +479,9 @@ class DocumentImportTest {
         // Monday morning cell; the metadata tail wraps mid-word, exactly like the export.
         val monday =
             listOf(
-                "大数据技术",
-                "(1-2节)3-4周,6-8周/校区:朝阳校区/场地:A414/教师:王",
-                "剑雄/教学班:(2026-2027-1)-XX03005-01/教学班组成:计",
+                "示例课程甲",
+                "(1-2节)3-4周,6-8周/校区:示例校区/场地:A414/教师:己",
+                "老师/教学班:(2026-2027-1)-XX03005-01/教学班组成:计",
                 "241;计242;计243;计244;计",
                 "245/考核方式:考查/选课备",
                 "注:/课程学时组成:理论:24,实验:8/周学时:2/总学时",
@@ -491,38 +491,38 @@ class DocumentImportTest {
         // Monday afternoon cell immediately below: clusters merge, splitBlocks separates courses.
         val mondayPm =
             listOf(
-                "计算机系统结构",
-                "(3-4节)3-4周,7-11周/校区:朝阳校区/场地:A314/教师:高",
-                "丽婷/教学班:(2026-2027-1)-XX03011-01/教学班组成:计241;计242",
+                "示例课程戊",
+                "(3-4节)3-4周,7-11周/校区:示例校区/场地:A314/教师:庚",
+                "老师/教学班:(2026-2027-1)-XX03011-01/教学班组成:计241;计242",
                 "学分:2.0",
             )
         mondayPm.forEachIndexed { k, text -> lines += campusRowLine(text, 105f, 177f + k * 11f) }
         // Friday cell with single-week parity.
-        lines += campusRowLine("Java程序设计", 516f, 100f)
+        lines += campusRowLine("示例课程丙", 516f, 100f)
         lines +=
             campusRowLine(
-                "(3-4节)3周,7-11周(单)/校区:朝阳校区/场地:A214/教师:祁爱华/教学班:(2026-2027-1)-XX02003-01/学分:3.0",
+                "(3-4节)3周,7-11周(单)/校区:示例校区/场地:A214/教师:丙老师/教学班:(2026-2027-1)-XX02003-01/学分:3.0",
                 516f,
                 111f,
             )
         // Footer rows: practice/exam weeks, legend and print time are not day-section courses.
-        lines += campusRowLine("实践课程：认识实习李超(共2周)/1-2周; 数据库原理课程设计周丽莉(共1周)/18周;", 60f, 700f, 740f)
-        lines += campusRowLine("其他课程：操作系统庞慧(共1周)/13周/无; 大数据技术王剑雄(共1周)/15周/无;", 60f, 711f, 740f)
+        lines += campusRowLine("实践课程：示例实习丁老师(共2周)/1-2周; 示例课程庚课程设计乙老师(共1周)/18周;", 60f, 700f, 740f)
+        lines += campusRowLine("其他课程：示例课程乙戊老师(共1周)/13周/无; 示例课程甲己老师(共1周)/15周/无;", 60f, 711f, 740f)
         lines += campusRowLine("打印时间:2026-10-10", 400f, 722f, 120f)
         lines += campusRowLine("： 实践 : 理论 : 实验 : 上机", 400f, 733f, 120f)
 
         val result = DocumentImport.fromPositioned("教务PDF", lines)
         assertEquals(3, result.rows.size)
         assertEquals(
-            DocumentCourseRow("大数据技术", "1", "1", "2", "王剑雄", "A414", "3-4,6-8"),
+            DocumentCourseRow("示例课程甲", "1", "1", "2", "己老师", "A414", "3-4,6-8"),
             result.rows[0],
         )
         assertEquals(
-            DocumentCourseRow("计算机系统结构", "1", "3", "4", "高丽婷", "A314", "3-4,7-11"),
+            DocumentCourseRow("示例课程戊", "1", "3", "4", "庚老师", "A314", "3-4,7-11"),
             result.rows[1],
         )
         assertEquals(
-            DocumentCourseRow("Java程序设计", "5", "3", "4", "祁爱华", "A214", "3,7-11单"),
+            DocumentCourseRow("示例课程丙", "5", "3", "4", "丙老师", "A214", "3,7-11单"),
             result.rows[2],
         )
         assertTrue(result.rows.none { it.name.contains("实践") || it.name.contains("打印") })

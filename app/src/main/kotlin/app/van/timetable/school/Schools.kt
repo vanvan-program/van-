@@ -11,37 +11,11 @@ data class School(
     val note: String,
 )
 
-val schools =
-    listOf(
-        School(
-            "hebau",
-            "河北农业大学",
-            "http://urp.hebau.edu.cn:1009/jwapp/sys/homeapp/home/index.html#/",
-            "hebau.edu.cn",
-            "接口式获取；需要登录后选择学期，尚待本校真实数据验证",
-        ),
-        School(
-            "hebiace",
-            "河北建筑工程学院",
-            "https://jwx.hebiace.edu.cn/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N2151&layout=default",
-            "hebiace.edu.cn",
-            "登录后进入学生课表查询，选择学年和学期并查询，再获取当前课表",
-        ),
-        School(
-            "stdu",
-            "石家庄铁道大学",
-            "https://jw.stdu.edu.cn/xtgl/login_slogin.html",
-            "stdu.edu.cn",
-            "进入个人课表后获取；正方页面结构尚待本校验证",
-        ),
-        School(
-            "xtu",
-            "湘潭大学",
-            "http://jwxt.xtu.edu.cn/",
-            "xtu.edu.cn",
-            "旧入口/ jsxsd 曾返回404，请确认校内实际入口；强智页面尚待验证",
-        ),
-    )
+// Synthetic protocol examples used by import regression tests; no real school directory.
+val schools = listOf(
+    School("wdkb", "教务示例甲", "https://wdkb.example.edu.cn/jwapp/sys/home/", "wdkb.example.edu.cn", "示例网址"),
+    School("zhengfang", "教务示例乙", "https://portal.example.edu.cn/kbcx/xskbcx_cxXskbcxIndex.html?gnmkdm=N2151&layout=default", "portal.example.edu.cn", "示例网址"),
+)
 
 /** Accept only browser URLs; keep paths, queries and fragments used by campus portals. */
 fun schoolAddress(input: String): String {
@@ -63,19 +37,24 @@ fun schoolAddress(input: String): String {
 
 fun schoolForAddress(address: String): School {
     val url = schoolAddress(address)
-    val host = URI(url).host.lowercase()
-    return schools
-        .firstOrNull { host == it.domain || host.endsWith(".${it.domain}") }
-        ?.copy(url = url) ?: School("custom", "教务系统", url, host, "登录后进入个人课表，点击获取当前课表")
+    val uri = URI(url)
+    val host = uri.host.lowercase()
+    val path = uri.path.orEmpty().lowercase()
+    val adapter = when {
+        path.startsWith("/jwapp/") -> "wdkb"
+        path.startsWith("/kbcx/") || path.startsWith("/xtgl/") -> "zhengfang"
+        else -> "custom"
+    }
+    return School(adapter, "教务系统", url, host, "登录后进入个人课表，点击获取当前课表")
 }
 
 fun schoolAdapter(address: String): String =
     when (schoolForAddress(address).id) {
-        "hebau" -> "hebau"
-        "hebiace" -> "hebiace"
+        "wdkb" -> "wdkb"
+        "zhengfang" -> "zhengfang"
         else -> "dom"
     }
 
 fun schoolAdapterAssets(address: String): List<String> =
-    if (schoolAdapter(address) == "hebiace") listOf("dom", "hebiace")
+    if (schoolAdapter(address) == "zhengfang") listOf("dom", "zhengfang")
     else listOf(schoolAdapter(address))

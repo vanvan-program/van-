@@ -59,7 +59,7 @@ class ImportFlowTest {
             .performTextReplacement("file:///sdcard/table")
         ui.onNodeWithText("打开教务系统").performClick()
         ui.onNodeWithText("请输入有效的 http 或 https 教务系统地址").assertIsDisplayed()
-        val address = "jwx.hebiace.edu.cn/student?semester=2026#/table"
+        val address = "portal.example.edu.cn/student?semester=2026#/table"
         ui.onNode(hasSetTextAction() and hasText("教务系统地址")).performTextReplacement(address)
         ui.activityRule.scenario.recreate()
         ui.onNode(hasSetTextAction() and hasText("教务系统地址")).assertTextContains(address)
@@ -85,13 +85,13 @@ class ImportFlowTest {
     }
 
     @Test
-    fun hebiaceWebResultPreviewAndSavePreserveTheOldSchedule() {
-        val result = HebiaceAdapterTest().currentPageFixtureResult()
+    fun zhengfangWebResultPreviewAndSavePreserveTheOldSchedule() {
+        val result = ZhengfangAdapterTest().currentPageFixtureResult()
         val old = seed()
         val store = (ui.activity.application as VanApplication).store
         val before = runBlocking { store.all().associateBy { it.id } }
         val previousPreferences = runBlocking { store.prefs() }
-        val school = schools.first { it.id == "hebiace" }
+        val school = schools.first { it.id == "zhengfang" }
         val monitor =
             object : Instrumentation.ActivityMonitor() {
                 override fun onStartActivity(intent: Intent): Instrumentation.ActivityResult? =
@@ -120,32 +120,32 @@ class ImportFlowTest {
                     .takeScreenshot(
                         File(
                             ui.activity.getExternalFilesDir(null),
-                            "hebiace-current-term-$theme.png",
+                            "zhengfang-current-term-$theme.png",
                         )
                     )
-                ui.onAllNodesWithText("老师：甲老师 · 地点：朝阳校区 A414")
+                ui.onAllNodesWithText("老师：甲老师 · 地点：示例校区 A414")
                     .onFirst()
                     .performScrollTo()
                     .assertIsDisplayed()
                 ui.onAllNodesWithText("第3、4、6、7、8周").onFirst().performScrollTo().assertIsDisplayed()
-                ui.onAllNodesWithText("老师：甲老师 · 地点：朝阳校区 A414").onFirst().assertIsDisplayed()
+                ui.onAllNodesWithText("老师：甲老师 · 地点：示例校区 A414").onFirst().assertIsDisplayed()
                 UiDevice.getInstance(instrumentation)
                     .takeScreenshot(
                         File(
                             ui.activity.getExternalFilesDir(null),
-                            "hebiace-current-preview-$theme.png",
+                            "zhengfang-current-preview-$theme.png",
                         )
                     )
                 ui.onNodeWithText("老师：壬老师 · 地点：未安排").performScrollTo().assertIsDisplayed()
                 ui.onNodeWithText("第1、2周").performScrollTo().assertIsDisplayed()
-                ui.onNodeWithText("认识实习").assertIsDisplayed()
+                ui.onNodeWithText("示例实习").assertIsDisplayed()
                 ui.onAllNodesWithText("无固定上课时间").assertCountEquals(9)
                 ui.onNodeWithText("整周 08:00–09:40").assertDoesNotExist()
                 UiDevice.getInstance(instrumentation)
                     .takeScreenshot(
                         File(
                             ui.activity.getExternalFilesDir(null),
-                            "hebiace-current-practice-$theme.png",
+                            "zhengfang-current-practice-$theme.png",
                         )
                     )
             }
@@ -165,14 +165,14 @@ class ImportFlowTest {
                 assertEquals(26, saved.sessions.count { it.mode == TimeMode.SECTIONS })
                 assertEquals(9, saved.sessions.count { it.mode == TimeMode.UNTIMED })
                 val slot = saved.sessions.first()
-                assertEquals("大数据技术", saved.courses.first().name)
+                assertEquals("示例课程甲", saved.courses.first().name)
                 assertEquals("甲老师", slot.teacher)
-                assertEquals("朝阳校区 A414", slot.place)
+                assertEquals("示例校区 A414", slot.place)
                 assertEquals(setOf(3, 4, 6, 7, 8), slot.weeks)
                 assertEquals(1, slot.day)
                 assertEquals(1, slot.startSection)
                 assertEquals(2, slot.endSection)
-                val practice = saved.courses.single { it.name == "认识实习" }
+                val practice = saved.courses.single { it.name == "示例实习" }
                 val practiceSlot = saved.sessions.single { it.courseId == practice.id }
                 assertEquals(TimeMode.UNTIMED, practiceSlot.mode)
                 assertEquals(setOf(1, 2), practiceSlot.weeks)
@@ -207,7 +207,7 @@ class ImportFlowTest {
 [{"timeTable":99,"node":1,"startTime":"8:0","endTime":"8:45"},{"timeTable":99,"node":2,"startTime":"8:55","endTime":"9:40"}]
 {"id":8,"timeTable":0,"nodes":2,"startDate":"2026-9-7","maxWeek":20,"tableName":"WakeUp界面验证"}
 [{"id":41,"tableId":8,"courseName":"备份导入验证"}]
-[{"id":41,"day":1,"startNode":1,"step":2,"startWeek":1,"endWeek":20,"type":0,"teacher":"张老师","room":"立德楼 A414"}]"""
+[{"id":41,"day":1,"startNode":1,"step":2,"startWeek":1,"endWeek":20,"type":0,"teacher":"张老师","room":"示例楼 A414"}]"""
         )
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.files", file)
         val monitor =
@@ -226,7 +226,7 @@ class ImportFlowTest {
             ui.onNodeWithText("从教务系统获取").performClick()
             ui.onNodeWithText("选择导入文件").performScrollTo().performClick()
             ui.waitUntil(10000) { ui.onAllNodesWithText("导入预览").fetchSemanticsNodes().isNotEmpty() }
-            ui.onNodeWithText("老师：张老师 · 地点：立德楼 A414").performScrollTo().assertIsDisplayed()
+            ui.onNodeWithText("老师：张老师 · 地点：示例楼 A414").performScrollTo().assertIsDisplayed()
             ui.onNodeWithText("作息关联ID不一致").assertDoesNotExist()
             ui.onNode(isToggleable()).performScrollTo().assertIsOff().performClick().assertIsOn()
             ui.onNodeWithText("保存为新课表").performScrollTo().performClick()
@@ -254,7 +254,7 @@ class ImportFlowTest {
                     )
                 }
                 assertEquals("张老师", saved.sessions.single().teacher)
-                assertEquals("立德楼 A414", saved.sessions.single().place)
+                assertEquals("示例楼 A414", saved.sessions.single().place)
                 assertEquals("08:00", saved.routines.single().sections.first().start)
                 assertEquals(20, saved.sessions.single().weeks.size)
                 assertEquals(

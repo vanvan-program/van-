@@ -23,7 +23,7 @@ class EngineTest {
         assertTrue(runCatching { Codec.restore(text) }.isFailure)
     }
 
-    private val c = Course(id = "c", name = "操作系统")
+    private val c = Course(id = "c", name = "示例课程乙")
     private val session = CourseSession(id = "s", courseId = "c", day = 1, weeks = setOf(1, 3, 5))
 
     private fun table() =

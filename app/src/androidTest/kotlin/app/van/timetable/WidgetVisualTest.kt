@@ -79,7 +79,7 @@ class WidgetVisualTest {
                                 if (index == 0) "23:59"
                                 else listOf("09:35", "12:15", "15:35", "17:25")[index - 1],
                             place = if (index == 0) "6-301" else "6-203",
-                            teacher = if (index == 0) "霍怡楠" else "张堤楠",
+                            teacher = if (index == 0) "甲老师" else "乙老师",
                         )
                     },
             )
@@ -140,7 +140,7 @@ class WidgetVisualTest {
                     val time = row.findViewById<TextView>(R.id.item_time)
                     assertTrue(name.top < place.top && place.top < time.top)
                     assertFalse("课程名常规字重", name.typeface.isBold)
-                    assertEquals("6-203  张堤楠", place.text.toString())
+                    assertEquals("6-203  乙老师", place.text.toString())
                     assertEquals("08:00–09:35", time.text.toString())
                     assertEquals("时间不截断", 0, time.layout.getEllipsisCount(0))
                     assertTrue(time.layout.getLineWidth(0) <= time.width)
