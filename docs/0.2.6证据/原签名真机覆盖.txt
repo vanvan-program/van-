@@ -1,0 +1,13 @@
+Device: Redmi K70 / 23113RKC6C (user phone)
+Original upgrade: 0.2.5 -> 0.2.6 (versionCode 19)
+APK signer SHA-256: 2787e9a025cbd6606ac2ec05415432513ada6732360ce4dc2abb22e049e938bf
+adb install -r: Success
+Uninstall or clear data: NOT performed
+Full private backup: saved locally before upgrade; SQLite integrity ok
+PASS: all 2 schedules (IDs and complete payloads) equal the original 0.2.5 backup
+NOTE: activeScheduleId differed between initial backup and first post-upgrade snapshot; all other preference fields were unchanged. Cause not established. No preference restore was performed.
+Controlled recheck: force-stop -> snapshot -> same-APK install -r -> force-stop -> snapshot
+PASS: controlled recheck preserved all schedule payloads and exact DataStore preference bytes
+PASS: database integrity ok
+PASS: launch completed; process alive after 3 seconds; no FATAL EXCEPTION for current PID
+Private backup and screenshots are excluded from source and public evidence.

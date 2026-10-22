@@ -5,6 +5,20 @@ import java.time.*
 import java.time.temporal.ChronoUnit
 
 object CourseEngine {
+    /** Occurrence IDs retain the source date when a single lesson is moved. */
+    fun originalDate(o: Occurrence): String = o.id.substringAfterLast('@', o.date.toString())
+
+    fun cancelOccurrence(schedule: Schedule, occurrence: Occurrence): Schedule {
+        val originalDate = originalDate(occurrence)
+        val old = schedule.sessionOverrides.firstOrNull {
+            it.sessionId == occurrence.session.id && it.originalDate == originalDate
+        }
+        val rule = (old ?: SessionOverride(occurrence.session.id, originalDate)).copy(cancelled = true)
+        return schedule.copy(sessionOverrides = schedule.sessionOverrides.filterNot {
+            it.sessionId == rule.sessionId && it.originalDate == rule.originalDate
+        } + rule)
+    }
+
     fun holiday(schedule: Schedule, date: LocalDate): Holiday? =
         schedule.holidays.firstOrNull {
             date >= LocalDate.parse(it.from) && date <= LocalDate.parse(it.through)

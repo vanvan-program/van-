@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="app.van.timetable.domain.PdfTextExtractorTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-21T15:47:22.108Z" hostname="AGRO" time="0.031">
+  <properties/>
+  <testcase name="scannedOrUnsupportedPdfReportsNoUsableText" classname="app.van.timetable.domain.PdfTextExtractorTest" time="0.023"/>
+  <testcase name="simpleLatinFontTjArrayAndEscapesDecode" classname="app.van.timetable.domain.PdfTextExtractorTest" time="0.003"/>
+  <testcase name="rotatedCampusExportYieldsExactTextInDisplayOrder" classname="app.van.timetable.domain.PdfTextExtractorTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

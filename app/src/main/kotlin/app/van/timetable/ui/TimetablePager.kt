@@ -14,7 +14,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -23,7 +22,6 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.Velocity
-import kotlin.math.absoluteValue
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 // A century on either side of the initial date; avoid giant pager indices whose
@@ -31,8 +29,8 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 internal const val DAY_PAGER_ANCHOR = 36_500
 internal const val DAY_PAGER_COUNT = DAY_PAGER_ANCHOR * 2 + 1
 
-// Inspired by ryanw-mobile/compose-pager-demo's page-offset graphicsLayer approach.
-// Keep timetable text readable: use subtle scaling and fading, without 3D rotation.
+// Keep finger tracking and animated snapping. Avoid whole-page fading/scaling:
+// composing a translucent timetable layer adds work to every drag frame.
 @Composable
 internal fun TimetablePager(
     state: PagerState,
@@ -64,18 +62,7 @@ internal fun TimetablePager(
                 snapPositionalThreshold = 0.18f,
             ),
     ) { page ->
-        Box(
-            Modifier.fillMaxSize().graphicsLayer {
-                // Read the continuously changing offset during drawing, not composition.
-                val offset =
-                    ((state.currentPage - page) + state.currentPageOffsetFraction)
-                        .absoluteValue
-                        .coerceIn(0f, 1f)
-                alpha = 1f - 0.12f * offset
-                scaleX = 1f - 0.015f * offset
-                scaleY = scaleX
-            }
-        ) {
+        Box(Modifier.fillMaxSize()) {
             content(page)
         }
     }

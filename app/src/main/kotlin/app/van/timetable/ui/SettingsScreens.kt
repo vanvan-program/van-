@@ -232,7 +232,7 @@ fun NotificationSettings(p: Preferences, vm: VanViewModel) {
 }
 
 @Composable
-fun About() {
+fun About(nav: (String) -> Unit = {}) {
     val context = LocalContext.current
     val version =
         remember(context) {
@@ -245,7 +245,7 @@ fun About() {
         Panel {
             Text("van课表 $version", style = MaterialTheme.typography.headlineSmall)
             Text("GPL-3.0-only · 本地开发版")
-            Muted("尚未发布到GitHub。不同教务系统、实际导出文件与国产系统通知仍需要验证。")
+            Muted("不同教务系统、实际导出文件与国产系统通知仍需要验证。")
         }
         Panel {
             Text("隐私说明", fontWeight = FontWeight.Medium)
@@ -261,6 +261,7 @@ fun About() {
             )
             Text("完整恢复会替换全部课表，操作前自动保存本机恢复快照。")
         }
+        Action("历史版本更新", "查看 0.2.6 及以往版本的更新内容") { nav("changelog") }
         Action("开源与第三方许可", "查看本地许可声明") {
             context.startActivity(Intent(context, app.van.timetable.LicenseActivity::class.java))
         }

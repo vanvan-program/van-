@@ -190,7 +190,9 @@ class WidgetAutomaticTest {
                 .edit()
                 .putString("schedule_$id", schedule.id)
                 .commit()
-            runBlocking { Widgets.update(context, id) }
+            // Join the same serialized refresh path as the provider. A direct update can
+            // race its initial bind broadcast and be overwritten with the old binding.
+            runBlocking { app.van.timetable.system.Scheduler.reconcile(context) }
             waitForCount(scenario, 1)
             val list =
                 UiDevice.getInstance(instrumentation)

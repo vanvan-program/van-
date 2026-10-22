@@ -1,0 +1,2 @@
+Verified installed version: 0.2.6
+PASS: schedules, course payloads and all preference bytes are unchanged after overwrite upgrade

@@ -1,4 +1,7 @@
 .gradle/
+.tools/
+.verification/
+deliverables/
 .kotlin/
 **/build/
 local.properties
@@ -26,6 +29,7 @@ Thumbs.db
 keystore.properties
 key.properties
 signing.properties
+tr/
 credentials.json
 *.p12
 *.pfx

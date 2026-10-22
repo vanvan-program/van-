@@ -63,79 +63,16 @@ class Version020Test {
     }
 
     @Test
-    fun clockAndMovedCoursesOccupyGridIncludingBreaksAndOutOfHours() {
-        val s =
-            base.copy(
-                sessions =
-                    listOf(
-                        clock("06:30", "07:30"),
-                        clock("12:00", "13:00"),
-                        clock("22:00", "23:00"),
-                        clock("08:15", "08:40"),
-                    )
-            )
-        val timeline =
-            GridTimeline.create(
-                defaultSections(),
-                CourseEngine.resolveDay(s, LocalDate.parse(s.week1Monday)),
-            )
-        assertTrue(
-            timeline.position(LocalTime.parse("07:30")) <=
-                timeline.position(LocalTime.parse("08:00"))
-        )
-        assertTrue(
-            timeline.position(LocalTime.parse("08:15")) >
-                timeline.position(LocalTime.parse("08:00"))
-        )
-        assertEquals(
-            timeline.position(LocalTime.parse("11:40")),
-            timeline.position(LocalTime.parse("12:00")),
-            0f,
-        )
-        assertTrue(
-            timeline.position(LocalTime.parse("13:00")) >
-                timeline.position(LocalTime.parse("12:00"))
-        )
-        assertEquals(
-            timeline.position(LocalTime.parse("13:00")),
-            timeline.position(LocalTime.parse("14:30")),
-            0f,
-        )
-        assertTrue(
-            timeline.position(LocalTime.parse("22:00")) >=
-                timeline.position(LocalTime.parse("20:40"))
-        )
-        assertEquals(timeline.units, timeline.position(LocalTime.parse("23:00")), 0.001f)
-        val regular =
-            base.copy(sessions = listOf(CourseSession(courseId = course.id, weeks = setOf(1))))
-        val unchanged =
-            GridTimeline.create(
-                defaultSections(),
-                CourseEngine.resolveDay(regular, LocalDate.parse(base.week1Monday)),
-            )
-        assertEquals(10f, unchanged.units, 0f)
-        assertEquals(2f, unchanged.position(LocalTime.parse("09:40")), 0f)
-        val moved =
-            regular.copy(
-                sessionOverrides =
-                    listOf(
-                        SessionOverride(
-                            regular.sessions.single().id,
-                            base.week1Monday,
-                            start = "12:00",
-                            end = "13:00",
-                        )
-                    )
-            )
-        val modified =
-            GridTimeline.create(
-                defaultSections(),
-                CourseEngine.resolveDay(moved, LocalDate.parse(base.week1Monday)),
-            )
-        assertTrue(
-            modified.position(LocalTime.parse("13:00")) >
-                modified.position(LocalTime.parse("12:00"))
-        )
+    fun clockAndMovedCoursesOccupyFixedGridIncludingBreaksAndOutOfHours() {
+        val timeline = GridTimeline.create(defaultSections())
+        val samples = listOf("06:30", "07:30", "08:00", "08:15", "08:40",
+            "11:40", "12:00", "13:00", "14:30", "20:40", "22:00", "23:00")
+            .map(LocalTime::parse).map(timeline::position)
+        samples.zipWithNext().forEach { (a, b) -> assertTrue(a < b) }
+        assertEquals(10, timeline.bands.count { it.section != null })
+        assertTrue(timeline.bands.filter { it.section == null }.all { it.units == 20f / 56f })
+        assertNotNull(timeline.gapContaining(LocalTime.NOON, LocalTime.of(13, 0)))
+        assertEquals(timeline.units, timeline.position(LocalTime.MAX), 0.001f)
     }
 
     @Test

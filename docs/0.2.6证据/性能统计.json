@@ -1,0 +1,50 @@
+[
+  {
+    "version": "0.2.5",
+    "run": 1,
+    "frames": 912,
+    "jank_percent": 90.13,
+    "p95_ms": 61,
+    "p99_ms": 150
+  },
+  {
+    "version": "0.2.5",
+    "run": 2,
+    "frames": 912,
+    "jank_percent": 88.49,
+    "p95_ms": 57,
+    "p99_ms": 150
+  },
+  {
+    "version": "0.2.5",
+    "run": 3,
+    "frames": 912,
+    "jank_percent": 91.89,
+    "p95_ms": 61,
+    "p99_ms": 150
+  },
+  {
+    "version": "0.2.6",
+    "run": 1,
+    "frames": 917,
+    "jank_percent": 89.86,
+    "p95_ms": 85,
+    "p99_ms": 121
+  },
+  {
+    "version": "0.2.6",
+    "run": 2,
+    "frames": 917,
+    "jank_percent": 84.19,
+    "p95_ms": 61,
+    "p99_ms": 85
+  },
+  {
+    "version": "0.2.6",
+    "run": 3,
+    "frames": 919,
+    "jank_percent": 79.43,
+    "p95_ms": 61,
+    "p99_ms": 77
+  }
+]

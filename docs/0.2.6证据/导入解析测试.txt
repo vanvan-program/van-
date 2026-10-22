@@ -1,0 +1,19 @@
+✔ uses the selected past term and same-origin query, preserving metadata (18.5053ms)
+✔ reads repeated week suffixes, both parity spellings, and sparse weeks (5.0013ms)
+✔ handles single sections and missing metadata without inventing values (0.9428ms)
+✔ rejects malformed rows atomically without hiding errors through DOM fallback (5.9281ms)
+✔ expired login rejects stale visible data (2.3236ms)
+✔ empty or changing term is rejected without guessing (1.1942ms)
+✔ empty semesters and unscheduled practice cannot be silently dropped (1.7533ms)
+✔ transport failures use the chosen document through the shared DOM fallback (0.8052ms)
+✔ legacy pages without term inputs never request an inferred semester (0.606ms)
+✔ school overrides of array predicates preserve the term and reject practice courses (2.0063ms)
+✔ imports the queried grid and footer without fetching a different semester (1.0649ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 149.8424

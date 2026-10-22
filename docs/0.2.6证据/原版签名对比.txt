@@ -1,0 +1,18 @@
+2026-10-22 原版签名修复复核
+GitHub 0.2.5 与手机已安装 0.2.5 证书 SHA-256：
+2787e9a025cbd6606ac2ec05415432513ada6732360ce4dc2abb22e049e938bf
+
+首轮不兼容 0.2.6 证书 SHA-256：
+76013fa323f763be8c7caa569dee23dfd27ab1af745fa0dd064c8b64f2f06385
+首轮不兼容 APK SHA-256：
+8ce2544c5087cdf51fdaebac2931081ccbbf5248955ab92346e03a419e5bf4e3
+
+使用用户提供的原私钥重新构建后的 0.2.6 证书 SHA-256：
+2787e9a025cbd6606ac2ec05415432513ada6732360ce4dc2abb22e049e938bf
+修复 APK SHA-256：
+06e3690997eee4d2ad8c19d209613e474d8cb587ca45a95fa116c959f9f00f73
+
+结果：修复包证书与原版一致，APK v2 验签通过。
+非 META-INF/ ZIP 条目逐项 SHA-256 与首轮已测试包一致。
+真实手机 adb install -r 成功；没有卸载或清空数据。
+详情见“原签名真机覆盖.txt”。

@@ -3,6 +3,26 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.compose'
 }
 
+// 原版升级使用本地私有配置；源码包不包含签名密码或密钥。
+def originalSigningFile = rootProject.file('signing.properties')
+def originalSigning = new Properties()
+if (originalSigningFile.exists()) {
+    originalSigningFile.withInputStream { originalSigning.load(it) }
+    ['storeFile', 'storePassword', 'keyAlias', 'keyPassword'].each { name ->
+        if (!originalSigning.getProperty(name)) throw new GradleException("signing.properties 缺少 ${name}")
+    }
+    def keyStore = java.security.KeyStore.getInstance('JKS')
+    rootProject.file(originalSigning.storeFile).withInputStream {
+        keyStore.load(it, originalSigning.storePassword.toCharArray())
+    }
+    if (!keyStore.isKeyEntry(originalSigning.keyAlias)) throw new GradleException('原版签名配置不包含私钥')
+    def fingerprint = java.security.MessageDigest.getInstance('SHA-256')
+        .digest(keyStore.getCertificate(originalSigning.keyAlias).encoded).encodeHex().toString()
+    if (fingerprint != '2787e9a025cbd6606ac2ec05415432513ada6732360ce4dc2abb22e049e938bf') {
+        throw new GradleException('签名证书与原版 0.2.5 不同，不能用于覆盖升级')
+    }
+}
+
 android {
     namespace 'app.van.timetable'
     compileSdk 37
@@ -10,8 +30,8 @@ android {
         applicationId 'app.van.timetable'
         minSdk 26
         targetSdk 37
-        versionCode 18
-        versionName '0.2.5'
+        versionCode 19
+        versionName '0.2.6'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildFeatures { compose true }
@@ -19,7 +39,23 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-    buildTypes { release { minifyEnabled false } }
+    if (originalSigningFile.exists()) {
+        signingConfigs {
+            original {
+                storeFile rootProject.file(originalSigning.storeFile)
+                storePassword originalSigning.storePassword
+                keyAlias originalSigning.keyAlias
+                keyPassword originalSigning.keyPassword
+            }
+        }
+    }
+    buildTypes {
+        debug { if (originalSigningFile.exists()) signingConfig signingConfigs.original }
+        release {
+            minifyEnabled false
+            if (originalSigningFile.exists()) signingConfig signingConfigs.original
+        }
+    }
 }
 
 dependencies {

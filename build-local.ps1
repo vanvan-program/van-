@@ -6,8 +6,16 @@ param(
 $ErrorActionPreference = 'Stop'
 $projectPath = [IO.Path]::GetFullPath($PSScriptRoot)
 $toolPath = Join-Path (Split-Path $projectPath -Parent) '.tools'
-if (!$SdkPath) { $SdkPath = Join-Path $toolPath 'android-sdk' }
+if (!(Test-Path -LiteralPath (Join-Path $toolPath 'gradle-9.3.1'))) { $toolPath = Join-Path $projectPath '.tools' }
+if (!$SdkPath) {
+    $SdkPath = Join-Path $toolPath 'sdk'
+    if (!(Test-Path -LiteralPath $SdkPath)) { $SdkPath = Join-Path $toolPath 'android-sdk' }
+}
 if (!$JavaPath) { $JavaPath = $env:JAVA_HOME }
+if (!$JavaPath) {
+    $vanJavaCommand = Get-Command java.exe -ErrorAction SilentlyContinue
+    if ($vanJavaCommand) { $JavaPath = Split-Path (Split-Path $vanJavaCommand.Source -Parent) -Parent }
+}
 if (!$JavaPath) { $JavaPath = 'C:\Program Files\Microsoft\jdk-21.0.7.6-hotspot' }
 if (!(Test-Path -LiteralPath (Join-Path $SdkPath 'platform-tools'))) { throw '请通过 -SdkPath 指定已安装的 Android SDK。' }
 if (!(Test-Path -LiteralPath (Join-Path $JavaPath 'bin\java.exe'))) { throw '请通过 -JavaPath 指定 Java 21。' }

@@ -20,6 +20,7 @@ fun CalendarDateField(
     onChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     onlyMondays: Boolean = false,
+    allowClear: Boolean = false,
 ) {
     var open by rememberSaveable { mutableStateOf(false) }
     val date = runCatching { LocalDate.parse(value) }.getOrNull()
@@ -29,6 +30,11 @@ fun CalendarDateField(
             Icon(Icons.Outlined.DateRange, contentDescription = null)
             Spacer(Modifier.width(8.dp))
             Text(date?.let { "$it ${weekdays[it.dayOfWeek.value - 1]}" } ?: "选择日期")
+        }
+        if (allowClear && value.isNotBlank()) {
+            TextButton(onClick = { onChange("") }, modifier = Modifier.testTag("clear-once-date")) {
+                Text("清除日期，按星期和周次上课")
+            }
         }
     }
     if (open) {

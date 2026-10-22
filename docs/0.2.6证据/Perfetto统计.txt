@@ -1,0 +1,27 @@
+0.2.5
+Loading trace: 0.00 MBLoading trace: 24.20 MB[524.957]     common_flags.cc:474 Trace loaded: 24.20 MB in 0.73s (33.3 MB/s)
+column 0 = name
+column 1 = count
+column 2 = avg_ms
+column 3 = max_ms
+[524.961]            query.cc:159 Query execution time: 3 ms
+"name","count","avg_ms","max_ms"
+"draw-VRI[MainActivity]",1074,7.488000,36.315000
+"postAndWait",1074,5.970000,35.964000
+"AndroidOwner:measureAndLayout",914,1.917000,69.279000
+"Record View#draw()",1074,1.304000,11.828000
+"Compose:recompose",1483,0.246000,14.803000
+0.2.6
+Loading trace: 0.00 MBLoading trace: 31.08 MB[525.818]     common_flags.cc:474 Trace loaded: 31.08 MB in 0.76s (40.7 MB/s)
+column 0 = name
+column 1 = count
+column 2 = avg_ms
+column 3 = max_ms
+[525.821]            query.cc:159 Query execution time: 2 ms
+"name","count","avg_ms","max_ms"
+"draw-VRI[MainActivity]",842,15.473000,88.315000
+"postAndWait",842,14.445000,87.962000
+"Compose:recompose",129,1.513000,30.985000
+"AndroidOwner:measureAndLayout",733,1.076000,62.769000
+"Record View#draw()",843,0.810000,15.783000
+

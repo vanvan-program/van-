@@ -29,15 +29,21 @@ fun Detail(
     vm: VanViewModel,
     nav: (String) -> Unit,
     back: () -> Unit,
+    sessionId: String? = null,
+    originalDate: String? = null,
 ) {
     var delete by remember { mutableStateOf(false) }
+    var deleteOccurrence by remember { mutableStateOf<Occurrence?>(null) }
     LaunchedEffect(s.id, c.id) { vm.refreshWidgets() }
     val state by vm.state.collectAsStateWithLifecycle()
     val sessions = s.sessions.filter { it.courseId == c.id }
     val occurrences =
         date
             ?.let {
-                CourseEngine.resolveDay(s, LocalDate.parse(it)).filter { it.course.id == c.id }
+                CourseEngine.resolveDay(s, LocalDate.parse(it)).filter {
+                    it.course.id == c.id && (sessionId == null || it.session.id == sessionId) &&
+                        (originalDate == null || CourseEngine.originalDate(it) == originalDate)
+                }
             }
             .orEmpty()
     Column(
@@ -90,8 +96,15 @@ fun Detail(
             }
         occurrences.forEach { o ->
             Action("调整 ${o.date} ${o.start} 的课程", "取消、移动或修改这一次课程") {
-                nav("adjust:${o.session.id}:${o.date}")
+                nav("adjust:${o.session.id}:${CourseEngine.originalDate(o)}")
             }
+            OutlinedButton(
+                onClick = { deleteOccurrence = o },
+                modifier = Modifier.fillMaxWidth().testTag("delete-occurrence-${o.id}"),
+            ) {
+                Text("仅删除本日本节", color = MaterialTheme.colorScheme.error)
+            }
+            Muted("${o.date} ${o.start}–${o.end} · ${o.place}")
             val conflict =
                 CourseEngine.conflicts(CourseEngine.resolveDay(s, o.date)).firstOrNull { group ->
                     group.size > 1 && group.any { it.id == o.id }
@@ -142,6 +155,12 @@ fun Detail(
         Confirm("删除课程", "将删除“${c.name}”的全部时段和单次调整，并取消相关提醒。", { delete = false }) {
             vm.deleteCourse(s, c.id, back)
         }
+    deleteOccurrence?.let { o ->
+        Confirm("仅删除本日本节", "取消“${c.name}”在 ${o.date} ${o.start}–${o.end} 的这一次课程。其他日期和时段保留。", { deleteOccurrence = null }) {
+            vm.save(CourseEngine.cancelOccurrence(s, o), after = back)
+            deleteOccurrence = null
+        }
+    }
 }
 
 private data class SlotForm(
@@ -351,21 +370,14 @@ fun CourseEditor(
                     }
                     Field(slot.day, { slots[i] = slot.copy(day = it) }, "星期（1–7，整周实践可填0）")
                     Field(slot.weeks, { slots[i] = slot.copy(weeks = it) }, "周次，如1-8、11-16单")
-                    Field(slot.date, { slots[i] = slot.copy(date = it) }, "仅一次的日期（可选，YYYY-MM-DD）")
+                    CalendarDateField("仅一次的日期（可选）", slot.date,
+                        { slots[i] = slot.copy(date = it,
+                            weeks = if (it.isBlank() && slot.weeks.isBlank()) "1-${s.maxWeeks}" else slot.weeks) }, allowClear = true)
                     if (slot.mode == TimeMode.SECTIONS) {
-                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                            Field(
-                                slot.first,
-                                { slots[i] = slot.copy(first = it) },
-                                "开始节",
-                                Modifier.weight(1f),
-                            )
-                            Field(
-                                slot.last,
-                                { slots[i] = slot.copy(last = it) },
-                                "结束节",
-                                Modifier.weight(1f),
-                            )
+                        SectionRangeField(slot.first.toIntOrNull() ?: 1,
+                            slot.last.toIntOrNull() ?: 2,
+                            s.routines.minOf { it.sections.size }) { first, last ->
+                            slots[i] = slot.copy(first = first.toString(), last = last.toString())
                         }
                     }
                     if (slot.mode == TimeMode.CLOCK) {

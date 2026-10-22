@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="app.van.timetable.domain.TempDebugPdfTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-21T15:47:22.155Z" hostname="AGRO" time="0.027">
+  <properties/>
+  <testcase name="debug" classname="app.van.timetable.domain.TempDebugPdfTest" time="0.027"/>
+  <system-out><![CDATA[BLOCKED=Extraction(lines=[], cjkCount=0, letterCount=0)
+LATIN=[DocumentText(text=Hello (x), left=100.0, top=84.0, right=145.0, bottom=94.0, page=0), DocumentText(text=W\2, left=100.0, top=96.0, right=115.0, bottom=106.0, page=0)]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

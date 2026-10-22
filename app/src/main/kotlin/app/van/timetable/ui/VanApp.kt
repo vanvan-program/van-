@@ -339,7 +339,7 @@ fun VanApp(
                                 val parts = route.split(':')
                                 s.courses
                                     .firstOrNull { it.id == parts[1] }
-                                    ?.let { Detail(s, it, parts.getOrNull(2), vm, ::nav, ::back) }
+                                    ?.let { Detail(s, it, parts.getOrNull(2), vm, ::nav, ::back, parts.getOrNull(3), parts.getOrNull(4)) }
                                     ?: Missing(::nav)
                             } ?: Missing(::nav)
                         route.startsWith("edit:") ->
@@ -403,7 +403,8 @@ fun VanApp(
                             state.schedules
                                 .firstOrNull { it.id == route.substringAfter(':') }
                                 ?.let { ShareScreen(it, c.dark, vm) } ?: Missing(::nav)
-                        route == "about" -> About()
+                        route == "about" -> About(::nav)
+                        route == "changelog" -> ChangelogScreen()
                         else -> Missing(::nav)
                     }
                 }
@@ -453,6 +454,7 @@ private fun title(route: String) =
         "backup" -> "备份与恢复"
         "share" -> "分享课表"
         "about" -> "帮助与关于"
+        "changelog" -> "历史版本更新"
         else -> "van课表"
     }
 

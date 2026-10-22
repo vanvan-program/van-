@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="app.van.timetable.domain.SchoolImportTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-21T15:47:22.140Z" hostname="AGRO" time="0.012">
+  <properties/>
+  <testcase name="malformedFooterCannotBeDroppedWhileSavingRegularCourses" classname="app.van.timetable.domain.SchoolImportTest" time="0.005"/>
+  <testcase name="selectedTermAndMultipleTeachingSlotsRemainIntactThroughBackup" classname="app.van.timetable.domain.SchoolImportTest" time="0.002"/>
+  <testcase name="visibleFooterPreservesPracticeAndOtherCoursesWithoutSchedulingFakeTimes" classname="app.van.timetable.domain.SchoolImportTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
