@@ -1,7 +1,7 @@
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\DocumentFiles.kt:7: Warning: Avoid using android.media.ExifInterface; use androidx.exifinterface.media.ExifInterface instead [ExifInterface]
+app\src\main\kotlin\app\van\timetable\system\DocumentFiles.kt:7: Warning: Avoid using android.media.ExifInterface; use androidx.exifinterface.media.ExifInterface instead [ExifInterface]
 import android.media.ExifInterface
        ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\DocumentFiles.kt:183: Warning: Avoid using android.media.ExifInterface; use androidx.exifinterface.media.ExifInterface instead [ExifInterface]
+app\src\main\kotlin\app\van\timetable\system\DocumentFiles.kt:183: Warning: Avoid using android.media.ExifInterface; use androidx.exifinterface.media.ExifInterface instead [ExifInterface]
                     ExifInterface(ByteArrayInputStream(bytes))
                     ^
 
@@ -10,31 +10,31 @@ C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Docu
    in older versions of Android. There is a new implementation available of
    this library in the support library, which is preferable.
 
-C:\app\amyprogram\van schedule\app\src\main\res\xml\widget_dual.xml:1: Warning: Attribute targetCellHeight is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
+app\src\main\res\xml\widget_dual.xml:1: Warning: Attribute targetCellHeight is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android" android:minWidth="250dp" android:minHeight="110dp" android:minResizeWidth="250dp" android:minResizeHeight="110dp" android:targetCellWidth="4" android:targetCellHeight="2" android:updatePeriodMillis="1800000" android:resizeMode="horizontal|vertical" android:initialLayout="@layout/widget_dual" android:configure="app.van.timetable.widget.WidgetSettingsActivity" android:widgetFeatures="reconfigurable" android:widgetCategory="home_screen" android:description="@string/widget_dual_description"/>
                                                                                                                                                                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\xml\widget_dual.xml:1: Warning: Attribute targetCellWidth is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
+app\src\main\res\xml\widget_dual.xml:1: Warning: Attribute targetCellWidth is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android" android:minWidth="250dp" android:minHeight="110dp" android:minResizeWidth="250dp" android:minResizeHeight="110dp" android:targetCellWidth="4" android:targetCellHeight="2" android:updatePeriodMillis="1800000" android:resizeMode="horizontal|vertical" android:initialLayout="@layout/widget_dual" android:configure="app.van.timetable.widget.WidgetSettingsActivity" android:widgetFeatures="reconfigurable" android:widgetCategory="home_screen" android:description="@string/widget_dual_description"/>
                                                                                                                                                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\xml\widget_dual.xml:1: Warning: Attribute widgetFeatures is only used in API level 28 and higher (current min is 26) [UnusedAttribute]
+app\src\main\res\xml\widget_dual.xml:1: Warning: Attribute widgetFeatures is only used in API level 28 and higher (current min is 26) [UnusedAttribute]
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android" android:minWidth="250dp" android:minHeight="110dp" android:minResizeWidth="250dp" android:minResizeHeight="110dp" android:targetCellWidth="4" android:targetCellHeight="2" android:updatePeriodMillis="1800000" android:resizeMode="horizontal|vertical" android:initialLayout="@layout/widget_dual" android:configure="app.van.timetable.widget.WidgetSettingsActivity" android:widgetFeatures="reconfigurable" android:widgetCategory="home_screen" android:description="@string/widget_dual_description"/>
                                                                                                                                                                                                                                                                                                                                                                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\xml\widget_next.xml:1: Warning: Attribute targetCellHeight is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
+app\src\main\res\xml\widget_next.xml:1: Warning: Attribute targetCellHeight is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android" android:minWidth="200dp" android:minHeight="110dp" android:minResizeWidth="180dp" android:minResizeHeight="100dp" android:targetCellWidth="3" android:targetCellHeight="1" android:updatePeriodMillis="1800000" android:resizeMode="horizontal|vertical" android:initialLayout="@layout/widget_next" android:configure="app.van.timetable.widget.WidgetSettingsActivity" android:widgetFeatures="reconfigurable" android:widgetCategory="home_screen" android:description="@string/widget_next_description"/>
                                                                                                                                                                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\xml\widget_next.xml:1: Warning: Attribute targetCellWidth is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
+app\src\main\res\xml\widget_next.xml:1: Warning: Attribute targetCellWidth is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android" android:minWidth="200dp" android:minHeight="110dp" android:minResizeWidth="180dp" android:minResizeHeight="100dp" android:targetCellWidth="3" android:targetCellHeight="1" android:updatePeriodMillis="1800000" android:resizeMode="horizontal|vertical" android:initialLayout="@layout/widget_next" android:configure="app.van.timetable.widget.WidgetSettingsActivity" android:widgetFeatures="reconfigurable" android:widgetCategory="home_screen" android:description="@string/widget_next_description"/>
                                                                                                                                                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\xml\widget_next.xml:1: Warning: Attribute widgetFeatures is only used in API level 28 and higher (current min is 26) [UnusedAttribute]
+app\src\main\res\xml\widget_next.xml:1: Warning: Attribute widgetFeatures is only used in API level 28 and higher (current min is 26) [UnusedAttribute]
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android" android:minWidth="200dp" android:minHeight="110dp" android:minResizeWidth="180dp" android:minResizeHeight="100dp" android:targetCellWidth="3" android:targetCellHeight="1" android:updatePeriodMillis="1800000" android:resizeMode="horizontal|vertical" android:initialLayout="@layout/widget_next" android:configure="app.van.timetable.widget.WidgetSettingsActivity" android:widgetFeatures="reconfigurable" android:widgetCategory="home_screen" android:description="@string/widget_next_description"/>
                                                                                                                                                                                                                                                                                                                                                                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\xml\widget_today.xml:1: Warning: Attribute targetCellHeight is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
+app\src\main\res\xml\widget_today.xml:1: Warning: Attribute targetCellHeight is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android" android:minWidth="140dp" android:minHeight="170dp" android:minResizeWidth="120dp" android:minResizeHeight="130dp" android:targetCellWidth="2" android:targetCellHeight="2" android:updatePeriodMillis="1800000" android:resizeMode="horizontal|vertical" android:initialLayout="@layout/widget_dual" android:configure="app.van.timetable.widget.WidgetSettingsActivity" android:widgetFeatures="reconfigurable" android:widgetCategory="home_screen" android:description="@string/widget_today_description"/>
                                                                                                                                                                                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\xml\widget_today.xml:1: Warning: Attribute targetCellWidth is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
+app\src\main\res\xml\widget_today.xml:1: Warning: Attribute targetCellWidth is only used in API level 31 and higher (current min is 26) [UnusedAttribute]
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android" android:minWidth="140dp" android:minHeight="170dp" android:minResizeWidth="120dp" android:minResizeHeight="130dp" android:targetCellWidth="2" android:targetCellHeight="2" android:updatePeriodMillis="1800000" android:resizeMode="horizontal|vertical" android:initialLayout="@layout/widget_dual" android:configure="app.van.timetable.widget.WidgetSettingsActivity" android:widgetFeatures="reconfigurable" android:widgetCategory="home_screen" android:description="@string/widget_today_description"/>
                                                                                                                                                                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\xml\widget_today.xml:1: Warning: Attribute widgetFeatures is only used in API level 28 and higher (current min is 26) [UnusedAttribute]
+app\src\main\res\xml\widget_today.xml:1: Warning: Attribute widgetFeatures is only used in API level 28 and higher (current min is 26) [UnusedAttribute]
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android" android:minWidth="140dp" android:minHeight="170dp" android:minResizeWidth="120dp" android:minResizeHeight="130dp" android:targetCellWidth="2" android:targetCellHeight="2" android:updatePeriodMillis="1800000" android:resizeMode="horizontal|vertical" android:initialLayout="@layout/widget_dual" android:configure="app.van.timetable.widget.WidgetSettingsActivity" android:widgetFeatures="reconfigurable" android:widgetCategory="home_screen" android:description="@string/widget_today_description"/>
                                                                                                                                                                                                                                                                                                                                                                                                                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -55,7 +55,7 @@ C:\app\amyprogram\van schedule\app\src\main\res\xml\widget_today.xml:1: Warning:
    can be unused too, such as the new <tag> element in layouts introduced in
    API 21.
 
-C:\app\amyprogram\van schedule\gradle\wrapper\gradle-wrapper.properties:3: Warning: A newer version of Gradle than 9.3.1 is available: 9.8.2 [AndroidGradlePluginVersion]
+gradle\wrapper\gradle-wrapper.properties:3: Warning: A newer version of Gradle than 9.3.1 is available: 9.8.2 [AndroidGradlePluginVersion]
 distributionUrl=https\://services.gradle.org/distributions/gradle-9.3.1-bin.zip
                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -66,7 +66,7 @@ distributionUrl=https\://services.gradle.org/distributions/gradle-9.3.1-bin.zip
    with an older version. However, you may simply not be aware that a more
    recent version is available, and that is what this lint check helps find.
 
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\ui\Components.kt:55: Warning: Modifier parameter should be the first optional parameter [ModifierParameter from androidx.compose.ui]
+app\src\main\kotlin\app\van\timetable\ui\Components.kt:55: Warning: Modifier parameter should be the first optional parameter [ModifierParameter from androidx.compose.ui]
 fun Toggle(title: String, value: Boolean, onChange: (Boolean) -> Unit, description: String = "", modifier: Modifier = Modifier) {
                                                                                                  ~~~~~~~~
 
@@ -82,7 +82,7 @@ fun Toggle(title: String, value: Boolean, onChange: (Boolean) -> Unit, descripti
    Identifier: androidx.compose.ui
    Feedback: https://issuetracker.google.com/issues/new?component=612128
 
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\school\SchoolActivity.kt:117: Warning: Using setJavaScriptEnabled can introduce XSS vulnerabilities into your application, review carefully [SetJavaScriptEnabled]
+app\src\main\kotlin\app\van\timetable\school\SchoolActivity.kt:117: Warning: Using setJavaScriptEnabled can introduce XSS vulnerabilities into your application, review carefully [SetJavaScriptEnabled]
                                 settings.javaScriptEnabled = true
                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -93,7 +93,7 @@ C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\school\Scho
    https://goo.gle/SetJavaScriptEnabled
    https://developer.android.com/training/articles/security-tips
 
-C:\app\amyprogram\van schedule\app\src\main\res\xml\network_security.xml:1: Warning: Insecure Base Configuration [InsecureBaseConfiguration]
+app\src\main\res\xml\network_security.xml:1: Warning: Insecure Base Configuration [InsecureBaseConfiguration]
 <network-security-config><base-config cleartextTrafficPermitted="true"/></network-security-config>
                                                                  ~~~~
 
@@ -106,7 +106,7 @@ C:\app\amyprogram\van schedule\app\src\main\res\xml\network_security.xml:1: Warn
    https://goo.gle/InsecureBaseConfiguration
    https://developer.android.com/preview/features/security-config.html
 
-C:\app\amyprogram\van schedule\app\src\main\AndroidManifest.xml:6: Warning: The attribute android:dataExtractionRules only applies for Android 12 and higher; since minSdkVersion is API 26 you should also set android:fullBackupContent [DataExtractionRules]
+app\src\main\AndroidManifest.xml:6: Warning: The attribute android:dataExtractionRules only applies for Android 12 and higher; since minSdkVersion is API 26 you should also set android:fullBackupContent [DataExtractionRules]
     <application android:name=".VanApplication" android:label="van课表" android:icon="@drawable/ic_van" android:allowBackup="false" android:dataExtractionRules="@xml/data_extraction_rules" android:supportsRtl="true" android:theme="@style/Theme.Van" android:networkSecurityConfig="@xml/network_security">
                                                                                                                                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -126,7 +126,7 @@ C:\app\amyprogram\van schedule\app\src\main\AndroidManifest.xml:6: Warning: The 
    https://developer.android.com/about/versions/12/backup-restore#xml-changes
    https://goo.gle/DataExtractionRules
 
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\school\SchoolActivity.kt:126: Warning: Unnecessary; SDK_INT is always >= 26 [ObsoleteSdkInt]
+app\src\main\kotlin\app\van\timetable\school\SchoolActivity.kt:126: Warning: Unnecessary; SDK_INT is always >= 26 [ObsoleteSdkInt]
                                 if (Build.VERSION.SDK_INT >= 26) settings.safeBrowsingEnabled = true
                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -139,16 +139,16 @@ C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\school\Scho
    where the version qualifier is less than or equal to the minSdkVersion,
    where the contents should be merged into the best folder.
 
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual.xml:55: Warning: Nested weights are bad for performance [NestedWeights]
+app\src\main\res\layout\widget_dual.xml:55: Warning: Nested weights are bad for performance [NestedWeights]
             android:layout_weight="1"
             ~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual.xml:73: Warning: Nested weights are bad for performance [NestedWeights]
+app\src\main\res\layout\widget_dual.xml:73: Warning: Nested weights are bad for performance [NestedWeights]
                 android:layout_weight="1">
                 ~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual_compact.xml:55: Warning: Nested weights are bad for performance [NestedWeights]
+app\src\main\res\layout\widget_dual_compact.xml:55: Warning: Nested weights are bad for performance [NestedWeights]
             android:layout_weight="1"
             ~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual_compact.xml:73: Warning: Nested weights are bad for performance [NestedWeights]
+app\src\main\res\layout\widget_dual_compact.xml:73: Warning: Nested weights are bad for performance [NestedWeights]
                 android:layout_weight="1">
                 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -157,7 +157,7 @@ C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual_compact.xml:7
    with non-zero weights is nested inside another LinearLayout with non-zero
    weights, then the number of measurements increase exponentially.
 
-C:\app\amyprogram\van schedule\app\src\main\res\drawable\widget_card.xml:1: Warning: The resource R.drawable.widget_card appears to be unused [UnusedResources]
+app\src\main\res\drawable\widget_card.xml:1: Warning: The resource R.drawable.widget_card appears to be unused [UnusedResources]
 <shape xmlns:android="http://schemas.android.com/apk/res/android"><solid android:color="#FCF4F4"/><corners android:radius="10dp"/></shape>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -194,143 +194,143 @@ C:\app\amyprogram\van schedule\app\src\main\res\drawable\widget_card.xml:1: Warn
    </lint>
    ```
 
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual.xml:142: Warning: Avoid using sizes smaller than 11sp: 9sp [SmallSp]
+app\src\main\res\layout\widget_dual.xml:142: Warning: Avoid using sizes smaller than 11sp: 9sp [SmallSp]
         android:textSize="9sp"
         ~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual_compact.xml:142: Warning: Avoid using sizes smaller than 11sp: 9sp [SmallSp]
+app\src\main\res\layout\widget_dual_compact.xml:142: Warning: Avoid using sizes smaller than 11sp: 9sp [SmallSp]
         android:textSize="9sp"
         ~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_item.xml:38: Warning: Avoid using sizes smaller than 11sp: 10sp [SmallSp]
+app\src\main\res\layout\widget_item.xml:38: Warning: Avoid using sizes smaller than 11sp: 10sp [SmallSp]
             android:textSize="10sp"
             ~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_item.xml:52: Warning: Avoid using sizes smaller than 11sp: 10sp [SmallSp]
+app\src\main\res\layout\widget_item.xml:52: Warning: Avoid using sizes smaller than 11sp: 10sp [SmallSp]
             android:textSize="10sp"
             ~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_item.xml:61: Warning: Avoid using sizes smaller than 11sp: 8sp [SmallSp]
+app\src\main\res\layout\widget_item.xml:61: Warning: Avoid using sizes smaller than 11sp: 8sp [SmallSp]
             android:textSize="8sp"
             ~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_item_compact.xml:45: Warning: Avoid using sizes smaller than 11sp: 8sp [SmallSp]
+app\src\main\res\layout\widget_item_compact.xml:45: Warning: Avoid using sizes smaller than 11sp: 8sp [SmallSp]
             android:textSize="8sp"
             ~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_item_compact.xml:58: Warning: Avoid using sizes smaller than 11sp: 10sp [SmallSp]
+app\src\main\res\layout\widget_item_compact.xml:58: Warning: Avoid using sizes smaller than 11sp: 10sp [SmallSp]
                 android:textSize="10sp"
                 ~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_item_compact.xml:68: Warning: Avoid using sizes smaller than 11sp: 10sp [SmallSp]
+app\src\main\res\layout\widget_item_compact.xml:68: Warning: Avoid using sizes smaller than 11sp: 10sp [SmallSp]
                 android:textSize="10sp"
                 ~~~~~~~~~~~~~~~~~~~~~~~
 
    Explanation for issues of type "SmallSp":
    Avoid using sizes smaller than 11sp.
 
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\DocumentFiles.kt:135: Warning: Use the KTX function createBitmap instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\DocumentFiles.kt:135: Warning: Use the KTX function createBitmap instead? [UseKtx]
                                 Bitmap.createBitmap(
                                 ^
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\DocumentFiles.kt:212: Warning: Use the KTX function createBitmap instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\DocumentFiles.kt:212: Warning: Use the KTX function createBitmap instead? [UseKtx]
         val white = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\DocumentFiles.kt:258: Warning: Use the KTX extension function Bitmap.scale instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\DocumentFiles.kt:258: Warning: Use the KTX extension function Bitmap.scale instead? [UseKtx]
                 Bitmap.createScaledBitmap(
                 ^
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Files.kt:88: Warning: Use the KTX function createBitmap instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Files.kt:88: Warning: Use the KTX function createBitmap instead? [UseKtx]
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Files.kt:90: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Files.kt:90: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
         canvas.drawColor(Color.parseColor(if (dark) "#111A2A" else "#F8F9FE"))
                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Files.kt:92: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Files.kt:92: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
         paint.color = Color.parseColor(if (dark) "#EFF3FA" else "#18233A")
                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Files.kt:92: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Files.kt:92: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
         paint.color = Color.parseColor(if (dark) "#EFF3FA" else "#18233A")
                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Files.kt:98: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Files.kt:98: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
             paint.color = Color.parseColor(if (dark) "#EFF3FA" else "#18233A")
                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Files.kt:98: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Files.kt:98: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
             paint.color = Color.parseColor(if (dark) "#EFF3FA" else "#18233A")
                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Files.kt:111: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Files.kt:111: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
                     if (holiday) Color.parseColor(if (dark) "#344155" else "#D4D7DE")
                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Files.kt:111: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Files.kt:111: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
                     if (holiday) Color.parseColor(if (dark) "#344155" else "#D4D7DE")
                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Files.kt:115: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Files.kt:115: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
                     Color.parseColor(
                     ^
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Files.kt:115: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Files.kt:115: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
                     Color.parseColor(
                     ^
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Scheduler.kt:79: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Scheduler.kt:79: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
                 .setData(android.net.Uri.parse("van://course/${o?.id?:"home"}")),
                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\system\Scheduler.kt:155: Warning: Use the KTX extension function SharedPreferences.edit instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\system\Scheduler.kt:155: Warning: Use the KTX extension function SharedPreferences.edit instead? [UseKtx]
                     cache
                     ^
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\school\SchoolActivity.kt:229: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\school\SchoolActivity.kt:229: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
         if (!allowed(Uri.parse(view.url))) return done(null, "当前不是教务网页")
                      ~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\ui\SettingsScreens.kt:214: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\ui\SettingsScreens.kt:214: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
                                 Uri.parse("package:${context.packageName}"),
                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\ui\VanApp.kt:520: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\ui\VanApp.kt:520: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
                             android.net.Uri.parse("package:${context.packageName}"),
                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\WidgetSettingsActivity.kt:87: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\WidgetSettingsActivity.kt:87: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
                                         android.net.Uri.parse("package:$packageName"),
                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\WidgetSettingsActivity.kt:98: Warning: Use the KTX extension function SharedPreferences.edit instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\WidgetSettingsActivity.kt:98: Warning: Use the KTX extension function SharedPreferences.edit instead? [UseKtx]
                             getSharedPreferences("widgets", MODE_PRIVATE)
                             ^
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:112: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:112: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
         val text = Color.parseColor(if (dark) "#ECECF3" else "#252635")
                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:113: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:113: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
         val secondary = Color.parseColor(if (dark) "#B3B3C2" else "#737583")
                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:136: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:136: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
                 ForegroundColorSpan(Color.parseColor(if (dark) "#A7BCEF" else "#4C6090")),
                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:154: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:154: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
                     .setData(Uri.parse("van://widget/$id/settings")),
                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:162: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:162: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
                 timetableIntent(c, s?.id, today.toString()).setData(Uri.parse("van://widget/$id")),
                                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:189: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:189: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
                         .setData(Uri.parse("van://widget/$id/next")),
                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:200: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:200: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
                 Color.parseColor(if (dark) "#444450" else "#D5D4DE"),
                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:231: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:231: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
                         .setData(Uri.parse("van://widget/$id/tomorrow-blank")),
                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:302: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:302: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
                     .setData(Uri.parse("van://refresh/$id"))
                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:350: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:350: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
                     .setData(Uri.parse("van://adapter/$id/$column"))
                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:353: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:353: Warning: Use the KTX extension function String.toUri instead? [UseKtx]
         val intent = timetableIntent(c, scheduleId).setData(Uri.parse("van://widget/$id/$column"))
                                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:405: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:405: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
                 setTextColor(R.id.item_name, Color.parseColor(if (dark) "#ECECF3" else "#252635"))
                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:409: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:409: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
                     Color.parseColor(if (dark) "#9DBBFF" else "#4261A6"),
                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:411: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:411: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
                 setTextColor(R.id.item_place, Color.parseColor(if (dark) "#C3C3D0" else "#50515C"))
                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:412: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:412: Warning: Use the KTX extension function String.toColorInt instead? [UseKtx]
                 setTextColor(R.id.item_time, Color.parseColor(if (dark) "#B3B3C2" else "#737583"))
                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:428: Warning: Use the KTX function createBitmap instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:428: Warning: Use the KTX function createBitmap instead? [UseKtx]
                 val bar = Bitmap.createBitmap(barWidth, barHeight, Bitmap.Config.ARGB_8888)
                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:474: Warning: Use the KTX extension function SharedPreferences.edit instead? [UseKtx]
+app\src\main\kotlin\app\van\timetable\widget\Widgets.kt:474: Warning: Use the KTX extension function SharedPreferences.edit instead? [UseKtx]
         val edit = c.getSharedPreferences("widgets", Context.MODE_PRIVATE).edit()
                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -390,34 +390,34 @@ C:\app\amyprogram\van schedule\app\src\main\kotlin\app\van\timetable\widget\Widg
    </lint>
    ```
 
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual.xml:40: Warning: Hardcoded string "↻", should use @string resource [HardcodedText]
+app\src\main\res\layout\widget_dual.xml:40: Warning: Hardcoded string "↻", should use @string resource [HardcodedText]
             android:text="↻"
             ~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual.xml:43: Warning: Hardcoded string "刷新小组件", should use @string resource [HardcodedText]
+app\src\main\res\layout\widget_dual.xml:43: Warning: Hardcoded string "刷新小组件", should use @string resource [HardcodedText]
             android:contentDescription="刷新小组件"
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual.xml:63: Warning: Hardcoded string "今天", should use @string resource [HardcodedText]
+app\src\main\res\layout\widget_dual.xml:63: Warning: Hardcoded string "今天", should use @string resource [HardcodedText]
                 android:text="今天"
                 ~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual.xml:108: Warning: Hardcoded string "明天", should use @string resource [HardcodedText]
+app\src\main\res\layout\widget_dual.xml:108: Warning: Hardcoded string "明天", should use @string resource [HardcodedText]
                 android:text="明天"
                 ~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual_compact.xml:40: Warning: Hardcoded string "↻", should use @string resource [HardcodedText]
+app\src\main\res\layout\widget_dual_compact.xml:40: Warning: Hardcoded string "↻", should use @string resource [HardcodedText]
             android:text="↻"
             ~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual_compact.xml:43: Warning: Hardcoded string "刷新小组件", should use @string resource [HardcodedText]
+app\src\main\res\layout\widget_dual_compact.xml:43: Warning: Hardcoded string "刷新小组件", should use @string resource [HardcodedText]
             android:contentDescription="刷新小组件"
             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual_compact.xml:63: Warning: Hardcoded string "今天", should use @string resource [HardcodedText]
+app\src\main\res\layout\widget_dual_compact.xml:63: Warning: Hardcoded string "今天", should use @string resource [HardcodedText]
                 android:text="今天"
                 ~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_dual_compact.xml:108: Warning: Hardcoded string "明天", should use @string resource [HardcodedText]
+app\src\main\res\layout\widget_dual_compact.xml:108: Warning: Hardcoded string "明天", should use @string resource [HardcodedText]
                 android:text="明天"
                 ~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_item.xml:60: Warning: Hardcoded string "上课中", should use @string resource [HardcodedText]
+app\src\main\res\layout\widget_item.xml:60: Warning: Hardcoded string "上课中", should use @string resource [HardcodedText]
             android:text="上课中"
             ~~~~~~~~~~~~~~~~~~
-C:\app\amyprogram\van schedule\app\src\main\res\layout\widget_item_compact.xml:44: Warning: Hardcoded string "上课中", should use @string resource [HardcodedText]
+app\src\main\res\layout\widget_item_compact.xml:44: Warning: Hardcoded string "上课中", should use @string resource [HardcodedText]
             android:text="上课中"
             ~~~~~~~~~~~~~~~~~~
 

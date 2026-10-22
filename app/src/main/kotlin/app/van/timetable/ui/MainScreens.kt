@@ -492,6 +492,14 @@ fun Courses(s: Schedule, now: Instant, nav: (String) -> Unit) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
             )
+            OutlinedButton(
+                onClick = { nav("notes") },
+                modifier = Modifier.testTag("all-course-notes-button"),
+            ) {
+                Icon(Icons.Outlined.EditNote, contentDescription = null)
+                Spacer(Modifier.width(6.dp))
+                Text("课程备注")
+            }
             IconButton(onClick = { nav("edit:new") }) { Icon(Icons.Outlined.Add, "新增课程") }
         }
         Field(query, { query = it }, "搜索课程、老师、地点")

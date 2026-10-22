@@ -1,0 +1,9 @@
+Publication domain check: 78 tests, 0 failures, 0 skipped
+Publication app check: 3 tests, 0 failures, 0 skipped
+Publication import parser run: 11 tests, 0 failures, 0 skipped
+Current Debug APK and AndroidTest APK: BUILD SUCCESSFUL
+Previous overview UI run: 4 tests passed in 15.657 seconds
+Current targeted sorting UI run: 1 test passed in 11.03 seconds; the other 3 tests were not rerun
+Lint: 0 errors, 76 warnings
+Version: 0.2.9, versionCode 26
+Installed APK SHA-256 matches delivery: 3036538976837f56c6e59cc90259309ea64ec8ee96f68de4f541ec51411c33d8

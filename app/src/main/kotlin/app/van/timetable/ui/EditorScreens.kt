@@ -5,6 +5,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.listSaver
@@ -33,6 +34,9 @@ fun Detail(
     originalDate: String? = null,
 ) {
     var delete by remember { mutableStateOf(false) }
+    var editNote by rememberSaveable(c.id) { mutableStateOf(false) }
+    var noteDraft by rememberSaveable(c.id) { mutableStateOf("") }
+    val saving by vm.busy.collectAsStateWithLifecycle()
     var deleteOccurrence by remember { mutableStateOf<Occurrence?>(null) }
     LaunchedEffect(s.id, c.id) { vm.refreshWidgets() }
     val state by vm.state.collectAsStateWithLifecycle()
@@ -66,6 +70,16 @@ fun Detail(
             }
         }
         Panel {
+            Text("课程备注", fontWeight = FontWeight.Medium)
+            if (c.note.isBlank()) Muted("记录分数分布、老师是否点名等课程信息。")
+            else SelectionContainer { Text(c.note, modifier = Modifier.testTag("course-note-content")) }
+            TextButton(
+                onClick = { noteDraft = c.note; editNote = true },
+                enabled = !saving,
+                modifier = Modifier.testTag("edit-course-note"),
+            ) { Text(if (c.note.isBlank()) "添加课程备注" else "编辑课程备注") }
+        }
+        Panel {
             if (sessions.isEmpty()) Muted("上课时间待定，可编辑课程补充日期或周次。")
             sessions.forEach { n ->
                 Text(
@@ -89,11 +103,6 @@ fun Detail(
             )
             if (!state.preferences.reminders) Muted("全局提醒尚未开启，请在我的 → 提醒设置中开启")
         }
-        if (c.note.isNotBlank())
-            Panel {
-                Text("备注", fontWeight = FontWeight.Medium)
-                Text(c.note)
-            }
         occurrences.forEach { o ->
             Action("调整 ${o.date} ${o.start} 的课程", "取消、移动或修改这一次课程") {
                 nav("adjust:${o.session.id}:${CourseEngine.originalDate(o)}")
@@ -151,6 +160,13 @@ fun Detail(
             Text("删除课程", color = MaterialTheme.colorScheme.error)
         }
     }
+    if (editNote) CourseNoteDialog(
+        value = noteDraft,
+        onChange = { noteDraft = it },
+        saving = saving,
+        onSave = { vm.courseNote(s.id, c.id, noteDraft) { editNote = false } },
+        onDismiss = { editNote = false },
+    )
     if (delete)
         Confirm("删除课程", "将删除“${c.name}”的全部时段和单次调整，并取消相关提醒。", { delete = false }) {
             vm.deleteCourse(s, c.id, back)
@@ -319,7 +335,7 @@ fun CourseEditor(
         Field(name, { name = it }, "课程名称")
         Field(credit, { credit = it }, "学分（可选）")
         Field(kind, { kind = it }, "课程类型")
-        Field(note, { note = it }, "备注", multi = true)
+        CourseNoteField(note, { note = it })
         Field(lead, { lead = it }, "提前提醒分钟（空白表示跟随全局）")
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(10.dp),

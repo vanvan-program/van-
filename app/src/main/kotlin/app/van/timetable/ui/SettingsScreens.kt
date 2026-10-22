@@ -273,7 +273,7 @@ fun About(nav: (String) -> Unit = {}) {
             )
             Text("完整恢复会替换全部课表，操作前自动保存本机恢复快照。")
         }
-        Action("历史版本更新", "查看 0.2.8 及以往版本的更新内容") { nav("changelog") }
+        Action("历史版本更新", "查看 0.2.9 及以往版本的更新内容") { nav("changelog") }
         Action("开源与第三方许可", "查看本地许可声明") {
             context.startActivity(Intent(context, app.van.timetable.LicenseActivity::class.java))
         }

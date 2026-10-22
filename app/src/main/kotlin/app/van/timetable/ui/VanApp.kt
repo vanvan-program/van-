@@ -292,6 +292,7 @@ fun VanApp(
                                         }
                                 else -> Mine(state, ::nav)
                             }
+                        route == "notes" -> active?.let { CourseNotesScreen(it, vm) } ?: Missing(::nav)
                         route == "import" -> ImportEntry({ pick.launch(arrayOf("*/*")) }, ::nav)
                         route == "document" ->
                             document?.let { DocumentReview(vm, it) { nav("preview") } }
@@ -445,6 +446,7 @@ private fun title(route: String) =
         "days" -> "调课管理"
         "holidays" -> "节假日设置"
         "detail" -> "课程详情"
+        "notes" -> "课程备注"
         "edit" -> "编辑课程"
         "quick" -> "快捷添加"
         "adjust" -> "单次调课"
