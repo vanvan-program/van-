@@ -6,8 +6,14 @@ import android.appwidget.*
 import android.content.*
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.net.Uri
 import android.os.*
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.view.View
 import android.widget.*
@@ -119,12 +125,21 @@ object Widgets {
             "setBackgroundResource",
             if (dark) R.drawable.widget_dark else R.drawable.widget_light,
         )
-        view.setTextViewText(
-            R.id.widget_date,
-            "${today.monthValue}.${today.dayOfMonth} ${s?.let { val week = CourseEngine.week(it, today)
- if (week < 1) "未开学" else if (week > it.maxWeeks) "已结课" else "第${week}周" }.orEmpty()} ${listOf("周一","周二","周三","周四","周五","周六","周日")[today.dayOfWeek.value-1]}",
-        )
-        view.setTextColor(R.id.widget_date, secondary)
+        val weekLabel = s?.let {
+            val week = CourseEngine.week(it, today)
+            if (week < 1) "未开学" else if (week > it.maxWeeks) "已结课" else "第${week}周"
+        }.orEmpty()
+        val weekday = listOf("周一", "周二", "周三", "周四", "周五", "周六", "周日")[today.dayOfWeek.value - 1]
+        val dateLabel = "${today.monthValue}.${today.dayOfMonth}  $weekLabel  $weekday"
+        view.setTextViewText(R.id.widget_date, SpannableString(dateLabel).apply {
+            setSpan(
+                ForegroundColorSpan(Color.parseColor(if (dark) "#A7BCEF" else "#4C6090")),
+                dateLabel.length - weekday.length,
+                dateLabel.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE,
+            )
+        })
+        view.setTextColor(R.id.widget_date, text)
         view.setTextViewText(
             R.id.widget_updated,
             "更新 ${now.atZone(zone).toLocalTime().withSecond(0).withNano(0)}${if (type == "next") " · ${s?.name ?: "请启用课表"}" else ""}",
@@ -177,7 +192,7 @@ object Widgets {
             )
         } else {
             view.setTextViewText(R.id.widget_name, s?.name ?: "请选择课表")
-            view.setTextColor(R.id.widget_name, secondary)
+            view.setTextColor(R.id.widget_name, text)
             view.setOnClickPendingIntent(R.id.widget_name, settings)
             view.setInt(
                 R.id.widget_divider,
@@ -188,8 +203,17 @@ object Widgets {
                 R.id.widget_divider,
                 if (type == "today") View.GONE else View.VISIBLE,
             )
+            view.setViewVisibility(R.id.widget_updated, View.GONE)
+            // Hosts reuse RemoteViews when resizing: always reset every adaptive property.
+            val spacious = !compact && widgetHeight >= 180
+            val horizontalPadding = if (spacious) 14 else if (compact) 10 else 12
+            val verticalPadding = if (spacious) 10 else if (compact) 3 else 4
+            view.setViewPadding(R.id.widget_root, dp(c, horizontalPadding), dp(c, verticalPadding), dp(c, horizontalPadding), dp(c, verticalPadding))
+            view.setTextViewTextSize(R.id.today_title, TypedValue.COMPLEX_UNIT_SP, 13f)
+            view.setTextViewTextSize(R.id.tomorrow_title, TypedValue.COMPLEX_UNIT_SP, 13f)
+            view.setTextViewTextSize(R.id.widget_name, TypedValue.COMPLEX_UNIT_SP, if (compact) 13f else 14f)
+            view.setTextViewTextSize(R.id.widget_date, TypedValue.COMPLEX_UNIT_SP, if (compact) 11f else 12f)
             if (tiny) {
-                view.setViewVisibility(R.id.widget_updated, View.GONE)
                 view.setViewPadding(R.id.widget_root, dp(c, 8), 0, dp(c, 8), 0)
                 view.setTextViewTextSize(R.id.today_title, TypedValue.COMPLEX_UNIT_SP, 11f)
                 view.setTextViewTextSize(R.id.tomorrow_title, TypedValue.COMPLEX_UNIT_SP, 11f)
@@ -315,7 +339,7 @@ object Widgets {
                     .setHasStableIds(true)
                     .setViewTypeCount(2)
             items.forEach { o ->
-                builder.addItem(stableId(o.id), item(c, o, now, zone, dark, compact, tiny))
+                builder.addItem(stableId(o.id), item(c, o, now, zone, dark, compact, tiny, height(c, id) >= 180))
             }
             view.setRemoteAdapter(listId, builder.build())
         } else {
@@ -352,6 +376,7 @@ object Widgets {
         dark: Boolean = false,
         compact: Boolean = true,
         tiny: Boolean = false,
+        spacious: Boolean = false,
     ) =
         RemoteViews(
                 c.packageName,
@@ -371,34 +396,42 @@ object Widgets {
                 )
                 setTextViewText(
                     R.id.item_time,
-                    "${o.start}–${o.end}${if (ongoing && !compact) " · 上课中" else ""}",
+                    "${o.start} – ${o.end}",
                 )
                 setContentDescription(
                     R.id.item_root,
                     "${if (ongoing) "正在上课，" else ""}$name，${o.start}–${o.end}，${o.place.ifBlank { "地点待定" }}${o.session.teacher.takeIf { it.isNotBlank() }?.let { "，$it" }.orEmpty()}",
                 )
                 setTextColor(R.id.item_name, Color.parseColor(if (dark) "#ECECF3" else "#252635"))
-                if (compact) {
-                    setViewVisibility(R.id.item_status, if (ongoing) View.VISIBLE else View.GONE)
-                    setTextColor(
-                        R.id.item_status,
-                        Color.parseColor(if (dark) "#9DBBFF" else "#4261A6"),
-                    )
-                }
-                listOf(R.id.item_place, R.id.item_time).forEach {
-                    setTextColor(it, Color.parseColor(if (dark) "#B3B3C2" else "#737583"))
-                }
+                setViewVisibility(R.id.item_status, if (ongoing) View.VISIBLE else View.GONE)
+                setTextColor(
+                    R.id.item_status,
+                    Color.parseColor(if (dark) "#9DBBFF" else "#4261A6"),
+                )
+                setTextColor(R.id.item_place, Color.parseColor(if (dark) "#C3C3D0" else "#50515C"))
+                setTextColor(R.id.item_time, Color.parseColor(if (dark) "#B3B3C2" else "#737583"))
+                val nameSize = if (spacious && !compact) 14f else if (compact) 12f else 13f
+                val detailSize = if (spacious && !compact) 12f else 10f
+                setViewPadding(R.id.item_root, 0, dp(c, 1), 0, dp(c, 1))
+                setTextViewTextSize(R.id.item_name, TypedValue.COMPLEX_UNIT_SP, nameSize)
+                setTextViewTextSize(R.id.item_place, TypedValue.COMPLEX_UNIT_SP, detailSize)
+                setTextViewTextSize(R.id.item_time, TypedValue.COMPLEX_UNIT_SP, detailSize)
                 if (tiny) {
                     setViewPadding(R.id.item_root, 0, 0, 0, 0)
                     setTextViewTextSize(R.id.item_name, TypedValue.COMPLEX_UNIT_SP, 11f)
                     setTextViewTextSize(R.id.item_time, TypedValue.COMPLEX_UNIT_SP, 9f)
                     setTextViewTextSize(R.id.item_place, TypedValue.COMPLEX_UNIT_SP, 9f)
                 }
-                setInt(
-                    R.id.item_bar,
-                    "setBackgroundColor",
-                    CoursePalette.argb(o.course, true).toInt(),
+                // A small bitmap keeps round caps and custom colors on API 26+ RemoteViews.
+                val barWidth = dp(c, if (compact) 3 else 4).coerceAtLeast(1)
+                val barHeight = dp(c, if (compact) 28 else 48).coerceAtLeast(barWidth)
+                val bar = Bitmap.createBitmap(barWidth, barHeight, Bitmap.Config.ARGB_8888)
+                Canvas(bar).drawRoundRect(
+                    0f, 0f, barWidth.toFloat(), barHeight.toFloat(),
+                    barWidth / 2f, barWidth / 2f,
+                    Paint(Paint.ANTI_ALIAS_FLAG).apply { color = CoursePalette.argb(o.course, dark).toInt() },
                 )
+                setImageViewBitmap(R.id.item_bar, bar)
                 setOnClickFillInIntent(
                     R.id.item_root,
                     Intent().putExtra("date", o.date.toString()),
@@ -461,6 +494,7 @@ class CourseListService : RemoteViewsService() {
             var dark = false
             var compact = true
             var tiny = false
+            var spacious = false
             val column = intent.getStringExtra("column")
 
             override fun onCreate() {}
@@ -474,6 +508,7 @@ class CourseListService : RemoteViewsService() {
                     val widgetHeight = Widgets.height(applicationContext, widgetId)
                     compact = widgetHeight < 140 || resources.configuration.fontScale > 1.15f
                     tiny = widgetHeight <= 100
+                    spacious = widgetHeight >= 180
                     zone = ZoneId.of(s?.zone ?: "Asia/Shanghai")
                     list =
                         if (s == null) emptyList()
@@ -491,7 +526,7 @@ class CourseListService : RemoteViewsService() {
 
             override fun getViewAt(position: Int) =
                 list.getOrNull(position)?.let {
-                    Widgets.item(applicationContext, it, Instant.now(), zone, dark, compact, tiny)
+                    Widgets.item(applicationContext, it, Instant.now(), zone, dark, compact, tiny, spacious)
                 }
 
             override fun getLoadingView(): RemoteViews? = null

@@ -25,7 +25,7 @@ fun ChangelogScreen() {
     }
     LazyColumn(Modifier.fillMaxSize().testTag("changelog-list"), contentPadding = PaddingValues(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         items(entries, key = { it.first }) { (title, body) ->
-            var expanded by rememberSaveable(title) { mutableStateOf(title.startsWith("0.2.6")) }
+            var expanded by rememberSaveable(title) { mutableStateOf(title.startsWith("0.2.8")) }
             Panel {
                 Row(Modifier.fillMaxWidth().clickable { expanded = !expanded }.padding(vertical = 8.dp)) {
                     Text(title, Modifier.weight(1f), fontWeight = FontWeight.Medium)

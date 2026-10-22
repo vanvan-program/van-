@@ -160,7 +160,7 @@ class Version026UiTest {
         val lunch = ui.onNodeWithTag("grid-course-gap1@$today").performScrollTo().fetchSemanticsNode().boundsInRoot
         val later = ui.onNodeWithTag("grid-course-gap2@$today").fetchSemanticsNode().boundsInRoot
         assertTrue(lunch.right <= later.left + 1f)
-        assertTrue(lunch.height <= 21f)
+        assertTrue(lunch.height <= 21f * ui.activity.resources.displayMetrics.density)
         screenshot("026-gap-cards.png")
         for (slot in listOf(slots.first(), slots.last(), slots[3])) {
             ui.onNodeWithTag("grid-course-${slot.id}@$today").performScrollTo().performClick()

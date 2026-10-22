@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="app.van.timetable.domain.DocumentImportTest" tests="21" skipped="0" failures="0" errors="0" timestamp="2026-10-21T15:47:21.653Z" hostname="AGRO" time="0.262">
+  <properties/>
+  <testcase name="combinedSectionsColumnAndHeaderBelowTitleAreRecognized" classname="app.van.timetable.domain.DocumentImportTest" time="0.098"/>
+  <testcase name="missingWeeksAndIncompleteMergeDoNotInventSemesterOrSections" classname="app.van.timetable.domain.DocumentImportTest" time="0.013"/>
+  <testcase name="oneOcrLineCanContainAllWeekdayLabelsAndDateLinesAreIgnored" classname="app.van.timetable.domain.DocumentImportTest" time="0.025"/>
+  <testcase name="severalCroppedColumnsRemainIndependentAndAllNeedWeekday" classname="app.van.timetable.domain.DocumentImportTest" time="0.008"/>
+  <testcase name="mergedCellsInferSectionsOnlyFromExplicitRowLabels" classname="app.van.timetable.domain.DocumentImportTest" time="0.005"/>
+  <testcase name="campusPdfTextLayerCellsParseWrappedTeacherPlaceAndWeeks" classname="app.van.timetable.domain.DocumentImportTest" time="0.058"/>
+  <testcase name="numericDataCellsDoNotBecomeWeekdayHeaders" classname="app.van.timetable.domain.DocumentImportTest" time="0.001"/>
+  <testcase name="zhengfangStyleWeekGridRestoresSplitWordsAndSeparatedWeekRanges" classname="app.van.timetable.domain.DocumentImportTest" time="0.003"/>
+  <testcase name="shortTimingFieldFixKeepsRealCourseNamesWithSectionsAsSeparateCourses" classname="app.van.timetable.domain.DocumentImportTest" time="0.003"/>
+  <testcase name="screenshotWithoutHeaderRetainsCourseButRequiresWeekday" classname="app.van.timetable.domain.DocumentImportTest" time="0.001"/>
+  <testcase name="labelledWeekListsAndWrappedTimingRangesRemainExplicit" classname="app.van.timetable.domain.DocumentImportTest" time="0.002"/>
+  <testcase name="positionedOcrUsesWeekdayColumnsAndRecognizesMetadata" classname="app.van.timetable.domain.DocumentImportTest" time="0.005"/>
+  <testcase name="badWeeksAndSectionsRemainUnresolvedUntilUserCorrectsThem" classname="app.van.timetable.domain.DocumentImportTest" time="0.009"/>
+  <testcase name="crossDayMergedCellRequiresConfirmationInsteadOfAssigningFirstDay" classname="app.van.timetable.domain.DocumentImportTest" time="0.006"/>
+  <testcase name="nativeOcrFixtureKeepsLabelledWeekTeacherAndRoomInTheSameCourse" classname="app.van.timetable.domain.DocumentImportTest" time="0.003"/>
+  <testcase name="missingReversedOrUnevenWeekdayHeadersNeverAssignANeighboringDay" classname="app.van.timetable.domain.DocumentImportTest" time="0.004"/>
+  <testcase name="standardColumnsAndEnglishAliasesPreserveMetadataAndImportAsCsv" classname="app.van.timetable.domain.DocumentImportTest" time="0.002"/>
+  <testcase name="distantGutterCannotSupplySectionsWhileNearbyExplicitRowRangeCan" classname="app.van.timetable.domain.DocumentImportTest" time="0.003"/>
+  <testcase name="nativePdfOcrMisreadWeekLabelStillFillsTheExistingCourse" classname="app.van.timetable.domain.DocumentImportTest" time="0.001"/>
+  <testcase name="multipleCoursesInsideOneCellKeepSeparateRows" classname="app.van.timetable.domain.DocumentImportTest" time="0.002"/>
+  <testcase name="csvEscapingRetainsManualEditsWithCommaQuotesAndNewlines" classname="app.van.timetable.domain.DocumentImportTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

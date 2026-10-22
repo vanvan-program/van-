@@ -3,13 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="10dp"
-    android:paddingVertical="0dp"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="4dp"
     android:background="@drawable/widget_dark">
     <LinearLayout
         android:id="@+id/widget_header"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
+        android:minHeight="20dp"
+        android:layout_marginBottom="2dp"
         android:orientation="horizontal"
         android:gravity="center_vertical">
         <TextView
@@ -18,7 +20,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textColor="#D8D8D8"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:includeFontPadding="false"
             android:singleLine="true"
             android:ellipsize="end" />
@@ -28,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:textColor="#747684"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:includeFontPadding="false"
             android:singleLine="true" />
         <TextView
@@ -37,7 +39,8 @@
             android:layout_height="match_parent"
             android:text="↻"
             android:gravity="center"
-            android:textSize="14sp"
+            android:textSize="15sp"
+            android:contentDescription="刷新小组件"
             android:includeFontPadding="false"
             android:textColor="#D8D8D8" />
     </LinearLayout>
@@ -58,6 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="今天"
+                android:layout_marginBottom="4dp"
                 android:textColor="#D8D8D8"
                 android:textSize="13sp"
                 android:textStyle="normal"
@@ -72,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="2dp"
+                android:dividerHeight="6dp"
                 android:scrollbars="none" />
             <TextView
                 android:id="@+id/today_empty"
@@ -87,8 +91,7 @@
             android:id="@+id/widget_divider"
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginTop="19dp"
             android:background="#D9D9E3"
             android:importantForAccessibility="no" />
         <LinearLayout
@@ -103,6 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="明天"
+                android:layout_marginBottom="4dp"
                 android:textColor="#D8D8D8"
                 android:textSize="13sp"
                 android:textStyle="normal"
@@ -117,7 +121,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@android:color/transparent"
-                android:dividerHeight="2dp"
+                android:dividerHeight="6dp"
                 android:scrollbars="none" />
             <TextView
                 android:id="@+id/tomorrow_empty"
@@ -131,6 +135,7 @@
     </LinearLayout>
     <TextView
         android:id="@+id/widget_updated"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#BBBBBB"

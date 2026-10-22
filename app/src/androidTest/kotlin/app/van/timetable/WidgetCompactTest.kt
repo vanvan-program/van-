@@ -91,7 +91,8 @@ class WidgetCompactTest {
                 .commit()
             for (theme in listOf("light", "dark")) {
                 runBlocking { store.updatePreferences { it.copy(theme = theme) } }
-                for (height in listOf(170, 130, 110)) {
+                // Grow again after tiny mode: a reused host must reset font sizes and padding.
+                for (height in listOf(170, 130, 110, 200, 170, 130)) {
                     scenario.onActivity { it.resize(height) }
                     runBlocking { Widgets.update(context, id) }
                     var ready = false

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="app.van.timetable.domain.HolidayTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-21T15:47:22.065Z" hostname="AGRO" time="0.039">
+  <properties/>
+  <testcase name="inclusiveRangePreservesCoursesAndRestoresAfterRemoval" classname="app.van.timetable.domain.HolidayTest" time="0.002"/>
+  <testcase name="backupRoundTripIncludesHolidayAndOlderSchedulesDefaultToNone" classname="app.van.timetable.domain.HolidayTest" time="0.029"/>
+  <testcase name="holidayValidationRejectsBadDatesAndReverseRange" classname="app.van.timetable.domain.HolidayTest" time="0.003"/>
+  <testcase name="holidayAlsoSuppressesSingleCoursesDayReplacementAndMovedInSessions" classname="app.van.timetable.domain.HolidayTest" time="0.0"/>
+  <testcase name="overlappingAndSingleDayHolidaysUseUnionOfDates" classname="app.van.timetable.domain.HolidayTest" time="0.001"/>
+  <testcase name="remainingAndNextSkipHolidayAndResumeOnFirstSchoolDay" classname="app.van.timetable.domain.HolidayTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

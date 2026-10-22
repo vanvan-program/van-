@@ -1,0 +1,2 @@
+core/domain/build/test-results/test : tests=78 failures=0 skipped=0
+app/build/test-results/testDebugUnitTest : tests=3 failures=0 skipped=0

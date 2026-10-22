@@ -58,13 +58,18 @@ class WidgetAutomaticTest {
     ) {
         val deadline = System.currentTimeMillis() + timeout
         var actual = -1
-        while (System.currentTimeMillis() < deadline && actual != count) {
+        var laidOut = false
+        while (System.currentTimeMillis() < deadline && (actual != count || !laidOut)) {
             Thread.sleep(100)
             scenario.onActivity {
-                actual = it.widgetView.findViewById<ListView>(R.id.today_list)?.adapter?.count ?: -1
+                val list = it.widgetView.findViewById<ListView>(R.id.today_list)
+                actual = list?.adapter?.count ?: -1
+                laidOut = list != null &&
+                    (count == 0 || (!list.isLayoutRequested && list.childCount > 0 && list.getChildAt(0).height > 0))
             }
         }
         assertEquals("未点击更新，小组件应自动同步", count, actual)
+        assertTrue("课程项已实际完成布局", laidOut)
     }
 
     @Test

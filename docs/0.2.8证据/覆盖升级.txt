@@ -1,0 +1,2 @@
+Verified 0.2.8 schedules: 6 integrity: ok
+PASS: direct 0.2.8 code 21 -> code 22 overwrite; no uninstall or clear; complete course JSON and settings bytes unchanged

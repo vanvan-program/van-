@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="app.van.timetable.domain.EngineTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2026-10-21T15:47:21.924Z" hostname="AGRO" time="0.124">
+  <properties/>
+  <testcase name="daySwapDoesNotRecursivelyCopy" classname="app.van.timetable.domain.EngineTest" time="0.014"/>
+  <testcase name="transitiveConflictsGrouped" classname="app.van.timetable.domain.EngineTest" time="0.001"/>
+  <testcase name="invalidCsvFailsAtomically" classname="app.van.timetable.domain.EngineTest" time="0.002"/>
+  <testcase name="weekExpressions" classname="app.van.timetable.domain.EngineTest" time="0.001"/>
+  <testcase name="moveOccursOnce" classname="app.van.timetable.domain.EngineTest" time="0.004"/>
+  <testcase name="routineChangesByDate" classname="app.van.timetable.domain.EngineTest" time="0.004"/>
+  <testcase name="disjointWeeksAndSemesterBoundaries" classname="app.van.timetable.domain.EngineTest" time="0.0"/>
+  <testcase name="backupRoundTrip" classname="app.van.timetable.domain.EngineTest" time="0.061"/>
+  <testcase name="clockTimeUnaffectedByRoutine" classname="app.van.timetable.domain.EngineTest" time="0.001"/>
+  <testcase name="csvQuotedFields" classname="app.van.timetable.domain.EngineTest" time="0.001"/>
+  <testcase name="backupRejectsBrokenDisplayPreferences" classname="app.van.timetable.domain.EngineTest" time="0.008"/>
+  <testcase name="nextAcrossEmptyWeeks" classname="app.van.timetable.domain.EngineTest" time="0.003"/>
+  <testcase name="copyRemapsEveryReference" classname="app.van.timetable.domain.EngineTest" time="0.001"/>
+  <testcase name="exactlyEndedRemoved" classname="app.van.timetable.domain.EngineTest" time="0.0"/>
+  <testcase name="touchingIntervalsDoNotConflict" classname="app.van.timetable.domain.EngineTest" time="0.0"/>
+  <testcase name="olderPreferencesDefaultToFittingTheWholeWeek" classname="app.van.timetable.domain.EngineTest" time="0.002"/>
+  <testcase name="wakeupStepAndSharedCourse" classname="app.van.timetable.domain.EngineTest" time="0.016"/>
+  <testcase name="nextRespectsPriorityAmongOngoingConflicts" classname="app.van.timetable.domain.EngineTest" time="0.002"/>
+  <testcase name="cancellationAndAdjustment" classname="app.van.timetable.domain.EngineTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,152 @@
+light host=936×510px, fontScale=1.0
+today_list height=303px children=3
+measured-row0=0..132px, height=132
+measured-row1=150..282px, height=132
+measured-row2=300..432px, height=132
+row0=0..132px
+row1=150..282px
+tomorrow_list height=303px children=3
+measured-row0=0..132px, height=132
+measured-row1=150..282px, height=132
+measured-row2=300..432px, height=132
+row0=0..132px
+row1=150..282px
+light host=936×390px, fontScale=1.0
+today_list height=200px children=3
+measured-row0=0..93px, height=93
+measured-row1=99..192px, height=93
+measured-row2=198..291px, height=93
+row0=0..93px
+row1=99..192px
+tomorrow_list height=200px children=3
+measured-row0=0..93px, height=93
+measured-row1=99..192px, height=93
+measured-row2=198..291px, height=93
+row0=0..93px
+row1=99..192px
+light host=936×330px, fontScale=1.0
+today_list height=168px children=2
+measured-row0=0..80px, height=80
+measured-row1=86..166px, height=80
+row0=0..80px
+row1=86..166px
+tomorrow_list height=168px children=2
+measured-row0=0..80px, height=80
+measured-row1=86..166px, height=80
+row0=0..80px
+row1=86..166px
+light host=936×600px, fontScale=1.0
+today_list height=357px children=3
+measured-row0=0..151px, height=151
+measured-row1=169..320px, height=151
+measured-row2=338..489px, height=151
+row0=0..151px
+row1=169..320px
+tomorrow_list height=357px children=3
+measured-row0=0..151px, height=151
+measured-row1=169..320px, height=151
+measured-row2=338..489px, height=151
+row0=0..151px
+row1=169..320px
+light host=936×510px, fontScale=1.0
+today_list height=303px children=3
+measured-row0=0..132px, height=132
+measured-row1=150..282px, height=132
+measured-row2=300..432px, height=132
+row0=0..132px
+row1=150..282px
+tomorrow_list height=303px children=3
+measured-row0=0..132px, height=132
+measured-row1=150..282px, height=132
+measured-row2=300..432px, height=132
+row0=0..132px
+row1=150..282px
+light host=936×390px, fontScale=1.0
+today_list height=200px children=3
+measured-row0=0..93px, height=93
+measured-row1=99..192px, height=93
+measured-row2=198..291px, height=93
+row0=0..93px
+row1=99..192px
+tomorrow_list height=200px children=3
+measured-row0=0..93px, height=93
+measured-row1=99..192px, height=93
+measured-row2=198..291px, height=93
+row0=0..93px
+row1=99..192px
+dark host=936×510px, fontScale=1.0
+today_list height=303px children=3
+measured-row0=0..132px, height=132
+measured-row1=150..282px, height=132
+measured-row2=300..432px, height=132
+row0=0..132px
+row1=150..282px
+tomorrow_list height=303px children=3
+measured-row0=0..132px, height=132
+measured-row1=150..282px, height=132
+measured-row2=300..432px, height=132
+row0=0..132px
+row1=150..282px
+dark host=936×390px, fontScale=1.0
+today_list height=200px children=3
+measured-row0=0..93px, height=93
+measured-row1=99..192px, height=93
+measured-row2=198..291px, height=93
+row0=0..93px
+row1=99..192px
+tomorrow_list height=200px children=3
+measured-row0=0..93px, height=93
+measured-row1=99..192px, height=93
+measured-row2=198..291px, height=93
+row0=0..93px
+row1=99..192px
+dark host=936×330px, fontScale=1.0
+today_list height=168px children=2
+measured-row0=0..80px, height=80
+measured-row1=86..166px, height=80
+row0=0..80px
+row1=86..166px
+tomorrow_list height=168px children=2
+measured-row0=0..80px, height=80
+measured-row1=86..166px, height=80
+row0=0..80px
+row1=86..166px
+dark host=936×600px, fontScale=1.0
+today_list height=357px children=3
+measured-row0=0..151px, height=151
+measured-row1=169..320px, height=151
+measured-row2=338..489px, height=151
+row0=0..151px
+row1=169..320px
+tomorrow_list height=357px children=3
+measured-row0=0..151px, height=151
+measured-row1=169..320px, height=151
+measured-row2=338..489px, height=151
+row0=0..151px
+row1=169..320px
+dark host=936×510px, fontScale=1.0
+today_list height=303px children=3
+measured-row0=0..132px, height=132
+measured-row1=150..282px, height=132
+measured-row2=300..432px, height=132
+row0=0..132px
+row1=150..282px
+tomorrow_list height=303px children=3
+measured-row0=0..132px, height=132
+measured-row1=150..282px, height=132
+measured-row2=300..432px, height=132
+row0=0..132px
+row1=150..282px
+dark host=936×390px, fontScale=1.0
+today_list height=200px children=3
+measured-row0=0..93px, height=93
+measured-row1=99..192px, height=93
+measured-row2=198..291px, height=93
+row0=0..93px
+row1=99..192px
+tomorrow_list height=200px children=3
+measured-row0=0..93px, height=93
+measured-row1=99..192px, height=93
+measured-row2=198..291px, height=93
+row0=0..93px
+row1=99..192px

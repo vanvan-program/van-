@@ -368,7 +368,7 @@ fun VanApp(
                                 val parts = route.split(':')
                                 SingleAdjustment(s, parts[1], parts[2], vm, ::back)
                             } ?: Missing(::nav)
-                        route == "appearance" -> Appearance(state.preferences, vm)
+                        route == "appearance" -> Appearance(state.preferences, vm, state.active)
                         route == "notifications" -> NotificationSettings(state.preferences, vm)
                         route == "widgets" -> WidgetGallery(state, vm)
                         route == "backup" ->

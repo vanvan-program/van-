@@ -1,0 +1,13 @@
+Performing Streamed Install
+
+Success
+
+
+Verified 0.2.6 schedules: 4 integrity: ok
+Performing Streamed Install
+
+Success
+
+
+Verified 0.2.7 schedules: 4 integrity: ok
+PASS: direct 0.2.6 -> 0.2.7 overwrite; no uninstall or clear; complete course JSON and settings bytes unchanged

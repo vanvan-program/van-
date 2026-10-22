@@ -59,7 +59,7 @@ private fun weekData(s: Schedule, monday: LocalDate, days: Int, showInactive: Bo
 @Composable
 internal fun WeekGrid(
     s: Schedule, p: Preferences, week: Int, dateNow: LocalDate,
-    gridPan: MutableStateFlow<Int>, activePage: Boolean,
+    gridPan: MutableStateFlow<Int>, activePage: Boolean, canCollapseGaps: Boolean,
     nav: (String) -> Unit, onDaySelected: (LocalDate) -> Unit,
 ) {
     val monday = remember(s.week1Monday, week) { LocalDate.parse(s.week1Monday).plusWeeks((week - 1).toLong()) }
@@ -73,19 +73,24 @@ internal fun WeekGrid(
     }
     val sections = remember(s, monday) { CourseEngine.routine(s, monday).sections }
     val data = remember(s, monday, days, p.showInactive) { weekData(s, monday, days, p.showInactive) }
+    val compactAxis = canCollapseGaps && p.showCourseGaps != true
     BoxWithConstraints(Modifier.fillMaxSize().testTag("week-grid-$week").gridPagingGuard(gridScroll)) {
         val density = LocalDensity.current
         val scale = density.fontScale.coerceAtLeast(1f)
         val gutter = (34f * scale).dp
         val width = maxOf(maxWidth.value, 38f * scale * days + gutter.value).dp
         val dayWidth = (width - gutter) / days
+        // Match 0.2.5's rounded cards on the compact axis; only time-axis
+        // breaks disappear. The 0.2.6 axis keeps its original card insets.
+        val cardInsetX = 2.dp
+        val cardInsetY = if (compactAxis) 2.dp else 1.dp
         val headerHeight = maxOf(44f, 36f * scale).dp
-        val gapHeight = (20f * scale).dp
+        val gapHeight = if (compactAxis) 0.dp else (20f * scale).dp
         val gapCount = remember(sections) { GridTimeline.create(sections).bands.count { it.section == null } }
         val fitted = (maxHeight - headerHeight - 8.dp - gapHeight * gapCount) / sections.size
         val rowHeight = if (p.fitWeek) minOf(p.rowHeight.dp, maxOf((36f * scale).dp, fitted)) else p.rowHeight.dp
         val timeline = remember(sections, gapHeight, rowHeight) { GridTimeline.create(sections, gapHeight / rowHeight) }
-        val placed = remember(data, timeline, rowHeight) {
+        val placed = remember(data, timeline, rowHeight, gapHeight) {
             data.map { day ->
                 val gaps = day.entries.groupBy { timeline.gapContaining(it.occurrence.start, it.occurrence.end) }
                 day.entries.map { entry ->
@@ -141,10 +146,10 @@ internal fun WeekGrid(
                         val entry = item.entry
                         val o = entry.occurrence
                         val color = if (entry.inactive) colors.inactive else colors.courseColor(o.course)
-                        val cardWidth = (dayWidth - 4.dp) / item.lanes
+                        val cardWidth = (dayWidth - cardInsetX * 2) / item.lanes
                         GridCard(o.course.name, o.place, color, entry.prefix, cardWidth,
-                            maxOf(1.dp, item.height - 2.dp), item.compact, entry.inactive,
-                            Modifier.offset(x = gutter + dayWidth * d + 2.dp + cardWidth * item.lane, y = item.top + 1.dp)
+                            maxOf(if (compactAxis) 24.dp else 1.dp, item.height - cardInsetY * 2), item.compact && !compactAxis, entry.inactive,
+                            Modifier.offset(x = gutter + dayWidth * d + cardInsetX + cardWidth * item.lane, y = item.top + cardInsetY)
                                 .testTag(if (entry.inactive && entry.prefix == "[非本周]") "inactive-course-${o.id}" else if (entry.inactive) "holiday-course-${o.id}" else "grid-course-${o.id}"),
                         ) {
                             if (entry.conflict) onDaySelected(o.date)
@@ -168,7 +173,8 @@ private fun GridCard(name: String, place: String, color: Color, prefix: String, 
     val placeHeight = if (place.isBlank() || compact) 0.dp else with(density) { (9.sp * placeLines * 1.2f).toDp() }
     val nameLines = if (compact) 1 else ((height - placeHeight - 6.dp) / with(density) { (nameSize * 1.15f).toDp() }).toInt().coerceIn(1, 5)
     val textColor = if (inactive) LocalVan.current.inactiveText else courseTextColor(color)
-    Box(modifier.width(width).height(height).clip(RoundedCornerShape(if (compact) 3.dp else 6.dp)).background(color).clickable(onClick = onClick), contentAlignment = Alignment.Center) {
+    val corner = if (compact) 3.dp else 6.dp
+    Box(modifier.width(width).height(height).clip(RoundedCornerShape(corner)).background(color).clickable(onClick = onClick), contentAlignment = Alignment.Center) {
         Column(Modifier.fillMaxSize().padding(horizontal = 3.dp, vertical = if (compact) 0.dp else 3.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             Text(prefix + name, color = textColor, fontSize = nameSize, lineHeight = nameSize * 1.15f, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center, maxLines = nameLines, overflow = TextOverflow.Ellipsis)
             if (place.isNotBlank() && !compact) Text(place, color = textColor, fontSize = 9.sp, lineHeight = 10.8.sp, textAlign = TextAlign.Center, maxLines = placeLines, overflow = TextOverflow.Ellipsis)

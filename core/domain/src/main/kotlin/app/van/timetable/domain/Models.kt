@@ -114,6 +114,9 @@ data class Preferences(
     val statusNotification: Boolean = false,
     val keepLogin: Boolean = false,
     val showCustomTimeLabels: Boolean = true,
+    // Controls time-axis breaks only. Cards always retain their rounded shape and insets.
+    // null follows the active timetable; Boolean values are explicit user choices.
+    val showCourseGaps: Boolean? = null,
 )
 
 @Serializable

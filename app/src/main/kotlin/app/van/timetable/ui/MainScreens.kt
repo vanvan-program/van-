@@ -93,6 +93,7 @@ fun Timetable(
     var selectWeek by remember { mutableStateOf(false) }
     var menu by remember { mutableStateOf(false) }
     val gridPan = remember(s.id) { MutableStateFlow(0) }
+    val canCollapseGaps = remember(s) { GridTimeline.canCollapseGaps(s) }
     val colors = LocalVan.current
     LaunchedEffect(weekPager) {
         snapshotFlow { weekPager.currentPage }
@@ -344,6 +345,7 @@ fun Timetable(
                         dateNow,
                         gridPan,
                         weekPager.settledPage == page,
+                        canCollapseGaps,
                         nav,
                     ) { date ->
                         selectedWeekday = date.dayOfWeek.value - 1

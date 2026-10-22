@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.van.timetable.domain.*
@@ -91,7 +92,8 @@ fun ScheduleList(state: VanState, vm: VanViewModel, nav: (String) -> Unit) {
 }
 
 @Composable
-fun Appearance(p: Preferences, vm: VanViewModel) {
+fun Appearance(p: Preferences, vm: VanViewModel, schedule: Schedule?) {
+    val canCollapseGaps = remember(schedule) { schedule?.let(GridTimeline::canCollapseGaps) ?: false }
     Column(
         Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -133,6 +135,16 @@ fun Appearance(p: Preferences, vm: VanViewModel) {
         Panel {
             Toggle("显示周末", p.showWeekend, { v -> vm.prefs { it.copy(showWeekend = v) } })
             Toggle("显示非本周课程", p.showInactive, { v -> vm.prefs { it.copy(showInactive = v) } })
+            Toggle(
+                "保留课间时间空档",
+                p.showCourseGaps ?: !canCollapseGaps,
+                { v -> vm.prefs { it.copy(showCourseGaps = v) } },
+                "${if (p.showCourseGaps == null) "当前自动判断。" else "当前使用手动设置。"}课程均在作息节次内时默认收起课间空档，作息外有课时保留；课程卡片始终保留圆角和小间距，空课节次仍保留",
+                modifier = Modifier.testTag("course-gap-setting"),
+            )
+            if (p.showCourseGaps != null) TextButton(onClick = { vm.prefs { it.copy(showCourseGaps = null) } }) {
+                Text("恢复自动判断")
+            }
             Toggle(
                 "显示自定义时间课时间",
                 p.showCustomTimeLabels,
@@ -261,7 +273,7 @@ fun About(nav: (String) -> Unit = {}) {
             )
             Text("完整恢复会替换全部课表，操作前自动保存本机恢复快照。")
         }
-        Action("历史版本更新", "查看 0.2.6 及以往版本的更新内容") { nav("changelog") }
+        Action("历史版本更新", "查看 0.2.8 及以往版本的更新内容") { nav("changelog") }
         Action("开源与第三方许可", "查看本地许可声明") {
             context.startActivity(Intent(context, app.van.timetable.LicenseActivity::class.java))
         }

@@ -19,10 +19,11 @@ class WidgetPreviewActivity : Activity() {
         host = AppWidgetHost(this, 6215)
         host.startListening()
         widgetId = host.allocateAppWidgetId()
+        val density = resources.displayMetrics.density
         val container =
             LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
-                setPadding(24, 70, 24, 24)
+                setPadding((24 * density).toInt(), (70 * density).toInt(), (24 * density).toInt(), (24 * density).toInt())
             }
         setContentView(container)
     }

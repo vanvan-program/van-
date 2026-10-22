@@ -1,0 +1,4 @@
+
+package: name='app.van.timetable' versionCode='20' versionName='0.2.7' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'
+sdkVersion:'26'
+targetSdkVersion:'37'

@@ -52,8 +52,8 @@ fun Field(
 }
 
 @Composable
-fun Toggle(title: String, value: Boolean, onChange: (Boolean) -> Unit, description: String = "") {
-    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+fun Toggle(title: String, value: Boolean, onChange: (Boolean) -> Unit, description: String = "", modifier: Modifier = Modifier) {
+    Row(modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
             Text(title)
             if (description.isNotEmpty()) Muted(description)

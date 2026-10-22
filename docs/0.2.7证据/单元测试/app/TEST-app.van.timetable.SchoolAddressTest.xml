@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="app.van.timetable.SchoolAddressTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-22T12:01:36.361Z" hostname="AGRO" time="0.062">
+  <properties/>
+  <testcase name="acceptsUserAddressesWithPortsQueriesAndFragments" classname="app.van.timetable.SchoolAddressTest" time="0.051"/>
+  <testcase name="selectsProtocolsByPagePathWithoutSchoolDomains" classname="app.van.timetable.SchoolAddressTest" time="0.001"/>
+  <testcase name="rejectsNonWebLinksAndEmbeddedCredentials" classname="app.van.timetable.SchoolAddressTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="app.van.timetable.domain.WakeUpCompatibilityTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-21T15:47:22.208Z" hostname="AGRO" time="0.014">
+  <properties/>
+  <testcase name="customClockCourseDoesNotRequireSectionPlaceholders" classname="app.van.timetable.domain.WakeUpCompatibilityTest" time="0.005"/>
+  <testcase name="exportIdsAreRebuiltWithoutDroppingTimesOrMetadata" classname="app.van.timetable.domain.WakeUpCompatibilityTest" time="0.004"/>
+  <testcase name="missingDatabaseLinksDoNotInvalidateAnOtherwiseCompleteBackup" classname="app.van.timetable.domain.WakeUpCompatibilityTest" time="0.001"/>
+  <testcase name="brokenTimesAndAmbiguousRoutinesStillFail" classname="app.van.timetable.domain.WakeUpCompatibilityTest" time="0.003"/>
+  <testcase name="fullRoutineMayHaveMoreRowsThanTheDisplayedSectionCount" classname="app.van.timetable.domain.WakeUpCompatibilityTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

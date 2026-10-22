@@ -3,6 +3,7 @@ package app.van.timetable
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.BitmapDrawable
 import android.view.View
 import android.widget.ListView
 import android.widget.TextView
@@ -30,19 +31,19 @@ class WidgetVisualTest {
         val store = (context.applicationContext as VanApplication).store
         val today = LocalDate.now(ZoneId.of("Asia/Shanghai"))
         val courses =
-            listOf("市场调查【讲授】", "形式与政策（五）", "习近平新时代中国特色社会主义思想", "门店销售与服务", "推销学").mapIndexed {
+            listOf("数字图像处理", "马克思主义基本原理", "电磁场与微波技术与天线", "数字信号处理", "推销学").mapIndexed {
                 index,
                 name ->
                 Course(
                     name = name,
                     customColor =
-                        listOf(0xFF3385EDL, 0xFFDA69CBL, 0xFFFA793FL, 0xFFE6BD63L, 0xFF6CC399L)[
+                        listOf(0xFFFF6082L, 0xFFFF9800L, 0xFF23D7ACL, 0xFFBBAAE1L, 0xFF6CC399L)[
                             index],
                 )
             }
         val s =
             Schedule(
-                name = "宝三上",
+                name = "三上",
                 week1Monday =
                     today
                         .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
@@ -78,8 +79,8 @@ class WidgetVisualTest {
                             end =
                                 if (index == 0) "23:59"
                                 else listOf("09:35", "12:15", "15:35", "17:25")[index - 1],
-                            place = if (index == 0) "6-301" else "6-203",
-                            teacher = if (index == 0) "甲老师" else "乙老师",
+                            place = if (index == 0) "信科-301" else if (index == 1) "信科-302" else "兴三-302",
+                            teacher = if (index == 0) "郭晓峰" else if (index == 1) "刘文鹏" else "楚君",
                         )
                     },
             )
@@ -103,6 +104,8 @@ class WidgetVisualTest {
                 .putString("schedule_$id", s.id)
                 .commit()
             for (theme in listOf("light", "dark")) {
+              for (height in listOf(170, 200)) {
+                scenario.onActivity { it.resize(height) }
                 context
                     .getSharedPreferences("widgets", 0)
                     .edit()
@@ -129,7 +132,7 @@ class WidgetVisualTest {
                 scenario.onActivity {
                     val root = it.widgetView.findViewById<View>(R.id.widget_root)
                     assertEquals(
-                        "宝三上",
+                        "三上",
                         root.findViewById<TextView>(R.id.widget_name).text.toString(),
                     )
                     assertTrue(root.findViewById<TextView>(R.id.widget_date).text.contains("第6周"))
@@ -138,10 +141,16 @@ class WidgetVisualTest {
                     val name = row.findViewById<TextView>(R.id.item_name)
                     val place = row.findViewById<TextView>(R.id.item_place)
                     val time = row.findViewById<TextView>(R.id.item_time)
-                    assertTrue(name.top < place.top && place.top < time.top)
+                    val namePosition = IntArray(2)
+                    val placePosition = IntArray(2)
+                    val timePosition = IntArray(2)
+                    name.getLocationOnScreen(namePosition)
+                    place.getLocationOnScreen(placePosition)
+                    time.getLocationOnScreen(timePosition)
+                    assertTrue(namePosition[1] < placePosition[1] && placePosition[1] < timePosition[1])
                     assertFalse("课程名常规字重", name.typeface.isBold)
-                    assertEquals("6-203  乙老师", place.text.toString())
-                    assertEquals("08:00–09:35", time.text.toString())
+                    assertEquals("信科-302  刘文鹏", place.text.toString())
+                    assertEquals("08:00 – 09:35", time.text.toString())
                     assertEquals("时间不截断", 0, time.layout.getEllipsisCount(0))
                     assertTrue(time.layout.getLineWidth(0) <= time.width)
                     assertTrue(
@@ -152,22 +161,26 @@ class WidgetVisualTest {
                         Color.parseColor(if (theme == "light") "#252635" else "#ECECF3"),
                         name.currentTextColor,
                     )
-                    val bar =
-                        row.findViewById<View>(R.id.item_bar).background
-                            as android.graphics.drawable.ColorDrawable
-                    assertEquals(0xFFDA69CB.toInt(), bar.color)
+                    assertEquals(View.GONE, root.findViewById<View>(R.id.widget_updated).visibility)
+                    val bar = (row.findViewById<android.widget.ImageView>(R.id.item_bar).drawable as BitmapDrawable).bitmap
+                    assertEquals("保留自定义课程颜色", 0xFFFF9800.toInt(), bar.getPixel(bar.width / 2, bar.height / 2))
+                    assertTrue("色条圆头的角落透明", Color.alpha(bar.getPixel(0, 0)) < 255)
                     val location = IntArray(2)
                     root.getLocationOnScreen(location)
                     bounds = intArrayOf(location[0], location[1], root.width, root.height)
                 }
                 // Crop pixels from the actual display screenshot, preserving the real widget.
+                UiDevice.getInstance(instrumentation).waitForIdle(1000)
+                Thread.sleep(200) // Let the applied RemoteViews reach the displayed frame.
                 val screen = instrumentation.uiAutomation.takeScreenshot()
                 val crop = Bitmap.createBitmap(screen, bounds[0], bounds[1], bounds[2], bounds[3])
-                File(context.getExternalFilesDir(null), "022-widget-4x2-$theme.png")
+                assertEquals("截图已显示当前主题的真实帧", Color.parseColor(if (theme == "light") "#F0EFF5" else "#202020"), crop.getPixel(crop.width / 4, crop.height - 5))
+                File(context.getExternalFilesDir(null), "027-widget-$height-$theme.png")
                     .outputStream()
                     .use { crop.compress(Bitmap.CompressFormat.PNG, 100, it) }
                 crop.recycle()
                 screen.recycle()
+              }
             }
             scenario.onActivity { it.resize(110) }
             runBlocking { Widgets.update(context, id) }

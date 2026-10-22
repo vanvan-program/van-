@@ -1,0 +1,11 @@
+
+app.van.timetable.WidgetVisualTest:.
+app.van.timetable.WidgetCompactTest:.
+app.van.timetable.WidgetScrollTest:.
+app.van.timetable.WidgetBindingTest:.
+app.van.timetable.WidgetAutomaticTest:..
+app.van.timetable.Version020WidgetTest:..
+
+Time: 70.283
+
+OK (8 tests)
